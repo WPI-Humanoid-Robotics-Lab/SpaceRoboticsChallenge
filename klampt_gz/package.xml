@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>klampt_gz_player</name>
+  <name>klampt_gz</name>
   <version>0.0.0</version>
   <description>executable to read a klampt path and send joint commands to gazebo</description>
   <maintainer email="mitranopeter@gmail.com">peter</maintainer>

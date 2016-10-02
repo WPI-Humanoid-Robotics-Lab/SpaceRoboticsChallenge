@@ -37,11 +37,11 @@ void KlamptGzPlayer::run(int _argc, char **_argv)
   // Publish to a Gazebo topic
   this->pub = node->Advertise<msgs::JointCmd>("~/valkyrie/joint_cmd");
 
-  this->jointSub = nh.subscribe("/set_joint_state", 10, &KlamptGzPlayer::jointStateCallback, this);
-
   // Wait for a subscriber to connect
   ROS_INFO("Waiting for gazebo connection... (unpause it!)");
   this->pub->WaitForConnection();
+
+  this->jointSub = nh.subscribe("/set_joint_state", 10, &KlamptGzPlayer::jointStateCallback, this);
 
   std::string param_name = "/valkyrie/pid";
   if (nh.hasParam(param_name)) {
