@@ -8,5 +8,7 @@
     <xacro:include filename="$(find val_description)/common/xacro/serial_numbers/valkyrie_A_serials.xacro"/>
     <xacro:include filename="$(find val_description)/common/xacro/dev_ports/valkyrie_gazebo_ports.xacro"/>
     <xacro:include filename="$(find val_description)/model/robots/common/xacro/valkyrie_base_sim.xacro"/>
-
+    <gazebo>
+      <static>true</static>
+    </gazebo>
 </robot>

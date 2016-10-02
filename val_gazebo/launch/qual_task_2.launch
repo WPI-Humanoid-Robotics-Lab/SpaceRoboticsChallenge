@@ -1,9 +1,14 @@
 <launch>
+
+  <param name="robot_description" textfile="$(find val_description)/model/urdf/valkyrie_sim.urdf"/>
+
   <!-- We grab the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="verbose" value="true"/>
     <arg name="world_name" value="$(find val_gazebo)/worlds/qual_task_2.world"/>
   </include>
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model valkyrie -z 1.18" />
 
   <node name="src_door" pkg="val_gazebo" type="src_door">
     <remap from="open_door" to="button_pressed" />
