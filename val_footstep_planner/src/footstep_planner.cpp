@@ -1,19 +1,26 @@
 #include "../include/footstep_planner.h"
+#include "../include/miqqp.h"
 #include <iostream>
+
+enum PlannerType {AStar, ANAStar, ARAStar, MIP};
+
+
 int main(){
-	//Testing the data structure
-	FootstepSequence fsequence;
-	for(int i=0; i<10; i++){
-		FootLocation fLocation(l_foot, 1.2, 2.2, 2.1,0.5);
-		fsequence.sequence.insert(std::pair<int, FootLocation> (i, fLocation));
+	//Class holding all the footsteps
+	FootstepSequence footSequence;
+	
+	//Options for the footstep planner
+	RobotWalkType walktype=	biped;
+	Foot startfoot= lf_foot;
+	PlannerType planningAlgorithm=MIP;
+	
+	//TODO:Load a terrain
+
+	
+	if(planningAlgorithm==MIP){
+		MiqQP MipPlanner(biped, startfoot);
+		footSequence=MipPlanner.PlanFootSteps();
 	}
 	
-	for(int k=0; k<10; k++){
-		
-		FootLocation fl=fsequence.sequence.find(k)->second;
-		Position x;
-		fl.GetPosition(x);
-		std::cout<<x.xPos<<"\n";
-	}
 	return 0;
 }

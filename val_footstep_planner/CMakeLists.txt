@@ -6,13 +6,13 @@ project(val_footstep_planner)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED)
 
-#SET(KLAMPT_ROOT /home/aditya/Klampt)
-#SET (CMAKE_MODULE_PATH "${KLAMPT_ROOT}/CMakeModules")
+SET(KLAMPT_ROOT /home/aditya/Klampt)
+SET (CMAKE_MODULE_PATH "${KLAMPT_ROOT}/CMakeModules")
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-#FIND_PACKAGE(Klampt REQUIRED)
-#ADD_DEFINITIONS(${KLAMPT_DEFINITIONS})
+FIND_PACKAGE(Klampt REQUIRED)
+ADD_DEFINITIONS(${KLAMPT_DEFINITIONS})
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -113,7 +113,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(include)
-#INCLUDE_DIRECTORIES(${KLAMPT_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${KLAMPT_INCLUDE_DIRS})
 
 ## Declare a C++ library
 # add_library(val_footstep_planner
@@ -126,7 +126,7 @@ include_directories(include)
 # add_dependencies(val_footstep_planner ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(footstep_planner src/foot_data.cpp src/footstep_planner.cpp)
+add_executable(footstep_planner src/foot_data.cpp src/miqqp.cpp src/footstep_planner.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
