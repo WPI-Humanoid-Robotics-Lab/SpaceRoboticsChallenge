@@ -1,0 +1,5 @@
+<launch>
+  <rosparam command="load" file="$(find klampt_gz_player)/param/pids.yaml"/>
+  <node name="pids" pkg="klampt_gz_player" type="klampt_gz_player">
+  </node>
+</launch>

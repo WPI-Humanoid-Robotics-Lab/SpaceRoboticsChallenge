@@ -1,0 +1,85 @@
+valkyrie:
+  pid:
+    torsoRoll: {target: 0.00, p: 400, i: 0, d: 200 }
+    torsoPitch: {target: 0.00, p: 400, i: 0, d: 200}
+    torsoYaw: {target: 0.00, p: 400, i: 0, d: 200}
+
+    rightHipRoll: {target: 0.00, p: 200, i: 0, d: 100}
+    rightHipPitch: {target: 0, p: 200, i: 0, d: 100}
+    rightHipYaw: {target: 0.00, p: 200, i: 0, d: 100}
+
+    leftHipRoll: {target: 0.00, p: 200, i: 0, d: 100}
+    leftHipPitch: {target: 0, p: 200, i: 0, d: 100}
+    leftHipYaw: {target: 0.00, p: 200, i: 0, d: 100}
+
+    leftKneePitch: {target: 0.00, p: 200, i: 0, d: 100}
+
+    rightKneePitch: {target: 0.0, p: 200, i: 0, d: 100}
+
+    leftElbowPitch: {target: 0, p: 200, i: 0, d: 100}
+
+    rightElbowPitch: {target: 0, p: 200, i: 0, d: 100}
+
+    leftShoulderRoll: {target: -1.2, p: 200, i: 0, d: 100}
+    leftShoulderPitch: {target: 0, p: 200, i: 0, d: 100}
+    leftShoulderYaw: {target: 0, p: 20, i: 0, d: 10}
+
+    rightShoulderRoll: {target: 1.2, p: 200, i: 0, d: 100}
+    rightShoulderPitch: {target: 0, p: 200, i: 0, d: 100}
+    rightShoulderYaw: {target: 0, p: 20, i: 0, d: 10}
+
+    leftAnklePitch: {target: 0, p: 1, i: 0, d: 0}
+    leftAnkleRoll: {target: 0, p: 1, i: 0, d: 0}
+
+    rightAnklePitch: {target: 0, p: 1, i: 0, d: 0}
+    rightAnkleRoll: {target: 0, p: 1, i: 0, d: 0}
+
+    leftForearmYaw: {target: 0, p: 200, i: 0, d: 100}
+
+    leftWristRoll: {target: 0, p: 200, i: 0, d: 100}
+    leftWristPitch: {target: 0, p: 200, i: 0, d: 100}
+
+    leftIndexFingerPitch1: {target: 0, p: 1, i: 0, d: 0}
+    leftIndexFingerPitch2: {target: 0, p: 1, i: 0, d: 0}
+    leftIndexFingerPitch3: {target: 0, p: 1, i: 0, d: 0}
+
+    leftMiddleFingerPitch1: {target: 0, p: 1, i: 0, d: 0}
+    leftMiddleFingerPitch2: {target: 0, p: 1, i: 0, d: 0}
+    leftMiddleFingerPitch3: {target: 0, p: 1, i: 0, d: 0}
+
+    leftPinkyPitch1: {target: 0, p: 1, i: 0, d: 0}
+    leftPinkyPitch2: {target: 0, p: 1, i: 0, d: 0}
+    leftPinkyPitch3: {target: 0, p: 1, i: 0, d: 0}
+
+    leftThumbRoll: {target: 0, p: 1, i: 0, d: 0}
+    leftThumbPitch1: {target: 0, p: 1, i: 0, d: 0}
+    leftThumbPitch2: {target: 0, p: 1, i: 0, d: 0}
+    leftThumbPitch3: {target: 0, p: 1, i: 0, d: 0}
+
+    lowerNeckPitch: {target: 0, p: 50, i: 0, d: 30}
+    neckYaw: {target: 0, p: 1, i: 0, d: 0}
+    upperNeckPitch: {target: 0, p: 1, i: 0, d: 0}
+
+    hokuyo_joint: {target: 0, p: 1, i: 0, d: 0}
+
+    rightForearmYaw: {target: 0, p: 200, i: 0, d: 100}
+
+    rightWristRoll: {target: 0, p: 200, i: 0, d: 100}
+    rightWristPitch: {target: 0, p: 200, i: 0, d: 100}
+
+    rightIndexFingerPitch1: {target: 0, p: 1, i: 0, d: 0}
+    rightIndexFingerPitch2: {target: 0, p: 1, i: 0, d: 0}
+    rightIndexFingerPitch3: {target: 0, p: 1, i: 0, d: 0}
+
+    rightMiddleFingerPitch1: {target: 0, p: 1, i: 0, d: 0}
+    rightMiddleFingerPitch2: {target: 0, p: 1, i: 0, d: 0}
+    rightMiddleFingerPitch3: {target: 0, p: 1, i: 0, d: 0}
+
+    rightPinkyPitch1: {target: 0, p: 1, i: 0, d: 0}
+    rightPinkyPitch2: {target: 0, p: 1, i: 0, d: 0}
+    rightPinkyPitch3: {target: 0, p: 1, i: 0, d: 0}
+
+    rightThumbRoll: {target: 0, p: 1, i: 0, d: 0}
+    rightThumbPitch1: {target: 0, p: 1, i: 0, d: 0}
+    rightThumbPitch2: {target: 0, p: 1, i: 0, d: 0}
+    rightThumbPitch3: {target: 0, p: 1, i: 0, d: 0}

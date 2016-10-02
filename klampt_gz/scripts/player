@@ -1,0 +1,60 @@
+#!/usr/bin/python
+
+import sys
+from time import sleep
+import rospy
+from sensor_msgs.msg import JointState
+
+model_name = "valkyrie"
+
+joints = [
+        {"index": 28, "name": "leftShoulderPitch"},
+        {"index": 8, "name": "leftHipYaw"}
+
+]
+
+def main():
+    if len(sys.argv) != 2:
+        print "You must specify a input file"
+        return
+
+    filename = sys.argv[1]
+    print "Using input file: %s" % filename
+
+    rospy.init_node('player', anonymous=True)
+    pub = rospy.Publisher('/set_joint_state', JointState, queue_size=1000)
+
+    f = open(filename, 'r')
+    all_joint_data = []
+    for line in f.readlines():
+        all_joint_data.append(line.strip('\n').split(','))
+
+    sleep(1)
+    t0 = rospy.Time.now()
+    for joint_state in all_joint_data:
+        # joint_state[0] is in seconds, but the Duration constructor takes ints
+        # so convert to nanoseconds
+        nsec = float(joint_state[0]) * 1000000000
+        t1 = t0 + rospy.Duration(0, nsec)
+        while rospy.Time.now() < t1:
+            pass
+
+        msg = JointState()
+        for joint in joints:
+            msg.name.append(joint['name'])
+            position = float(joint_state[joint['index']])
+            msg.position.append(position)
+
+        msg.header.stamp = rospy.Time.now()
+        print msg
+        pub.publish(msg)
+        sleep(0.02)
+
+
+    t0 = rospy.Time.now()
+    while rospy.Time.now() < (t1 + rospy.Duration(1)):
+        pass
+    print "done."
+
+if __name__ == "__main__":
+    main()
