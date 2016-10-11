@@ -1,0 +1,30 @@
+<launch>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find val_controllers)/config/val_control.yaml" command="load"/>
+
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/val" args="joint_state_controller
+				    torsoYaw_position_controller 
+				    torsoPitch_position_controller
+				    rightHipYaw_position_controller
+				    rightHipRoll_position_controller
+				    rightHipPitch_position_controller
+				    rightKneePitch_position_controller
+				    rightAnklePitch_position_controller
+				    rightAnkleRoll_position_controller
+				    leftHipYaw_position_controller
+				    leftHipRoll_position_controller
+				    leftHipPitch_position_controller
+				    leftKneePitch_position_controller
+				    leftAnklePitch_position_controller
+				    leftAnkleRoll_position_controller"/>
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/joint_states" to="/val/joint_states" />
+  </node>
+
+</launch>

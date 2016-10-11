@@ -359,9 +359,17 @@
       </imu>
     </sensor>
   </gazebo>
+<!--
   <gazebo>
     <plugin filename="libval_gazebo.so" name="SharedMemorySimInterfacePlugin">
       <robotNamespace>/val</robotNamespace>
+    </plugin>
+  </gazebo>
+-->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/val</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
     </plugin>
   </gazebo>
   <link name="pelvis">
@@ -2513,9 +2521,9 @@
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="torsoYaw">
-      <node name="/pelvis/waist"/>
+      <!--node name="/pelvis/waist"/-->
       <mechanicalReduction>1</mechanicalReduction>
-      <api name="robot_hardware_interface/TurbodriverSimAPI"/>
+      <!--api name="robot_hardware_interface/TurbodriverSimAPI"/-->
     </actuator>
   </transmission>
   <transmission name="torsoPitchTransmission">
@@ -2524,9 +2532,9 @@
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="waistPitchActuator">
-      <node name="/trunk/pitch_actuator"/>
+      <!--node name="/trunk/pitch_actuator"/-->
       <mechanicalReduction>1</mechanicalReduction>
-      <api name="robot_hardware_interface/TurbodriverSimAPI"/>
+      <!--api name="robot_hardware_interface/TurbodriverSimAPI"/-->
     </actuator>
   </transmission>
   <transmission name="torsoRollTransmission">
