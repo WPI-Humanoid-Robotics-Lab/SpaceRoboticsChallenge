@@ -22,19 +22,15 @@ val:
     joint: torsoRoll
     pid: {p: 100.0, i: 0.01, d: 10.0}
   lowerNeckPitch_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: torsoPitch
-    pid: {p: 100.0, i: 0.01, d: 10.0}
-  torsoPitch_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    type: position_controllers/JointPositionController
+    joint: lowerNeckPitch
     pid: {p: 100.0, i: 0.01, d: 10.0}
   neckYaw_position_controller:
-    type: effort_controllers/JointPositionController
+    type: position_controllers/JointPositionController
     joint: neckYaw
     pid: {p: 100.0, i: 0.01, d: 10.0}
   upperNeckPitch_position_controller:
-    type: effort_controllers/JointPositionController
+    type: position_controllers/JointPositionController
     joint: upperNeckPitch
     pid: {p: 100.0, i: 0.01, d: 10.0}
   rightShoulderPitch_position_controller:
@@ -43,27 +39,27 @@ val:
     pid: {p: 100.0, i: 0.01, d: 10.0}
   rightShoulderRoll_position_controller:
     type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    joint: rightShoulderRoll
     pid: {p: 100.0, i: 0.01, d: 10.0}
   rightShoulderYaw_position_controller:
     type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    joint: rightShoulderYaw
     pid: {p: 100.0, i: 0.01, d: 10.0}
   rightElbowPitch_position_controller:
     type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    joint: rightElbowPitch
     pid: {p: 100.0, i: 0.01, d: 10.0}
   rightForearmYaw_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    type: position_controllers/JointPositionController
+    joint: rightForearmYaw
     pid: {p: 100.0, i: 0.01, d: 10.0}
   rightWristRoll_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    type: position_controllers/JointPositionController
+    joint: rightWristRoll
     pid: {p: 100.0, i: 0.01, d: 10.0}
   rightWristPitch_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    type: position_controllers/JointPositionController
+    joint: rightWristPitch
     pid: {p: 100.0, i: 0.01, d: 10.0}
 
   rightThumbRoll_position_controller:
@@ -116,31 +112,31 @@ val:
     pid: {p: 100.0, i: 0.01, d: 10.0}
   leftShoulderPitch_position_controller:
     type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    joint: leftShoulderPitch
     pid: {p: 100.0, i: 0.01, d: 10.0}
   leftShoulderRoll_position_controller:
     type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    joint: leftShoulderRoll
     pid: {p: 100.0, i: 0.01, d: 10.0}
   leftShoulderYaw_position_controller:
     type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    joint: leftShoulderYaw
     pid: {p: 100.0, i: 0.01, d: 10.0}
   leftElbowPitch_position_controller:
     type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    joint: leftElbowPitch
     pid: {p: 100.0, i: 0.01, d: 10.0}
   leftForearmYaw_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    type: position_controllers/JointPositionController
+    joint: leftForearmYaw
     pid: {p: 100.0, i: 0.01, d: 10.0}
   leftWristRoll_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    type: position_controllers/JointPositionController
+    joint: leftWristRoll
     pid: {p: 100.0, i: 0.01, d: 10.0}
   leftWristPitch_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: torsoPitch
+    type: position_controllers/JointPositionController
+    joint: leftWristPitch
     pid: {p: 100.0, i: 0.01, d: 10.0}
   leftThumbRoll_position_controller:
     type: effort_controllers/JointPositionController

@@ -8,18 +8,36 @@
     output="screen" ns="/val" args="joint_state_controller
 				    torsoYaw_position_controller 
 				    torsoPitch_position_controller
+                                    torsoRoll_position_controller
 				    rightHipYaw_position_controller
 				    rightHipRoll_position_controller
 				    rightHipPitch_position_controller
 				    rightKneePitch_position_controller
-				    rightAnklePitch_position_controller
-				    rightAnkleRoll_position_controller
+                   		    rightAnklePitch_position_controller
+				    rightAnkleRoll_position_controller 
 				    leftHipYaw_position_controller
 				    leftHipRoll_position_controller
 				    leftHipPitch_position_controller
 				    leftKneePitch_position_controller
 				    leftAnklePitch_position_controller
-				    leftAnkleRoll_position_controller"/>
+				    leftAnkleRoll_position_controller
+				    leftShoulderPitch_position_controller
+				    leftShoulderRoll_position_controller
+			            leftShoulderYaw_position_controller
+				    leftElbowPitch_position_controller
+				    leftForearmYaw_position_controller
+				    leftWristRoll_position_controller
+			   	    leftWristPitch_position_controller
+   				    lowerNeckPitch_position_controller
+				    neckYaw_position_controller
+				    upperNeckPitch_position_controller
+				    rightShoulderPitch_position_controller
+				    rightShoulderRoll_position_controller
+				    rightShoulderYaw_position_controller
+				    rightElbowPitch_position_controller
+				    rightForearmYaw_position_controller
+				    rightWristRoll_position_controller
+				    rightWristPitch_position_controller"/>
 
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
