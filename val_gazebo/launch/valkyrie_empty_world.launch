@@ -11,7 +11,7 @@
     </node>
 
     <!-- Combine joint values -->
-    	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" ns="/val" >
+    	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" >
 		<param name="publish_frequency" value="50" />
 	</node>
 
@@ -24,11 +24,8 @@
   </include>
   
   <!-- Spawn a robot into Gazebo -->
-  <!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model val -z 1.18" /-->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model val -z 1.18"/>
 
-  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-   args="-urdf -model val -param robot_description"/>
-    
   <!-- Start spinning the lidar
   @TODO: implement this using a parameter or check if one exists already-->
   <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /multisense/set_spindle_speed -l std_msgs/Float64 2"/>
