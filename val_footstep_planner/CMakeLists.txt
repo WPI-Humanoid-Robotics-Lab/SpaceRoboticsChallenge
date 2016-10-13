@@ -8,6 +8,8 @@ find_package(catkin REQUIRED)
 
 SET(KLAMPT_ROOT /home/aditya/Klampt)
 SET (CMAKE_MODULE_PATH "${KLAMPT_ROOT}/CMakeModules")
+SET (GUROBI_INCLUDE_DIR "/opt/gurobi652/linux64/include/")
+SET (GUROBI_LIB_DIR "/opt/gurobi652/linux64/lib/")
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -114,6 +116,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(include)
 INCLUDE_DIRECTORIES(${KLAMPT_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${GUROBI_INCLUDE_DIR})
 
 ## Declare a C++ library
 # add_library(val_footstep_planner
@@ -126,16 +129,18 @@ INCLUDE_DIRECTORIES(${KLAMPT_INCLUDE_DIRS})
 # add_dependencies(val_footstep_planner ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(footstep_planner src/foot_data.cpp src/miqqp.cpp src/footstep_planner.cpp)
+add_executable(footstep_planner src/foot_data.cpp src/miqqp.cpp src/footstep_planner.cpp )
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(val_footstep_planner_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
+#-lgurobi_c++ -lgurobi65
 ## Specify libraries to link a library or executable target against
 target_link_libraries(footstep_planner
    ${catkin_LIBRARIES}
    ${KLAMPT_LIBRARIES}
+   ${GUROBI_LIB_DIR}/libgurobi_c++.a
+   ${GUROBI_LIB_DIR}/libgurobi65.so
 )
 
 #############

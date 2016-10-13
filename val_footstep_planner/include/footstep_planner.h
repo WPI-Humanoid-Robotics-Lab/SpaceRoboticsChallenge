@@ -6,7 +6,8 @@
 #include "foot_data.h"
 #include <map>
 
-enum RobotWalkType{ biped, quadruped };
+
+enum RobotWalkType{ BIPED=0, QUADRUPED };
 
 //Footstep sequence which will be passed to the low level planner
 class FootstepSequence{

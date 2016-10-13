@@ -187,10 +187,10 @@
         </clip>
         <noise>
           <type>gaussian</type>
-          <!-- Noise is sampled independently per pixel on each frame.  
+          <!-- Noise is sampled independently per pixel on each frame.
                That pixel's noise value is added to each of its color
                channels, which at that point lie in the range [0,1].
-               The stddev value of 0.007 is based on experimental data 
+               The stddev value of 0.007 is based on experimental data
                from a camera in a Sandia hand pointed at a static scene
                in a couple of different lighting conditions.  -->
           <mean>0.0</mean>
@@ -212,10 +212,10 @@
         </clip>
         <noise>
           <type>gaussian</type>
-          <!-- Noise is sampled independently per pixel on each frame.  
+          <!-- Noise is sampled independently per pixel on each frame.
                That pixel's noise value is added to each of its color
                channels, which at that point lie in the range [0,1].
-               The stddev value of 0.007 is based on experimental data 
+               The stddev value of 0.007 is based on experimental data
                from a camera in a Sandia hand pointed at a static scene
                in a couple of different lighting conditions.  -->
           <mean>0.0</mean>
@@ -2859,4 +2859,90 @@
       <api name="robot_hardware_interface/TurbodriverSimAPI"/>
     </actuator>
   </transmission>
+  <klampt package_root="../.." flip_yz="1" use_vis_geom="1" default_acc_max="2">
+    <link name="head" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="hokuyo_link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="head_hokuyo_frame" physical="0"/>
+    <link name="left_camera_frame" physical="0"/>
+    <link name="left_camera_optical_frame" physical="0"/>
+    <link name="right_camera_frame" physical="0"/>
+    <link name="right_camera_optical_frame" physical="0"/>
+    <link name="center_top_led_frame" physical="0"/>
+    <link name="center_bottom_led_frame" physical="0"/>
+    <link name="left_led_frame" physical="0"/>
+    <link name="right_led_frame" physical="0"/>
+    <link name="head_imu_link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="pelvis" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="torsoYawLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="torsoPitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="torso" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="lowerNeckPitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="neckYawLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="upperNeckPitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightShoulderPitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightShoulderRollLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightShoulderYawLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightElbowPitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightForearmLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightWristRollLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightPalm" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightThumbRollLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightThumbPitch1Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightThumbPitch2Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightThumbPitch3Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightIndexFingerPitch1Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightIndexFingerPitch2Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightIndexFingerPitch3Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightMiddleFingerPitch1Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightMiddleFingerPitch2Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightMiddleFingerPitch3Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightPinkyPitch1Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightPinkyPitch2Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightPinkyPitch3Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftShoulderPitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftShoulderRollLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftShoulderYawLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftElbowPitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftForearmLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftWristRollLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftPalm" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftThumbRollLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftThumbPitch1Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftThumbPitch2Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftThumbPitch3Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftIndexFingerPitch1Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftIndexFingerPitch2Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftIndexFingerPitch3Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftMiddleFingerPitch1Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftMiddleFingerPitch2Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftMiddleFingerPitch3Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftPinkyPitch1Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftPinkyPitch2Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftPinkyPitch3Link" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightHipYawLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightHipRollLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightHipPitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightKneePitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightAnklePitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="rightFoot" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftHipYawLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftHipRollLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftHipPitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftKneePitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftAnklePitchLink" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="leftFoot" servoP="10000" servoD="10" servoI="20" dryFriction="2" viscousFriction="2" accMax="8"/>
+    <link name="pelvisRearImu_Frame" physical="0"/>
+    <link name="pelvisMiddleImu_Frame" physical="0"/>
+    <link name="leftCOP_Frame" physical="0"/>
+    <link name="rightCOP_Frame" physical="0"/>
+    <link name="leftTorsoImu_Frame" physical="0"/>
+    <link name="rightHazardCamera_Frame" physical="0"/>
+    <link name="leftHazardCamera_Frame" physical="0"/>
+
+
+    <noselfcollision pairs="rightHipRollLink pelvis" />
+    <noselfcollision pairs="leftHipRollLink pelvis" />
+    <noselfcollision pairs="leftHipRollLink pelvis" />
+  </klampt>
+
 </robot>

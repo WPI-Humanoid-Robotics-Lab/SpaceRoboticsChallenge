@@ -2,7 +2,7 @@
 #include "../include/miqqp.h"
 #include <iostream>
 
-enum PlannerType {AStar, ANAStar, ARAStar, MIP};
+enum PlannerType {A, ANA, ARA, MIP};
 
 
 int main(){
@@ -10,15 +10,15 @@ int main(){
 	FootstepSequence footSequence;
 	
 	//Options for the footstep planner
-	RobotWalkType walktype=	biped;
-	Foot startfoot= lf_foot;
+	RobotWalkType walktype= BIPED;
 	PlannerType planningAlgorithm=MIP;
-	
-	//TODO:Load a terrain
+	Leg startleg=RIGHT;
 
+	//TODO:Load a terrain	
+	//TODO: Get safe regions in the terrain
 	
 	if(planningAlgorithm==MIP){
-		MiqQP MipPlanner(biped, startfoot);
+		MiqQP MipPlanner(BIPED, startleg);
 		footSequence=MipPlanner.PlanFootSteps();
 	}
 	

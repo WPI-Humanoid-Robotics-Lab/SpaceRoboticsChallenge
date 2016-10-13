@@ -1,7 +1,8 @@
 #include "../include/foot_data.h"
 
-FootLocation::FootLocation(Foot currentfoot, float xpos, float ypos, float zpos, float r, float p, float y){
-	foot=currentfoot;
+//Constructor
+FootLocation::FootLocation(Leg currentfoot, float xpos, float ypos, float zpos, float r, float p, float y){
+	currentleg=currentfoot;
 	pos.xPos=xpos;
 	pos.yPos=ypos;
 	pos.zPos=zpos;
@@ -9,13 +10,17 @@ FootLocation::FootLocation(Foot currentfoot, float xpos, float ypos, float zpos,
 	pos.roll=r;
 	pos.pitch=p;
 	pos.yaw=y;
-	
-	currentHold=GetHold();
 }
+
+//Default Constructor
+FootLocation::FootLocation(){
+}
+
+
+
 
 //Get Current position
 void FootLocation::GetPosition(Position& currentPos){
-
 	currentPos.xPos=pos.xPos;
 	currentPos.yPos=pos.yPos;
 	currentPos.zPos=pos.zPos;
@@ -30,6 +35,11 @@ bool FootLocation::GetFeasibility(){
 	return feasibility;
 }
 
+//Get the current leg
+Leg FootLocation::GetLeg(){
+	return currentleg; 
+}
+
 //Set the current position
 void FootLocation::SetPosition(float xpos, float ypos, float zpos, float r, float p, float y){
 	pos.xPos=xpos;
@@ -41,23 +51,13 @@ void FootLocation::SetPosition(float xpos, float ypos, float zpos, float r, floa
 	pos.yaw=y;
 }
 
+
 //Set the feasibility
 void FootLocation::SetFeasibility(bool fbility){
 	feasibility=fbility;
 }
 
-
-//TODO: Write this function
-Hold FootLocation::GetHold(){
-	//Load the hold data
-	Hold currentHold;
-	//Load the file
-	
-	//Fix the values based on current location
-
-	return currentHold;
+//Set the current leg
+void FootLocation::SetLeg(Leg curleg){
+	currentleg=curleg;
 }
-
-
-
-

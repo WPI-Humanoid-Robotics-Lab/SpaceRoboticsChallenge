@@ -5,7 +5,7 @@
 #include "Planning/StanceCSpace.h"
 
 //Enum for foot
-enum Foot {lf_foot, rf_foot, lb_foot, rb_foot};
+enum Leg {RIGHT=0, RIGHT_BACK=1, LEFT_BACK=2, LEFT=3};
 
 struct Position{
 	float xPos;
@@ -20,30 +20,26 @@ struct Position{
 //Foot location in space may be stored here
 class FootLocation{
 	public:
-		FootLocation(Foot currentfoot, float xpos, float ypos, float zpos, float r, float p, float y);
+		FootLocation(Leg currentfoot, float xpos, float ypos, float zpos, float r, float p, float y);
+		FootLocation();
+		
 		//Getters
 		void GetPosition(Position& currentposition);
 		bool GetFeasibility();
+		Leg GetLeg();
 
 		//Setters
 		void SetPosition(float xpos, float ypos, float zpos, float r, float p, float y);
 		void SetFeasibility(bool fbility);
-		
+		void SetLeg(Leg curleg);
 	private:
-		//Describes which foot
-		Foot foot;
+		Leg currentleg;
 	
 		//Position of the leg
 		Position pos;
 	
 		//Feasibility
 		bool feasibility;
-		
-		//Hold information for planner		
-		Hold currentHold;
-		
-		//Get the hold position
-		Hold GetHold();
 };
 
 #endif
