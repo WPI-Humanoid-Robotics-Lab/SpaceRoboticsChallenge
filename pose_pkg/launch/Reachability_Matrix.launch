@@ -1,0 +1,13 @@
+<launch>
+  <include file="$(find pose_pkg)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <node name="Reachability_Matrix"
+        pkg="pose_pkg"
+        type="Reachability_Matrix"
+        respawn="false" output="screen">
+    <rosparam command="load"
+              file="$(find pose_pkg)/config/kinematics.yaml"/>
+  </node>
+</launch>
