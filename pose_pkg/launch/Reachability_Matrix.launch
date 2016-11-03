@@ -3,11 +3,12 @@
     <arg name="load_robot_description" value="true"/>
   </include>
 
-  <node name="Reachability_Matrix"
-        pkg="pose_pkg"
-        type="Reachability_Matrix"
+  <node name="Reachability_Matrix" pkg="pose_pkg" type="Reachability_Matrix"
         respawn="false" output="screen">
-    <rosparam command="load"
-              file="$(find pose_pkg)/config/kinematics.yaml"/>
+    <rosparam command="load" file="$(find pose_pkg)/config/kinematics.yaml"/>
   </node>
+
+   <!-- Rviz   -->
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find pose_pkg)/launch/pose_rviz.rviz"/>
+
 </launch>
