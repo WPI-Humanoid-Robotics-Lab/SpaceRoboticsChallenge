@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     marker.header.stamp = ros::Time();
     marker.ns = "my_namespace";
     marker.id = 0;
-    marker.type = visualization_msgs::Marker::CUBE; //CUBE_LIST;
+    marker.type = visualization_msgs::Marker::CUBE;
     marker.action = visualization_msgs::Marker::ADD;
     marker.pose.position.x = 0;
     marker.pose.position.y = 0;
@@ -148,25 +148,27 @@ int main(int argc, char **argv)
     marker.color.b = 0.0;
     marker.lifetime = ros::Duration(0);
 
-    for(std::size_t j1 = ll_1; j1 < ul_1; j1=j1+0.001)
+    float sample_dt = 0.1;
+
+    for(float j1 = ll_1; j1 < ul_1; j1=j1+sample_dt)
     {
-        for(std::size_t j2 = ll_2; j2 < ul_2; j2=j2+0.001)
+        for(float j2 = ll_2; j2 < ul_2; j2=j2+sample_dt)
         {
-            for(std::size_t j3 = ll_3; j3 < ul_3; j3=j3+0.001)
+            for(float j3 = ll_3; j3 < ul_3; j3=j3+sample_dt)
             {
-                for(std::size_t j4 = ll_4; j4 < ul_4; j4=j4+0.001)
+                for(float j4 = ll_4; j4 < ul_4; j4=j4+sample_dt)
                 {
-                    for(std::size_t j5 = ll_5; j5 < ul_5; j5=j5+0.001)
+                    for(float j5 = ll_5; j5 < ul_5; j5=j5+sample_dt)
                     {
-                        for(std::size_t j6 = ll_6; j6 < ul_6; j6=j6+0.001)
+                        for(float j6 = ll_6; j6 < ul_6; j6=j6+sample_dt)
                         {
-                            for(std::size_t j7 = ll_7; j7 < ul_7; j7=j7+0.001)
+                            for(float j7 = ll_7; j7 < ul_7; j7=j7+sample_dt)
                             {
-                                for(std::size_t j8 = ll_8; j8 < ul_8; j8=j8+0.001)
+                                for(float j8 = ll_8; j8 < ul_8; j8=j8+sample_dt)
                                 {
-                                    for(std::size_t j9 = ll_9; j9 < ul_9; j9=j9+0.001)
+                                    for(float j9 = ll_9; j9 < ul_9; j9=j9+sample_dt)
                                     {
-                                        for(std::size_t j10 = ll_10; j10 < ul_10; j10=j10+0.001)
+                                        for(float j10 = ll_10; j10 < ul_10;j10=j10+sample_dt )
                                         {
                                             //   ROS_INFO("iNNER Loop reached");
 
@@ -181,8 +183,8 @@ int main(int argc, char **argv)
                                             joint_values[8] = j9;
                                             joint_values[9] = j10;
                                             //ROS_INFO("sET JOint angles");
-
                                             kinematic_state->setJointGroupPositions(joint_model_group, joint_values);
+                                            //kinematic_state->setToRandomPositions(joint_model_group);
                                             const Eigen::Affine3d &end_effector_state = kinematic_state->getGlobalLinkTransform("leftPalm");
 
                                             // Print end-effector pose. Remember that this is in the model frame
