@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     marker.header.stamp = ros::Time();
     marker.ns = "my_namespace";
     marker.id = 0;
-    marker.type = visualization_msgs::Marker::CUBE_LIST;
+    marker.type = visualization_msgs::Marker::POINTS; //CUBE_LIST;
     marker.action = visualization_msgs::Marker::ADD;
     marker.pose.position.x = 0;
     marker.pose.position.y = 0;
@@ -139,16 +139,16 @@ int main(int argc, char **argv)
     marker.pose.orientation.y = 0.0;
     marker.pose.orientation.z = 0.0;
     marker.pose.orientation.w = 1.0;
-    marker.scale.x = 0.03;
-    marker.scale.y = 0.03;
-    marker.scale.z = 0.03;
+    marker.scale.x = 0.02;
+    marker.scale.y = 0.02;
+    marker.scale.z = 0.02;
     marker.color.a = 1.0; // Don't forget to set the alpha!
     marker.color.r = 0.0;
     marker.color.g = 1.0;
     marker.color.b = 0.0;
     marker.lifetime = ros::Duration(0);
 
-    float sample_dt = 0.1;
+    float sample_dt = 0.45;
 
     for(float j1 = ll_1; j1 < ul_1; j1=j1+sample_dt)
     {
