@@ -9,16 +9,16 @@
   <param if="$(arg load_robot_description)" name="$(arg robot_description)" textfile="$(find val_description)/urdf/valkyrie_sim.urdf"/>
 
   <!-- The semantic description that corresponds to the URDF -->
-  <param name="$(arg robot_description)_semantic" textfile="$(find pose_pkg)/config/valkyrie.srdf" />
-  
+  <param name="$(arg robot_description)_semantic" textfile="$(find val_rechability)/config/valkyrie.srdf" />
+
   <!-- Load updated joint limits (override information from URDF) -->
   <group ns="$(arg robot_description)_planning">
-    <rosparam command="load" file="$(find pose_pkg)/config/joint_limits.yaml"/>
+    <rosparam command="load" file="$(find val_rechability)/config/joint_limits.yaml"/>
   </group>
 
   <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
   <group ns="$(arg robot_description)_kinematics">
-    <rosparam command="load" file="$(find pose_pkg)/config/kinematics.yaml"/>
+    <rosparam command="load" file="$(find val_rechability)/config/kinematics.yaml"/>
   </group>
-  
+
 </launch>

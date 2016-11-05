@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<launch>
+  <include file="$(find val_rechability)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <node name="reachability_matrix" pkg="val_rechability" type="val_rechability_node"
+        respawn="false" output="screen">
+    <rosparam command="load" file="$(find val_rechability)/config/kinematics.yaml"/>
+  </node>
+
+   <!-- Rviz   -->
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find val_rechability)/launch/pose_rviz.rviz"/>
+
+</launch>
