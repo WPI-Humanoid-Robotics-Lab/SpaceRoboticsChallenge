@@ -3,6 +3,9 @@
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 #include <moveit/planning_scene/planning_scene.h>
+#include <ros/package.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 int main(int argc, char **argv)
 {
@@ -126,7 +129,35 @@ int main(int argc, char **argv)
     marker.color.b = 0.0;
     marker.lifetime = ros::Duration(0);
 
-    float sample_dt = 0.6;
+    float sample_dt = 0.4;
+
+    char the_path[256];
+
+    getcwd(the_path, 255);
+    strcat(the_path, "/");
+
+    ROS_INFO("%s\n", the_path);
+
+    const std::string filename = "rechability.yaml";
+    struct stat st;
+
+    // open yaml file to write
+    std::string path(ros::package::getPath("val_rechability") + "/maps/");
+    if (stat(path.c_str(), &st) != 0)
+    {
+        ROS_WARN("Path does not exist. Creating folder for maps");
+    }
+    const int dir_err = mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    if (1 == dir_err)
+    {
+        ROS_ERROR("Error creating directory");
+        exit(1);
+    }
+
+    std::string fullpath = path + filename;
+    ROS_INFO("Saving map %s", filename.c_str());
+
+    FILE* yaml = fopen(fullpath.c_str(), "w");
 
     for(float j1 = (*joint_bounds[0])[0].min_position_; j1 < (*joint_bounds[0])[0].max_position_; j1=j1+sample_dt)
     {
@@ -173,13 +204,14 @@ int main(int argc, char **argv)
 
                                                 geometry_msgs::Point p;
                                                 // Print end-effector pose. Remember that this is in the model frame
-                                                ROS_INFO_STREAM("Translation: " << end_effector_state.translation());
+                                                // ROS_INFO_STREAM("Translation: " << end_effector_state.translation());
 
 
                                                 p.x = end_effector_state.translation()[0];
                                                 p.y = end_effector_state.translation()[1];
                                                 p.z = end_effector_state.translation()[2];
 
+                                                fprintf(yaml, "map: %s\nresolution: %f\npoints: [%f, %f, %f]\n\n", filename.c_str(), sample_dt, p.x, p.y, p.z);
                                                 marker.points.push_back(p);
                                             }
                                         }
@@ -193,6 +225,8 @@ int main(int argc, char **argv)
         }
     }
 
+    fclose(yaml);
+    ROS_INFO("Done\n");
     // publish the markers
     vis_pub.publish(marker);
 
