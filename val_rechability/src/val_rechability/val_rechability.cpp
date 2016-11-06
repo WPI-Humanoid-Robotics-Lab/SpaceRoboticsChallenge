@@ -3,9 +3,12 @@
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 #include <moveit/planning_scene/planning_scene.h>
+#include <moveit/collision_detection/collision_robot.h>
 #include <ros/package.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "H5Cpp.h"
+#include <hdf5.h>
 
 int main(int argc, char **argv)
 {
@@ -23,9 +26,12 @@ int main(int argc, char **argv)
     robot_state::RobotStatePtr kinematic_state(new robot_state::RobotState(kinematic_model));
     // set all joints to default state
     kinematic_state->setToDefaultValues();
+    kinematic_state->update();
 
     // instantiate planning scene
     planning_scene::PlanningScene planning_scene(kinematic_model);
+    robot_state::RobotState& current_state = planning_scene.getCurrentStateNonConst();
+    current_state.setToDefaultValues();
 
     // create collision variables for self collision
     collision_detection::CollisionRequest collision_request;
@@ -102,6 +108,8 @@ int main(int argc, char **argv)
     //        }
     //    }
 
+    float sample_dt = 0.2;
+
     ros::NodeHandle n1;
     ros::Publisher vis_pub = n1.advertise<visualization_msgs::Marker>( "visualization_marker", 0 );
 
@@ -129,8 +137,6 @@ int main(int argc, char **argv)
     marker.color.b = 0.0;
     marker.lifetime = ros::Duration(0);
 
-    float sample_dt = 0.4;
-
     char the_path[256];
 
     getcwd(the_path, 255);
@@ -157,6 +163,17 @@ int main(int argc, char **argv)
     std::string fullpath = path + filename;
     ROS_INFO("Saving map %s", filename.c_str());
 
+
+    const char* fp =  "rechability.h5";
+    // writing to h5f file
+    hid_t file, group_poses;
+    // create file
+    file = H5Fcreate(fp, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    // create a group for poses
+    group_poses = H5Gcreate(file, "/Poses", H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+    // create dataset for group_poses
+
+
     FILE* yaml = fopen(fullpath.c_str(), "w");
 
     for(float j1 = (*joint_bounds[0])[0].min_position_; j1 < (*joint_bounds[0])[0].max_position_; j1=j1+sample_dt)
@@ -179,6 +196,18 @@ int main(int argc, char **argv)
                                     {
                                         for(float j10 = (*joint_bounds[9])[0].min_position_; j10 < (*joint_bounds[9])[0].max_position_;j10=j10+sample_dt)
                                         {
+
+                                            //                                            joint_values[0] = 0; //j1;
+                                            //                                            joint_values[1] = 0; // -0.13; //j2;
+                                            //                                            joint_values[2] = 0.12; //j3;
+                                            //                                            joint_values[3] = 0.43; //j4;
+                                            //                                            joint_values[4] = -0.86; //j5;
+                                            //                                            joint_values[5] = 0; //j6;
+                                            //                                            joint_values[6] = 0; //j7;
+                                            //                                            joint_values[7] = 0; //j8;
+                                            //                                            joint_values[8] = 0; //j9;
+                                            //                                            joint_values[9] = 0; //j10;
+
                                             joint_values[0] = j1;
                                             joint_values[1] = j2;
                                             joint_values[2] = j3;
@@ -190,11 +219,36 @@ int main(int argc, char **argv)
                                             joint_values[8] = j9;
                                             joint_values[9] = j10;
 
-                                            kinematic_state->setJointGroupPositions(joint_model_group, joint_values);
+                                            // kinematic_state->setJointGroupPositions(joint_model_group, joint_values);
+                                            // kinematic_state->update(true);
+                                            // kinematic_state->updateCollisionBodyTransforms();
+
+                                            current_state = planning_scene.getCurrentStateNonConst();
+                                            current_state.setJointGroupPositions(joint_model_group, joint_values);
+                                            // current_state.setToRandomPositions();
+                                            ROS_INFO_STREAM("Current state is "<< (current_state.satisfiesBounds(joint_model_group) ? "valid" : "not valid"));
+                                            collision_request.contacts = true;
+                                            collision_request.max_contacts = 1000;
 
                                             // check the slef collision
                                             collision_result.clear();
                                             planning_scene.checkSelfCollision(collision_request, collision_result);
+                                            ROS_INFO_STREAM("Current state is "<< (collision_result.collision ? "in" : "not in")
+                                                            << " self collision");
+                                            collision_detection::CollisionResult::ContactMap::const_iterator it;
+                                            for(it = collision_result.contacts.begin();
+                                                it != collision_result.contacts.end();
+                                                ++it)
+                                            {
+                                                ROS_INFO("Contact between: %s and %s",it->first.first.c_str(),it->first.second.c_str());
+                                            }
+
+                                            std::vector<double> joint_values;
+                                            current_state.copyJointGroupPositions(joint_model_group, joint_values);
+                                            for(std::size_t i = 0; i < jointCount; ++i)
+                                            {
+                                                ROS_INFO("Joint %s: %f", joint_names[i].c_str(), joint_values[i]);
+                                            }
 
                                             // if there is no self collision
                                             if (collision_result.collision != true)
@@ -204,8 +258,8 @@ int main(int argc, char **argv)
 
                                                 geometry_msgs::Point p;
                                                 // Print end-effector pose. Remember that this is in the model frame
-                                                // ROS_INFO_STREAM("Translation: " << end_effector_state.translation());
-
+                                                ROS_INFO_STREAM("Translation: " << end_effector_state.translation());
+                                                ROS_INFO("Valid State");
 
                                                 p.x = end_effector_state.translation()[0];
                                                 p.y = end_effector_state.translation()[1];
@@ -213,6 +267,10 @@ int main(int argc, char **argv)
 
                                                 fprintf(yaml, "map: %s\nresolution: %f\npoints: [%f, %f, %f]\n\n", filename.c_str(), sample_dt, p.x, p.y, p.z);
                                                 marker.points.push_back(p);
+                                            }
+                                            else
+                                            {
+                                                ROS_INFO("collison");
                                             }
                                         }
                                     }

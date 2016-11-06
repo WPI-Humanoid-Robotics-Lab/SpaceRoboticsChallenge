@@ -7,6 +7,7 @@ project(val_rechability)
 find_package(catkin REQUIRED
              COMPONENTS roscpp moveit_core moveit_ros_move_group moveit_planners_ompl moveit_ros_visualization visualization_msgs)
 find_package(Eigen3 REQUIRED)
+find_package(HDF5 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -98,8 +99,8 @@ find_package(Eigen3 REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES val_rechability
+  INCLUDE_DIRS include
+  LIBRARIES val_rechability
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -111,7 +112,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
  include_directories(include)
- include_directories(${catkin_INCLUDE_DIRS} EIGEN3_INCLUDE_DIR include ) 
+ include_directories(${catkin_INCLUDE_DIRS} ${HDF5_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIR})
 
 ## Declare a C++ library
  add_library(val_rechability
@@ -132,7 +133,7 @@ catkin_package(
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(val_rechability_node
-   ${catkin_LIBRARIES}
+   -lhdf5 -lhdf5_cpp ${catkin_LIBRARIES}
  )
 
 #############

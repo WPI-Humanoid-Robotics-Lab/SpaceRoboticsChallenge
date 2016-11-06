@@ -51,8 +51,10 @@
   <run_depend>val_description</run_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>Eigen3</run_depend>
+  <run_depend>hdf5</run_depend>
   <build_depend>moveit_core</build_depend>
   <build_depend>Eigen3</build_depend>
+  <build_depend>hdf5</build_depend>
   
 
   <!-- The export tag contains other, unspecified, tags -->
