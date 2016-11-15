@@ -206,10 +206,10 @@ int main(int argc, char **argv)
     long z=1;
     
     float sample_dt = 1;
-       
+
     for(int i=0;i<jointCount;i++)
     {
-    /*
+        /*
     // find mod of last
     float last_mod = fmod((*joint_bounds[i])[0].max_position_,sample_dt);
     // fetch the last value
@@ -218,29 +218,29 @@ int main(int argc, char **argv)
         total*=(((last_value-(*joint_bounds[i])[0].min_position_)/sample_dt) + 1);
         */
         
-    total *= (round(((*joint_bounds[i])[0].max_position_ - (*joint_bounds[i])[0].min_position_)/sample_dt) + 1);
+        total *= (round(((*joint_bounds[i])[0].max_position_ - (*joint_bounds[i])[0].min_position_)/sample_dt) + 1);
     }
 
-    for(float j1 = (*joint_bounds[0])[0].min_position_; j1 <= (*joint_bounds[0])[0].max_position_; j1=j1+sample_dt) 
+    for(float j1 = (*joint_bounds[0])[0].min_position_; j1 <= (*joint_bounds[0])[0].max_position_; j1=j1+sample_dt)
     {
-        for(float j2 = (*joint_bounds[1])[0].min_position_; j2 <= (*joint_bounds[1])[0].max_position_; j2=j2+sample_dt) 
+        for(float j2 = (*joint_bounds[1])[0].min_position_; j2 <= (*joint_bounds[1])[0].max_position_; j2=j2+sample_dt)
         {
-            for(float j3 = (*joint_bounds[2])[0].min_position_; j3 <= (*joint_bounds[2])[0].max_position_; j3=j3+sample_dt) 
+            for(float j3 = (*joint_bounds[2])[0].min_position_; j3 <= (*joint_bounds[2])[0].max_position_; j3=j3+sample_dt)
             {
-                for(float j4 = (*joint_bounds[3])[0].min_position_; j4 <= (*joint_bounds[3])[0].max_position_; j4=j4+sample_dt) 
+                for(float j4 = (*joint_bounds[3])[0].min_position_; j4 <= (*joint_bounds[3])[0].max_position_; j4=j4+sample_dt)
                 {
-                    for(float j5 = (*joint_bounds[4])[0].min_position_; j5 <= (*joint_bounds[4])[0].max_position_; j5=j5+sample_dt) 
+                    for(float j5 = (*joint_bounds[4])[0].min_position_; j5 <= (*joint_bounds[4])[0].max_position_; j5=j5+sample_dt)
                     {
-                        for(float j6 = (*joint_bounds[5])[0].min_position_; j6 <= (*joint_bounds[5])[0].max_position_; j6=j6+sample_dt) 
+                        for(float j6 = (*joint_bounds[5])[0].min_position_; j6 <= (*joint_bounds[5])[0].max_position_; j6=j6+sample_dt)
                         {
-                            for(float j7 = (*joint_bounds[6])[0].min_position_; j7 <= (*joint_bounds[6])[0].max_position_; j7=j7+sample_dt) 
+                            for(float j7 = (*joint_bounds[6])[0].min_position_; j7 <= (*joint_bounds[6])[0].max_position_; j7=j7+sample_dt)
                             {
-                                for(float j8 = (*joint_bounds[7])[0].min_position_; j8 <= (*joint_bounds[7])[0].max_position_; j8=j8+sample_dt) 
+                                for(float j8 = (*joint_bounds[7])[0].min_position_; j8 <= (*joint_bounds[7])[0].max_position_; j8=j8+sample_dt)
                                 {
-                                    for(float j9 = (*joint_bounds[8])[0].min_position_; j9 <= (*joint_bounds[8])[0].max_position_; j9=j9+sample_dt) 
+                                    for(float j9 = (*joint_bounds[8])[0].min_position_; j9 <= (*joint_bounds[8])[0].max_position_; j9=j9+sample_dt)
                                     {
-                                        for(float j10 = (*joint_bounds[9])[0].min_position_; j10 <= (*joint_bounds[9])[0].max_position_;j10=j10+sample_dt) 
-                                        {                  
+                                        for(float j10 = (*joint_bounds[9])[0].min_position_; j10 <= (*joint_bounds[9])[0].max_position_;j10=j10+sample_dt)
+                                        {
                                             joint_values[0] = j1;
                                             joint_values[1] = j2;
                                             joint_values[2] = j3;
@@ -301,14 +301,17 @@ int main(int argc, char **argv)
                                             p.y = end_effector_state.translation()[1];
                                             p.z = end_effector_state.translation()[2];
 
+                                            // get the orientation
+                                            Eigen::Quaterniond o(end_effector_state.rotation());
+
                                             if (collision_result.collision != true)
                                             {
-                                                fprintf(yaml, "map: %s\nresolution: %f\nself collision: %s\npoints: [%f, %f, %f]\n\n", filename.c_str(), sample_dt, "false", p.x, p.y, p.z);
+                                                fprintf(yaml, "map: %s\nresolution: %f\nself collision: %s\npoints: [%f, %f, %f, %f, %f, %f, %f]\n\n", filename.c_str(), sample_dt, "false", p.x, p.y, p.z, o.x(), o.y(), o.z(), o.w());
                                                 marker.points.push_back(p);
                                             }
                                             else
                                             {
-                                                fprintf(yaml, "map: %s\nresolution: %f\nself collision: %s\npoints: [%f, %f, %f]\n\n", filename.c_str(), sample_dt, "true", p.x, p.y, p.z);
+                                                fprintf(yaml, "map: %s\nresolution: %f\nself collision: %s\npoints: [%f, %f, %f, %f, %f, %f, %f]\n\n", filename.c_str(), sample_dt, "true", p.x, p.y, p.z, o.x(), o.y(), o.z(), o.w());
                                                 marker_no.points.push_back(p);
                                                 //      ROS_WARN("collison");
                                             }
@@ -346,22 +349,21 @@ int main(int argc, char **argv)
 //    }
 //}
 
+#define BOLDRED     "\033[1m\033[31m"      /* Bold Red */
+#define GREEN   "\033[32m"      /* Green */
+#define RESET   "\033[0m"
+
+#define STATUS_BAR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+#define STATUS_BAR_WIDTH 60
 
 void print_status(long current_count, double total)
 {
-// compute the percentage
-    double Y=((double)current_count/total)*100.0;
-    ROS_INFO("%ld %lf %lf",current_count, total, Y);
+    // compute the percentage
+    double percent=((double)current_count/total);
+    //   ROS_INFO("%ld %lf %lf",current_count, total, Y);
 
-    if (Y>0 && Y<10) std::cout << "Completed    " << Y << " %-" << "\r";
-    if (Y>10 && Y<20) std::cout << "Completed   "<<Y<< " %--" << "\r";
-    if (Y>20 && Y<30) std::cout << "Completed   "<<Y<< " %---" << "\r";
-    if (Y>30 && Y<40) std::cout << "Completed   "<<Y<< " %----" << "\r";
-    if (Y>40 && Y<50) std::cout << "Completed   "<<Y<< " %-----" << "\r";
-    if (Y>50 && Y<60) std::cout << "Completed   "<<Y<< " %------" << "\r";
-    if (Y>60 && Y<70) std::cout << "Completed   "<<Y<< " %--------" << "\r";
-    if (Y>70 && Y<80) std::cout << "Completed   "<<Y<< " %---------" << "\r";
-    if (Y>80 && Y<90) std::cout << "Completed   "<<Y<< " %----------" << "\r";
-    if (Y>90) std::cout << "Completed  "<<Y<< " %----------" << "\r";
-    fflush(stdout);
+    int left_end = (int) (percent * STATUS_BAR_WIDTH);
+    int right_end = STATUS_BAR_WIDTH - left_end;
+    printf ("\r"GREEN"%.3lf"RESET"%% ["BOLDRED"%.*s%*s"RESET"]", (percent * 100), left_end, STATUS_BAR, right_end, "");
+    fflush (stdout);
 }
