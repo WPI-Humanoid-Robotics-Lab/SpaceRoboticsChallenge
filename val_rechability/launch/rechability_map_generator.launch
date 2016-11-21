@@ -5,7 +5,7 @@
     <arg name="load_robot_description" value="true"/>
   </include>
 
-  <node name="reachability_matrix" pkg="val_rechability" type="val_rechability_node"
+  <node name="reachability_matrix" pkg="val_rechability" type="val_mapgenerator_node"
         respawn="false" output="screen">
     <rosparam command="load" file="$(find val_rechability)/config/kinematics.yaml"/>
   </node>

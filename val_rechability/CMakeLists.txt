@@ -7,7 +7,6 @@ project(val_rechability)
 find_package(catkin REQUIRED
              COMPONENTS roscpp moveit_core moveit_ros_move_group moveit_planners_ompl moveit_ros_visualization visualization_msgs)
 find_package(Eigen3 REQUIRED)
-find_package(HDF5 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -100,7 +99,7 @@ find_package(HDF5 REQUIRED)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES val_rechability
+  LIBRARIES ${PROJECT_NAME}
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -112,28 +111,36 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
  include_directories(include)
- include_directories(${catkin_INCLUDE_DIRS} ${HDF5_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIR})
+ include_directories(${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
 
 ## Declare a C++ library
- add_library(val_rechability
+ add_library(${PROJECT_NAME}
    src/${PROJECT_NAME}/val_rechability.cpp
  )
+
+ target_link_libraries(${PROJECT_NAME}
+   ${catkin_LIBRARIES}
+)
+
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+## Declare a C++ executable
+ add_executable(val_mapgenerator_node src/${PROJECT_NAME}/map_generator.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
- add_dependencies(val_rechability ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Declare a C++ executable
- add_executable(val_rechability_node src/${PROJECT_NAME}/val_rechability.cpp)
+ add_dependencies(val_mapgenerator_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(val_rechability_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(val_rechability_node
-   -lhdf5 -lhdf5_cpp ${catkin_LIBRARIES}
+ target_link_libraries(val_mapgenerator_node
+ ${catkin_LIBRARIES}
+ ${PROJECT_NAME}
+ #src/${PROJECT_NAME}/val_rechability.cpp
  )
 
 #############
@@ -150,8 +157,11 @@ catkin_package(
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
+install(TARGETS val_mapgenerator_node
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
 ## Mark executables and/or libraries for installation
- install(TARGETS val_rechability val_rechability_node
+ install(TARGETS ${PROJECT_NAME}
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -163,6 +173,9 @@ catkin_package(
    FILES_MATCHING PATTERN "*.h"
    PATTERN ".svn" EXCLUDE
  )
+
+install(DIRECTORY launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
