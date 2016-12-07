@@ -1,0 +1,75 @@
+<?xml version='1.0'?>
+<%
+
+w = 8 # number of squares
+h = 6 # number of squares
+l = 0.1 # meters, thickness of checkerboard
+s = 0.108 # square size in meters
+
+x0 = -w * s / 2
+y0 = -h * s / 2
+
+density = 0.5 # density in g/cm^3
+mass = w*h*l*density # grams
+base_size = [l, w * s , h * s]
+square_size = [0.001, s, s]
+
+%>
+<sdf version='1.6'>
+  <model name='checkerboard'>
+    <link name='base'>
+      <inertial>
+        <mass><%=mass%></mass>
+        <inertia>
+          <ixx><%=1/12.0 * mass * (h*h + l*l)%></ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy><%=1/12.0 * mass * (w*w + l*l)%></iyy>
+          <iyz>0</iyz>
+          <izz><%=1/12.0 * mass * (w*w + h*h)%></izz>
+        </inertia>
+      </inertial>
+      <visual name='visual_base'>
+        <pose frame=''>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=base_size.join(" ")%></size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='collision_base'>
+        <geometry>
+          <box>
+            <size><%=base_size.join(" ")%></size>
+          </box>
+        </geometry>
+      </collision>
+      <% for x in 1..w%>
+        <% for y in 1..h%>
+          <%if (x%2==0 and y%2==1) or (x%2==1 and y%2==0)%>
+            <visual name='black_square_<%=x%>_<%=y%>'>
+              <pose frame=''><%=[l/2, x0 + x*s - s/2, y0 + y*s - s/2].join('')%> 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size><%=square_size.join(" ")%></size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          <%end%>
+        <%end%>
+      <%end%>
+    </link>
+  </model>
+</sdf>

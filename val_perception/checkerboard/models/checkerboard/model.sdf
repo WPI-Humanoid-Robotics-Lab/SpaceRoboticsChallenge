@@ -1,0 +1,513 @@
+<?xml version='1.0'?>
+
+<sdf version='1.6'>
+  <model name='checkerboard'>
+    <link name='base'>
+      <inertial>
+        <mass>2.4000000000000004</mass>
+        <inertia>
+          <ixx>7.202</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>12.802000000000001</iyy>
+          <iyz>0</iyz>
+          <izz>20.0</izz>
+        </inertia>
+      </inertial>
+      <visual name='visual_base'>
+        <pose frame=''>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.864 0.648</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='collision_base'>
+        <geometry>
+          <box>
+            <size>0.1 0.864 0.648</size>
+          </box>
+        </geometry>
+      </collision>
+      
+        
+          
+        
+          
+            <visual name='black_square_1_2'>
+              <pose frame=''>0.05-0.378-0.162 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_1_4'>
+              <pose frame=''>0.05-0.3780.053999999999999986 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_1_6'>
+              <pose frame=''>0.05-0.3780.27 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+      
+        
+          
+            <visual name='black_square_2_1'>
+              <pose frame=''>0.05-0.27-0.27 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_2_3'>
+              <pose frame=''>0.05-0.27-0.054 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_2_5'>
+              <pose frame=''>0.05-0.270.16200000000000003 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+            <visual name='black_square_3_2'>
+              <pose frame=''>0.05-0.16199999999999998-0.162 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_3_4'>
+              <pose frame=''>0.05-0.161999999999999980.053999999999999986 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_3_6'>
+              <pose frame=''>0.05-0.161999999999999980.27 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+      
+        
+          
+            <visual name='black_square_4_1'>
+              <pose frame=''>0.05-0.054-0.27 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_4_3'>
+              <pose frame=''>0.05-0.054-0.054 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_4_5'>
+              <pose frame=''>0.05-0.0540.16200000000000003 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+            <visual name='black_square_5_2'>
+              <pose frame=''>0.050.05400000000000004-0.162 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_5_4'>
+              <pose frame=''>0.050.054000000000000040.053999999999999986 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_5_6'>
+              <pose frame=''>0.050.054000000000000040.27 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+      
+        
+          
+            <visual name='black_square_6_1'>
+              <pose frame=''>0.050.16200000000000003-0.27 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_6_3'>
+              <pose frame=''>0.050.16200000000000003-0.054 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_6_5'>
+              <pose frame=''>0.050.162000000000000030.16200000000000003 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+      
+        
+          
+        
+          
+            <visual name='black_square_7_2'>
+              <pose frame=''>0.050.27-0.162 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_7_4'>
+              <pose frame=''>0.050.270.053999999999999986 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_7_6'>
+              <pose frame=''>0.050.270.27 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+      
+        
+          
+            <visual name='black_square_8_1'>
+              <pose frame=''>0.050.378-0.27 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_8_3'>
+              <pose frame=''>0.050.378-0.054 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+          
+            <visual name='black_square_8_5'>
+              <pose frame=''>0.050.3780.16200000000000003 0 0 0</pose>
+              <geometry>
+                <box>
+                  <size>0.001 0.108 0.108</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Black</name>
+                </script>
+              </material>
+            </visual>
+          
+        
+          
+        
+      
+    </link>
+  </model>
+</sdf>

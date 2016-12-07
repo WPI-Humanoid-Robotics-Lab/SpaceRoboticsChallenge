@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>checkerboard</name>
+  <version>0.1.0</version>
+  <description>gazebo model and launch file for calibrating srcsim camera</description>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>erb</buildtool_depend>
+
+  <export>
+    <gazebo_ros gazebo_model_path="${prefix}/models" />
+  </export>
+</package>
