@@ -21,12 +21,12 @@ square_size = [0.001, s, s]
       <inertial>
         <mass><%=mass%></mass>
         <inertia>
-          <ixx><%=1/12.0 * mass * (h*h + l*l)%></ixx>
+          <ixx><%=1/12.0 * mass * (w*s*w*s + h*s*h*s)%></ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy><%=1/12.0 * mass * (w*w + l*l)%></iyy>
+          <iyy><%=1/12.0 * mass * (h*s*h*s + l*l)%></iyy>
           <iyz>0</iyz>
-          <izz><%=1/12.0 * mass * (w*w + h*h)%></izz>
+          <izz><%=1/12.0 * mass * (w*s*w*s + l*l)%></izz>
         </inertia>
       </inertial>
       <visual name='visual_base'>
@@ -50,26 +50,22 @@ square_size = [0.001, s, s]
           </box>
         </geometry>
       </collision>
-      <% for x in 1..w%>
-        <% for y in 1..h%>
-          <%if (x%2==0 and y%2==1) or (x%2==1 and y%2==0)%>
-            <visual name='black_square_<%=x%>_<%=y%>'>
-              <pose frame=''><%=[l/2, x0 + x*s - s/2, y0 + y*s - s/2].join('')%> 0 0 0</pose>
-              <geometry>
-                <box>
-                  <size><%=square_size.join(" ")%></size>
-                </box>
-              </geometry>
-              <material>
-                <script>
-                  <uri>file://media/materials/scripts/gazebo.material</uri>
-                  <name>Gazebo/Black</name>
-                </script>
-              </material>
-            </visual>
-          <%end%>
-        <%end%>
-      <%end%>
+      <% for x in 1..w%> <% for y in 1..h%> <%if (x%2==0 and y%2==1) or (x%2==1 and y%2==0)%>
+        <visual name='black_square_<%=x%>_<%=y%>'>
+          <pose frame=''><%=[l/2, x0 + x*s - s/2, y0 + y*s - s/2].join('')%> 0 0 0</pose>
+          <geometry>
+            <box>
+              <size><%=square_size.join(" ")%></size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Black</name>
+            </script>
+          </material>
+        </visual>
+      <%end%> <%end%> <%end%>
     </link>
   </model>
 </sdf>
