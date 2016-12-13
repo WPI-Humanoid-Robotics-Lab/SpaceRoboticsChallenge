@@ -3,6 +3,7 @@
   <name>checkerboard</name>
   <version>0.1.0</version>
   <description>gazebo model and launch file for calibrating srcsim camera</description>
+  <maintainer email="mitranopeter@gmail.com">peter mitrano</maintainer>
   <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>
