@@ -105,7 +105,7 @@ void ColorLaser::laserPointCloudCallback(
     }
 
     color_laser_pointcloud_.header = message->header;
-    color_laser_pointcloud_.header.frame_id=camera_info_.header.frame_id;
+    //color_laser_pointcloud_.header.frame_id=camera_info_.header.frame_id;
 
 
     //
