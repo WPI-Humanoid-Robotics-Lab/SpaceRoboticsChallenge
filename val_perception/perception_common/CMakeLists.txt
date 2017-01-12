@@ -64,6 +64,9 @@ target_link_libraries(test_organizedRGBD  ${PROJECT_NAME})
 add_executable(periodic_snapshotter  src/periodic_snapshotter.cpp)
 target_link_libraries(periodic_snapshotter  ${PROJECT_NAME})
 
+add_executable(color_laser_publisher  src/color_laser.cpp)
+target_link_libraries(color_laser_publisher  ${PROJECT_NAME})
+
 ## Mark executables and/or libraries for installation
 #install(TARGETS ${PROJECT_NAME} multisense_backend
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
