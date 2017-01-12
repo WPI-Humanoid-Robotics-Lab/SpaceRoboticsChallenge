@@ -29,6 +29,10 @@ namespace VAL_COMMON_NAMES
 
     /* world frame*/
     static const std::string WORLD_TF = "/world";
+
+    /* left camera optical frame*/
+    static const std::string LEFT_CAMERA_OPTICAL_FRAME_ACTUAL_TF = "/left_camera_optical_frame";
+
 }
 
 #endif

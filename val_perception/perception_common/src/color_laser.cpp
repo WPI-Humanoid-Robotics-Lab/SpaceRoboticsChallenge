@@ -105,7 +105,7 @@ void ColorLaser::laserPointCloudCallback(
     }
 
     color_laser_pointcloud_.header = message->header;
-    color_laser_pointcloud_.header.frame_id=camera_info_.header.frame_id;
+    //color_laser_pointcloud_.header.frame_id=camera_info_.header.frame_id;
 
 
     //
@@ -227,7 +227,7 @@ void ColorLaser::startStreaming()
                                                        &perception_common::ColorLaser::cameraInfoCallback,
                                                        this);
 
-        laser_pointcloud_sub_ = node_handle_.subscribe("/assembled_cloud2",
+        laser_pointcloud_sub_ = node_handle_.subscribe("/multisense/image_points2",
                                                        10,
                                                        &perception_common::ColorLaser::laserPointCloudCallback,
                                                        this);
