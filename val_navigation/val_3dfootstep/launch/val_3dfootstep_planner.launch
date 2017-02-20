@@ -3,6 +3,8 @@
 <launch>
   <arg name="namespace" default="val_footstep_planner" />
   <group ns="$(arg namespace)">
+
+
     <!-- start up footstep planning system -->
     <include file="$(find vigir_footstep_planning)/launch/footstep_planning_basics.launch" />
 

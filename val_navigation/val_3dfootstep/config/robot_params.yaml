@@ -4,22 +4,21 @@ world_frame_id: /world
 
 ### upper body settings ########################################################
 upper_body:
-  size: {x: 0.7, y: 1.1, z: 1.95} # [m]
+  size: {x: 0.7, y: 1.1, z: 1.5} # [m]
   origin_shift: {x: -0.1, y: 0.00, z: 0.00} # [m], transformation from center to shifted frame
 
 ### foot settings ##############################################################
 foot:
-  size: {x: 0.26, y: 0.14, z: 0.0508} # [m]
-  separation: 0.22 # [m]
+  size: {x: 0.22, y: 0.15, z: 0.015} # [m]
+  separation: 0.217 # [m]
   left: # position of planner foot frame (center of sole) given in robot's "foot" tf frame
-    frame_id: /lefFoot
+    frame_id: /leftFoot
     foot_frame:
-      {x:  0.04, y:  0.00, z: -0.085, roll:  0.00, pitch:  0.00, yaw:  0.00}  # 3x[m] 3x[rad]
+      {x:  0.00, y:  0.0155, z:  0.00, roll:  0.00, pitch:  0.00, yaw:  0.00}  # 3x[m] 3x[rad]
   right: # position of planner foot frame (center of sole) given in robot's "foot" tf frame
     frame_id: /rightFoot
     foot_frame:
-      {x:  0.04, y:  0.00, z: -0.085, roll:  0.00, pitch:  0.00, yaw:  0.00}  # 3x[m] 3x[rad]
+      {x:  0.00, y: -0.0155, z:  0.00, roll:  0.00, pitch:  0.00, yaw:  0.00}  # 3x[m] 3x[rad]
 
 ### pelvis pose to feet center (on ground) transform ###########################
 pelvis_to_feet_center: {x: 0.0, y: 0.0, z: -0.912} # [m]
-
