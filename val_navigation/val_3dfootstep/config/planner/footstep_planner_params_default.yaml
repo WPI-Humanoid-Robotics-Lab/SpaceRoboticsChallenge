@@ -61,7 +61,7 @@ collision_check:
   # - 1 feet
   # - 2 upper body
   # - 4 foot contact support
-  collision_check_mask: 4
+  collision_check_mask: 3 #4 su
 
   # footstep collision check accuracy
   # - 0 (just the circumcircle of the foot)
@@ -70,25 +70,29 @@ collision_check:
   collision_check_accuracy: 2
 
   # discretization of continuous space (cell size in meters)
-  cell_size: 0.02
+  cell_size: 0.01 #0.02 su
 
-  num_angle_bins: 32
+  num_angle_bins: 64 # 32 su
 
 ### step set params ########################################################
 foot:
   max:
-    step: {theta: 0.40}
+    step: {theta: 0.3} #0.4 su
     inverse:
-      step: {theta: -0.30}
+      step: {theta: -0.05} #0.30 su
 
 # define polygon for valid step position in view of supporting (=standing) foot
 step_range:
-  x: [ 0.00, -0.20, -0.17, -0.13,  0.13,  0.20,  0.38]
-  y: [ 0.20,  0.25,  0.30,  0.35,  0.35,  0.30,  0.20]
-
-sway_duration: 0.10
-step_duration: 0.63
-swing_height:  0.10     # Ignored if it is less than 0.1
+#su
+#  x: [ 0.00, -0.20, -0.17, -0.13,  0.13,  0.20,  0.38]
+#  y: [ 0.20,  0.25,  0.30,  0.35,  0.35,  0.30,  0.20]
+  
+  x: [ 0.00, -0.10, -0.08, -0.05,  0.05,  0.10,  0.13]
+  y: [ 0.18,  0.18,  0.25,  0.30,  0.30,  0.25,  0.18]
+  
+sway_duration: 0.0 # 0.10 su 
+step_duration: 1.0 # 0.63 su 
+swing_height:  1 # 0.10 su      # Ignored if it is less than 0.1
 
 dynamics:
   body: # zero values will disable dynamic constraints
@@ -98,4 +102,4 @@ dynamics:
 ### misc ###################################################################
 feedback_rate: 10.0 # [Hz]
 threads: 4
-jobs_per_thread: 50
+jobs_per_thread: 100 # 50 su
