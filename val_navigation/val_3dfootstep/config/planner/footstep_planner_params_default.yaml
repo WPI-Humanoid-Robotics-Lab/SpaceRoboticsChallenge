@@ -1,0 +1,101 @@
+name: default
+
+### planner environment settings ###############################################
+
+# the size of the used hash map (the bigger the better); should be something
+# with 2^X (initially 2^16=65536)
+max_hash_size: 1048576
+
+# default cost to perform one footstep (in addition to ALL other costs, corresponds to 'meters')
+const_step_cost_estimator:
+  step_cost: 0.1
+
+# parameters for heuristics
+max_heuristic_value: 1000.0
+heuristic_scale: 1.0
+
+# cost to estimate the difference between the current orientation and the goal
+# orientation; used in the heuristic it can easily overestimate the true path
+# cost since this cost is not incorporated in each step
+diff_angle_cost: 0.0
+
+# maximum risk before state will be discarded
+max_risk: 1.0
+
+### planner settings ###########################################################
+
+plugin_set: default
+
+# define the planner of choice provided by the SBPL package
+# - ARAPlanner
+# - ADPlanner
+# - RSTARPlanner
+planner_type: ARAPlanner
+
+# search until a specific time limit is reached or first solution is found
+search_until_first_solution: False
+
+max_planning_time: 10.0 # default max planning time if not given by request
+initial_epsilon: 8.0
+decrease_epsilon: 0.2
+
+forward_search: True
+
+# the limit of changed states that decides whether to replan or to start a hole
+# new planning task
+changed_cells_limit: 20000
+
+### Planning parameterization for a large humanoid, similar to ASIMO or HRP-2 ##
+# used for foot contact support collision check
+foot_contact_support:
+  min_sampling_steps_x: 6
+  min_sampling_steps_y: 4
+  max_sampling_steps_x: 32
+  max_sampling_steps_y: 24
+  max_intrusion_z: 0.01
+  max_ground_clearance: 0.02
+  minimal_support: 0.85
+
+collision_check:
+  # collision check mask (binary encoded)
+  # - 1 feet
+  # - 2 upper body
+  # - 4 foot contact support
+  collision_check_mask: 4
+
+  # footstep collision check accuracy
+  # - 0 (just the circumcircle of the foot)
+  # - 1 (just the incircle of the foot)
+  # - 2 (circumcircle and incircle recursivly checked for the whole foot)
+  collision_check_accuracy: 2
+
+  # discretization of continuous space (cell size in meters)
+  cell_size: 0.02
+
+  num_angle_bins: 32
+
+### step set params ########################################################
+foot:
+  max:
+    step: {theta: 0.40}
+    inverse:
+      step: {theta: -0.30}
+
+# define polygon for valid step position in view of supporting (=standing) foot
+step_range:
+  x: [ 0.00, -0.20, -0.17, -0.13,  0.13,  0.20,  0.38]
+  y: [ 0.20,  0.25,  0.30,  0.35,  0.35,  0.30,  0.20]
+
+sway_duration: 0.10
+step_duration: 0.63
+swing_height:  0.10     # Ignored if it is less than 0.1
+
+dynamics:
+  body: # zero values will disable dynamic constraints
+    max_vel: 0.0
+    max_acc: 0.0
+
+### misc ###################################################################
+feedback_rate: 10.0 # [Hz]
+threads: 4
+jobs_per_thread: 50
