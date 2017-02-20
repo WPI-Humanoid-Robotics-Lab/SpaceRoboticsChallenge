@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+
+ <remap from="/assembled_cloud2" to="/vigir/terrain_classifier/point_cloud_update" />
+ <include file="$(find val_laser2point_cloud)/launch/laser_assembler.launch" />
+ 
+ <include file="$(find vigir_terrain_classifier)/launch/terrain_classifier.launch" />
+ <include file="$(find vigir_footstep_planning)/launch/rviz_footstep_planning.launch"/>
+
+</launch>
