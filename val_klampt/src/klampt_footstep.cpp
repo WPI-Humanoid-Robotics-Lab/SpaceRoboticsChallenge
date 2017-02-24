@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 	int leg;
 	float x,y,z;
 	const char* outputfile="walk.xml";
-	char* flatwalkworld="../robonaut_r5.xml";
+	char* flatwalkworld="src/space_robotics_challenge/val_klampt/robonaut_r5.xml";
 	Robot rob;
 	MultiPath path;
 	//FlatGroundWalk groundwalk(flatwalkworld, rob);

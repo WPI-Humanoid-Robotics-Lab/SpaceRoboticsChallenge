@@ -95,7 +95,7 @@ for(int i=0; i<activevalues.size(); i++){
 			}
 			//check if it's what we want
 
-			if(!(sample_checked = check_com(stretchspace.robot.q,goalcom[0],goalcom[1],comz,0.1,0.1,0.1))){
+			if(!(sample_checked = check_com(stretchspace.robot.q,goalcom[0],goalcom[1],comz,0.1,0.1,0.1))){//.1, .1, .1
 				//clear, because it wasn't.
 				stretchspace.robot.q=clearworld(stretchspace.robot.q);
 			}
@@ -248,7 +248,7 @@ Config Planner::straightpath(vector<int> activevalues, int leg, Config startconf
 		  {
 		    stretchspace.Sample(stretchspace.robot.q);
 		  }
-			sample_checked = check_com(stretchspace.robot.q,curcom[0],curcom[1],curcom[2],.02,.02,.4);
+			sample_checked = check_com(stretchspace.robot.q,curcom[0],curcom[1],curcom[2],.02,.02,.4);//,.02,.02,.4
 			if(!sample_checked){
 				//clear, because it wasn't.
 				stretchspace.robot.q=clearworld(stretchspace.robot.q);
