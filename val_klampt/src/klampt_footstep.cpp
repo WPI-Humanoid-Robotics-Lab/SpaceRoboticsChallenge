@@ -1,5 +1,7 @@
 #include "ros/ros.h"
-
+#include "planner.h"
+#include "val_single_step.h"
+#include "timeassignment.h"
 //klampt_footstep turns footstep requests into robot motions
 int main(int argc, char **argv)
 {
