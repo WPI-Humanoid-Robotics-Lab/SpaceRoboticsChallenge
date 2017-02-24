@@ -19,7 +19,7 @@ vector<int>RobotLimbsState::setrelaxedjoints(int leg){
 }
 
 Hold RobotLimbsState::gethold(int leg, int flat){
-	string holdFolder="src/space_robotics_challenge/val_klampt/footstep_data/";
+	string holdFolder="~/indigo_ws/src/space_robotics_challenge/val_klampt/footstep_data/";
 	string holdfile;
 	switch (leg){
 			case 1:
