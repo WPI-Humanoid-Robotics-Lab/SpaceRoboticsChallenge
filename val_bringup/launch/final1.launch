@@ -9,7 +9,12 @@
       <arg name="use_local_build" value="$(arg use_local_build)" />
    </include>
 
-   <rosparam param="self_see_links">[leftForearmLink, leftWristRollLink, leftPalm, leftThumbRollLink, leftThumbPitch1Link, leftThumbPitch2Link, leftThumbPitch3Link, upperNeckPitchLink, torso]</rosparam>
+   <rosparam param="self_see_links">[leftForearmLink, leftWristRollLink, leftPalm, leftThumbRollLink, leftThumbPitch1Link,
+                                     leftThumbPitch2Link, leftThumbPitch3Link,leftShoulderPitchLink, leftShoulderRollLink, leftElbowPitchLink,
+                                     upperNeckPitchLink, torso,
+                                     rightForearmLink, rightWristRollLink, rightPalm, rightThumbRollLink, rightThumbPitch1Link,
+                                     rightThumbPitch2Link, rightThumbPitch3Link,rightShoulderPitchLink, rightShoulderRollLink, rightElbowPitchLink]
+   </rosparam>
 
    <!-- Start spinning the lidar   @TODO: implement this using a parameter or check if one exists already-->
    <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /multisense/set_spindle_speed -l std_msgs/Float64 2"/>
