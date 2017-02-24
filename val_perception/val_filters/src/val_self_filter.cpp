@@ -40,10 +40,11 @@
 #include <visualization_msgs/Marker.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud_conversion.h>
+#include <pcl/filters/extract_indices.h>
 
 #include "robot_self_filter/self_mask.h"
 #include "val_common/val_common_names.h"
-
+#include "perception_common/perception_common_names.h"
 
 class val_self_filter
 {
@@ -53,8 +54,8 @@ public:
     {
         id_ = 1;
         vmPub_ = nodeHandle_.advertise<visualization_msgs::Marker>("visualization_marker", 10240);
-        vmOutputPub_ = nodeHandle_.advertise<sensor_msgs::PointCloud2>("assembled_filtered_cloud2", 10);
-        vmSub_ = nodeHandle_.subscribe("assembled_cloud2",100, &val_self_filter::run, this);
+        vmOutputPub_ = nodeHandle_.advertise<sensor_msgs::PointCloud2>("filtered_cloud2", 1);
+        vmSub_ = nodeHandle_.subscribe(PERCEPTION_COMMON_NAMES::MULTISENSE_LASER_CLOUD_TOPIC + "2",100, &val_self_filter::run, this);
         std::vector<robot_self_filter::LinkInfo> links;
 
         if (!nodeHandle_.hasParam("self_see_links")){
@@ -76,7 +77,7 @@ public:
                 for(int i = 0; i < ssl_vals.size(); i++) {
                     robot_self_filter::LinkInfo li;
                     li.name = ssl_vals.at(i);
-                    li.padding = .05f;
+                    li.padding = 0.05f;
                     li.scale = 1.0f;
                     links.push_back(li);
                 }
@@ -91,73 +92,51 @@ public:
         delete sf_;
     }
 
-    void gotIntersection(const tf::Vector3 &pt)
-    {
-        sendPoint(pt.x(), pt.y(), pt.z());
-    }
-
-    void sendPoint(double x, double y, double z)
-    {
-        pcl::PointXYZ pt(x, y, z);
-        maskCloud_.insert(maskCloud_.end(), pt);
-        visualization_msgs::Marker mk;
-
-        mk.header.stamp = ros::Time::now();
-
-        mk.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
-
-        mk.ns = "";
-        mk.id = id_++;
-        mk.type = visualization_msgs::Marker::SPHERE;
-        mk.action = visualization_msgs::Marker::ADD;
-        mk.pose.position.x = x;
-        mk.pose.position.y = y;
-        mk.pose.position.z = z;
-        mk.pose.orientation.w = 1.0;
-
-        mk.scale.x = mk.scale.y = mk.scale.z = 0.01;
-
-        mk.color.a = 1.0;
-        mk.color.r = 1.0;
-        mk.color.g = 0.04;
-        mk.color.b = 0.04;
-
-        mk.lifetime = ros::Duration(10);
-
-        vmPub_.publish(mk);
-    }
-
     void run(sensor_msgs::PointCloud2::ConstPtr msg)
     {
+        static bool isFiltering = false;
 
-        pcl::PCLPointCloud2 pcl_pc2;
-        pcl_conversions::toPCL(*msg,pcl_pc2);
-        pcl::PointCloud<pcl::PointXYZ>::Ptr in(new pcl::PointCloud<pcl::PointXYZ>);
-        pcl::fromPCLPointCloud2(pcl_pc2,*in);
-        ROS_INFO("Size of pointcloud : %d ", in->size());
+        if (!isFiltering){
+            isFiltering = true;
+            pcl::PCLPointCloud2 pcl_pc2;
+            pcl_conversions::toPCL(*msg,pcl_pc2);
+            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_in(new pcl::PointCloud<pcl::PointXYZ>);
+            pcl::fromPCLPointCloud2(pcl_pc2,*cloud_in);
 
-        std::vector<int> mask;
-        sf_->maskIntersection(*in, VAL_COMMON_NAMES::HOKUYO_LINK_TF, 0.01, mask, boost::bind(&val_self_filter::gotIntersection, this, _1) );
-//            sf_->maskContainment(*in, mask);
+            std::vector<int> mask;
+            sf_->maskContainment(*cloud_in, mask);
 
-//        assert(mask.size() == in->size());
-//        for (unsigned int i = 0 ; i < mask.size() ; ++i)
-//        {
-//            if (mask[i] != robot_self_filter::INSIDE) {
-//                 in->points.erase(in->points.begin() + i);
-//                 in->erase(in->begin() + i);
-//                 sendPoint(in->points[i].x, in->points[i].y, in->points[i].z);
-//            }
-//        }
+            pcl::PointIndices::Ptr outliers(new pcl::PointIndices());
+            outliers->header = cloud_in->header;
+            for (unsigned int i = 0 ; i < mask.size() ; ++i)
+            {
+                if (mask[i] == robot_self_filter::INSIDE )
+                {
+                    outliers->indices.insert(outliers->indices.end(),i);
+                }
+            }
 
-        sensor_msgs::PointCloud2 cloud2;
-        pcl::toPCLPointCloud2(maskCloud_, pcl_pc2);
-        pcl_conversions::moveFromPCL(pcl_pc2, cloud2);
-        cloud2.header.frame_id.assign(in->header.frame_id);
-        cloud2.header.stamp = ros::Time::now();
-        ROS_INFO("Size of filtered pointcloud: %d", in->size());
-        vmOutputPub_.publish(cloud2);
+            subtractPointClouds(cloud_in, outliers);
+
+            sensor_msgs::PointCloud2 cloud2;
+            pcl::toPCLPointCloud2(*cloud_in, pcl_pc2);
+            pcl_conversions::moveFromPCL(pcl_pc2, cloud2);
+            cloud2.header.frame_id.assign(cloud_in->header.frame_id);
+            cloud2.header.stamp = ros::Time(pcl_pc2.header.stamp);
+//            ROS_INFO("Size of filtered pointcloud: %d", cloud_in->size());
+            vmOutputPub_.publish(cloud2);
+            isFiltering = false;
+        }
 //        ros::spin();
+    }
+
+    void subtractPointClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr full_cloud, const pcl::PointIndices::Ptr outliers){
+        pcl::ExtractIndices<pcl::PointXYZ> extract ;
+        extract.setInputCloud(full_cloud);
+        extract.setIndices(outliers);
+        extract.setNegative (true);
+        extract.filter (*full_cloud);
+        return;
     }
 
 protected:

@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   tf
   val_common
+  perception_common
 )
 
 ## System dependencies are found with CMake's conventions
@@ -145,12 +146,13 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
- add_dependencies(val_self_filter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} val_common)
+ add_dependencies(val_self_filter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(val_self_filter
    ${catkin_LIBRARIES}
    val_common
+   perception_common
  )
 
 #############
