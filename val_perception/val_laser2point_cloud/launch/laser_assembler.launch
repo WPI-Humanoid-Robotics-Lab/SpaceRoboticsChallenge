@@ -2,7 +2,7 @@
 <launch>
   <node type="point_cloud_assembler" pkg="laser_assembler"
         name="val_laser_assembler_svc">
-    <remap from="cloud" to="/multisense/points"/>
+    <remap from="cloud" to="/filtered_cloud"/>
     <param name="max_clouds" type="int" value="400" />
     <param name="fixed_frame" type="string" value="world" />
   </node>

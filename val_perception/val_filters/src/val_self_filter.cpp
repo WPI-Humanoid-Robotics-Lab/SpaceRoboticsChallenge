@@ -54,7 +54,7 @@ public:
     {
         id_ = 1;
         vmPub_ = nodeHandle_.advertise<visualization_msgs::Marker>("visualization_marker", 10240);
-        vmOutputPub_ = nodeHandle_.advertise<sensor_msgs::PointCloud2>("filtered_cloud2", 1);
+        vmOutputPub_ = nodeHandle_.advertise<sensor_msgs::PointCloud>("filtered_cloud", 1);
         vmSub_ = nodeHandle_.subscribe(PERCEPTION_COMMON_NAMES::MULTISENSE_LASER_CLOUD_TOPIC + "2",100, &val_self_filter::run, this);
         std::vector<robot_self_filter::LinkInfo> links;
 
@@ -124,7 +124,9 @@ public:
             cloud2.header.frame_id.assign(cloud_in->header.frame_id);
             cloud2.header.stamp = ros::Time(pcl_pc2.header.stamp);
 //            ROS_INFO("Size of filtered pointcloud: %d", cloud_in->size());
-            vmOutputPub_.publish(cloud2);
+            sensor_msgs::PointCloud  cloud;
+            sensor_msgs::convertPointCloud2ToPointCloud(cloud2,cloud);
+            vmOutputPub_.publish(cloud);
             isFiltering = false;
         }
 //        ros::spin();
