@@ -6,7 +6,7 @@ SET(CMAKE_BUILD_TYPE RelWithDebInfo)
 set(CMAKE_CXX_FLAGS "-std=c++0x -g -march=native -mno-avx -Werror ${CMAKE_CXX_FLAGS}")
 
 find_package(OpenCV 2.4 REQUIRED core gpu imgproc calib3d highgui)
-find_package(PCL 1.7 REQUIRED io)
+find_package(PCL 1.7 REQUIRED)
 find_package(catkin REQUIRED COMPONENTS roscpp
                                         rospy
                                         geometric_shapes
@@ -43,6 +43,7 @@ add_library(${PROJECT_NAME}  src/MultisensePointCloud.cpp
                              src/ImageHelper.cpp
                              src/PointCloudHelper.cpp
                              src/laser2point_cloud.cpp
+                             src/perception_utils.cpp
 )
 									
 # TODO
@@ -64,6 +65,10 @@ target_link_libraries(test_organizedRGBD  ${PROJECT_NAME})
 
 add_executable(periodic_snapshotter  src/periodic_snapshotter.cpp)
 target_link_libraries(periodic_snapshotter  ${PROJECT_NAME})
+
+add_executable(test_object_detector  src/test_object_detector.cpp)
+target_link_libraries(test_object_detector  ${PROJECT_NAME})
+
 
 ## Mark executables and/or libraries for installation
 #install(TARGETS ${PROJECT_NAME} multisense_backend
