@@ -13,8 +13,6 @@
    <!-- Start spinning the lidar   @TODO: implement this using a parameter or check if one exists already-->
    <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /multisense/set_spindle_speed -l std_msgs/Float64 1.0"/>
 
-   <include file="$(find val_laser2point_cloud)/launch/laser_assembler.launch"/>
-   
    <!-- Start stereo_image_proc to pusblish disparity image -->
    <node ns="/multisense/camera" name="stereo_proc" pkg="stereo_image_proc" type="stereo_image_proc" respawn="false" output="log">
        <param name="prefilter_size" type="int" value="11"/>
