@@ -60,7 +60,10 @@ PeriodicSnapshotter::PeriodicSnapshotter()
     client_ = n_.serviceClient<AssembleScans2>("assemble_scans2");
 
     // Start the timer that will trigger the processing loop (timerCallback)
-    timer_ = n_.createTimer(ros::Duration(5,0), &PeriodicSnapshotter::timerCallback, this);
+    float timeout;
+    n_.param<float>("val_laser_assembler_svc/laser_snapshot_timeout", timeout, 5.0);
+    ROS_INFO("Snapshot timeout : %.2f seconds", timeout);
+    timer_ = n_.createTimer(ros::Duration(timeout,0), &PeriodicSnapshotter::timerCallback, this);
 
     // Need to track if we've called the timerCallback at least once
     first_time_ = true;
