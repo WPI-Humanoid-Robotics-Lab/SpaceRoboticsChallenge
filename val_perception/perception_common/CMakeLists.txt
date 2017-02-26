@@ -43,7 +43,7 @@ add_library(${PROJECT_NAME}  src/MultisensePointCloud.cpp
                              src/ImageHelper.cpp
                              src/PointCloudHelper.cpp
                              src/laser2point_cloud.cpp
-                             src/perception_utils.cpp
+                             src/object_detection/object_detectors.cpp
 )
 									
 # TODO
@@ -66,7 +66,7 @@ target_link_libraries(test_organizedRGBD  ${PROJECT_NAME})
 add_executable(periodic_snapshotter  src/periodic_snapshotter.cpp)
 target_link_libraries(periodic_snapshotter  ${PROJECT_NAME})
 
-add_executable(test_object_detector  src/test_object_detector.cpp)
+add_executable(test_object_detector  src/object_detection/test_object_detector.cpp)
 target_link_libraries(test_object_detector  ${PROJECT_NAME})
 
 

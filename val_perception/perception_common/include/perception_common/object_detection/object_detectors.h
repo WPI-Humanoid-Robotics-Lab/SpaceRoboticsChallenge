@@ -19,7 +19,6 @@
 
 #include <sensor_msgs/point_cloud_conversion.h>
 
-
 namespace perception_utils{
 
 typedef pcl::PointXYZ       PointType;
@@ -27,27 +26,57 @@ typedef pcl::Normal         NormalType;
 typedef pcl::ReferenceFrame RFType;
 typedef pcl::SHOT352        DescriptorType;
 
+/**
+ * @brief The model_based_object_detector class provides ability to detect an object using model matching techniques
+ * in a pointcloud. This class matching using the algorithms defined in enum class detection_algorithm
+ */
 class model_based_object_detector{
 public:
+    /**
+     * @brief model_based_object_detector default constructor
+     */
     model_based_object_detector();
+    /**
+     * @brief The detection_algorithm enum provides a list of algorithms which can be used for detection.
+     */
     enum class detection_algorithm{
         HOUGH = 0,
         GC = 1,
         ICP
     };
 
+    /**
+     * @brief match_model method matches a model in a scene and returns SE3 matrix for the position and orientation of origin of the model wrt the scene
+     * @param model pointer to the pcl pointcloud of model
+     * @param scene pointer to the pcl pointcloud of scene
+     * @param algo  detection algorithm to be used.
+     */
     void match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo);
+
+    /**
+     * @brief match_model method matches a model in a scene and returns SE3 matrix for the position and orientation of origin of the model wrt the scene
+     * @param model pointer to ros pointcloud2 of model
+     * @param scene pointer to ros pointcloud2 of scene
+     * @param algo  detection algorithm to be used.
+     */
     void match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo);
+
+    /**
+     * @brief match_model method matches a model in a scene and returns SE3 matrix for the position and orientation of origin of the model wrt the scene
+     * @param model_cloud pointer to the pcl pointcloud of model
+     * @param scene pointer to ros pointcloud2 of scene
+     * @param algo detection algorithm to be used.
+     */
     void match_model(const pcl::PointCloud<PointType>::Ptr model_cloud, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo);
+    /**
+     * @brief match_using_corrs matches a model in a scene using correspondence grouping and returns SE3 matrix for the position and orientation of the origin of the model wrt the scene
+     * @param model pointer to the pcl pointcloud of model
+     * @param scene pointer to the pcl pointcloud of scene
+     * @param algo  detection algorithm to be used. It can be either HOUGH or GC.
+     */
+    void match_using_corrs(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo);
 
     void match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene);
-
-
-    bool show_keypoints() const;
-    void setShow_keypoints(bool show_keypoints);
-
-    bool show_correspondences() const;
-    void setShow_correspondences(bool show_correspondences);
 
     bool use_cloud_resolution() const;
     void setUse_cloud_resolution(bool use_cloud_resolution);
@@ -75,8 +104,6 @@ public:
 
 
 protected:
-    bool show_keypoints_;
-    bool show_correspondences_;
     bool use_cloud_resolution_;
     bool use_hough_;
     float model_ss_;

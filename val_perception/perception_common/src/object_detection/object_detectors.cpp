@@ -1,19 +1,17 @@
-#include "perception_common/object_locator.h"
+#include "perception_common/object_detection/object_detectors.h"
 #include <pcl_conversions/pcl_conversions.h>
 
 namespace perception_utils {
 
 model_based_object_detector::model_based_object_detector() {
-    bool show_keypoints_ (false);
-    bool show_correspondences_ (false);
-    bool use_cloud_resolution_ (true);
-    bool use_hough_ (true);
-    float model_ss_ (0.03f);
-    float scene_ss_ (0.03f);
-    float rf_rad_ (0.015f);
-    float descr_rad_ (0.02f);
-    float cg_size_ (0.01f);
-    float cg_thresh_ (5.0f);
+    use_cloud_resolution_   = true;
+    use_hough_              = true;
+    model_ss_               = 0.03f;
+    scene_ss_               = 0.03f;
+    rf_rad_                 = 0.015f;
+    descr_rad_              = 0.02f;
+    cg_size_                = 0.01f;
+    cg_thresh_              = 5.0f;
 }
 
 double model_based_object_detector::computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud) {
@@ -42,6 +40,7 @@ double model_based_object_detector::computeCloudResolution (const pcl::PointClou
     return res;
 }
 
+// This might never be used
 void model_based_object_detector::match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr model_cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -69,6 +68,7 @@ void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::
     pcl_conversions::toPCL(*scene,pcl_pc2);
     pcl::fromPCLPointCloud2(pcl_pc2,*scene_cloud);
 
+//    pcl::io::savePCDFile("/home/ninja/Downloads/PCL_test/scene.pcd",*scene);
 
     return match_model(model_cloud, scene_cloud, algo);
 
@@ -78,11 +78,7 @@ void model_based_object_detector::match_using_ICP(const pcl::PointCloud<PointTyp
 
 }
 
-void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
-
-    if (algo == detection_algorithm::ICP){
-        return match_using_ICP(model, scene);
-    }
+void model_based_object_detector::match_using_corrs(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
     pcl::PointCloud<PointType>::Ptr model_keypoints (new pcl::PointCloud<PointType> ());
     pcl::PointCloud<PointType>::Ptr scene_keypoints (new pcl::PointCloud<PointType> ());
     pcl::PointCloud<NormalType>::Ptr model_normals (new pcl::PointCloud<NormalType> ());
@@ -132,40 +128,37 @@ void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::
     pcl::UniformSampling<PointType> uniform_sampling;
     uniform_sampling.setInputCloud (model);
     uniform_sampling.setRadiusSearch (model_ss_);
-    uniform_sampling.setKSearch(10);
-    //uniform_sampling.filter (*model_keypoints);   //uncomment this for any other version of pcl
-    pcl::PointCloud<int> keypointIndices1;          //comment this for any other version of pcl
-    uniform_sampling.compute(keypointIndices1);     //comment this for any other version of pcl
-    pcl::copyPointCloud(*model, keypointIndices1.points, *model_keypoints); //comment this for any other version of pcl
+    //uniform_sampling.filter (*model_keypoints);
+    pcl::PointCloud<int> keypointIndices1;
+    uniform_sampling.compute(keypointIndices1);
+    pcl::copyPointCloud(*model, keypointIndices1.points, *model_keypoints);
     std::cout << "Model total points: " << model->size () << "; Selected Keypoints: " << model_keypoints->size () << std::endl;
 
 
     uniform_sampling.setInputCloud (scene);
     uniform_sampling.setRadiusSearch (scene_ss_);
-    uniform_sampling.setKSearch(10);
-    //uniform_sampling.filter (*scene_keypoints);   //uncomment this for any other version of pcl
-    pcl::PointCloud<int> keypointIndices2;          //comment this for any other version of pcl
-    uniform_sampling.compute(keypointIndices2);     //comment this for any other version of pcl
-    pcl::copyPointCloud(*scene, keypointIndices2.points, *scene_keypoints); //comment this for any other version of pcl
+    //uniform_sampling.filter (*scene_keypoints);
+    pcl::PointCloud<int> keypointIndices2;
+    uniform_sampling.compute(keypointIndices2);
+    pcl::copyPointCloud(*scene, keypointIndices2.points, *scene_keypoints);
     std::cout << "Scene total points: " << scene->size () << "; Selected Keypoints: " << scene_keypoints->size () << std::endl;
-
 
     //
     //  Compute Descriptor for keypoints
     //
     pcl::SHOTEstimationOMP<PointType, NormalType, DescriptorType> descr_est;
     descr_est.setRadiusSearch (descr_rad_);
+
     descr_est.setInputCloud (model_keypoints);
     descr_est.setInputNormals (model_normals);
     descr_est.setSearchSurface (model);
-    descr_est.setKSearch(10);
     descr_est.compute (*model_descriptors);
 
     descr_est.setInputCloud (scene_keypoints);
     descr_est.setInputNormals (scene_normals);
     descr_est.setSearchSurface (scene);
-    descr_est.setKSearch(10);
     descr_est.compute (*scene_descriptors);
+
 
     //
     //  Find Model-Scene Correspondences with KdTree
@@ -252,7 +245,7 @@ void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::
         gc_clusterer.recognize (rototranslations, clustered_corrs);
     }
     else {
-        std::cout<<"Please specify a known algorithm";
+        std::cout<<"Please specify a known algorithm for Correspondence Grouping";
     }
 
     //
@@ -276,88 +269,27 @@ void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::
         printf ("        t = < %0.3f, %0.3f, %0.3f >\n", translation (0), translation (1), translation (2));
     }
 
-    //
-    //  Visualization
-    //
-    pcl::visualization::PCLVisualizer viewer ("Correspondence Grouping");
-    viewer.addPointCloud (scene, "scene_cloud");
 
-    pcl::PointCloud<PointType>::Ptr off_scene_model (new pcl::PointCloud<PointType> ());
-    pcl::PointCloud<PointType>::Ptr off_scene_model_keypoints (new pcl::PointCloud<PointType> ());
+}
 
-    if (show_correspondences_ || show_keypoints_)
-    {
-        //  We are translating the model so that it doesn't end in the middle of the scene representation
-        pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-        pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
+void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
 
-        pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_color_handler (off_scene_model, 255, 255, 128);
-        viewer.addPointCloud (off_scene_model, off_scene_model_color_handler, "off_scene_model");
-    }
+    switch (algo) {
 
-    if (show_keypoints_)
-    {
-        pcl::visualization::PointCloudColorHandlerCustom<PointType> scene_keypoints_color_handler (scene_keypoints, 0, 0, 255);
-        viewer.addPointCloud (scene_keypoints, scene_keypoints_color_handler, "scene_keypoints");
-        viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "scene_keypoints");
+        case detection_algorithm::HOUGH:
+        case detection_algorithm::GC:
+            return match_using_corrs(model, scene, algo);
 
-        pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_keypoints_color_handler (off_scene_model_keypoints, 0, 0, 255);
-        viewer.addPointCloud (off_scene_model_keypoints, off_scene_model_keypoints_color_handler, "off_scene_model_keypoints");
-        viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "off_scene_model_keypoints");
-    }
+        case detection_algorithm::ICP:
+            return match_using_ICP(model, scene);
 
-    for (size_t i = 0; i < rototranslations.size (); ++i)
-    {
-        pcl::PointCloud<PointType>::Ptr rotated_model (new pcl::PointCloud<PointType> ());
-        pcl::transformPointCloud (*model, *rotated_model, rototranslations[i]);
-
-        std::stringstream ss_cloud;
-        ss_cloud << "instance" << i;
-
-        pcl::visualization::PointCloudColorHandlerCustom<PointType> rotated_model_color_handler (rotated_model, 255, 0, 0);
-        viewer.addPointCloud (rotated_model, rotated_model_color_handler, ss_cloud.str ());
-
-        if (show_correspondences_)
-        {
-            for (size_t j = 0; j < clustered_corrs[i].size (); ++j)
-            {
-                std::stringstream ss_line;
-                ss_line << "correspondence_line" << i << "_" << j;
-                PointType& model_point = off_scene_model_keypoints->at (clustered_corrs[i][j].index_query);
-                PointType& scene_point = scene_keypoints->at (clustered_corrs[i][j].index_match);
-
-                //  We are drawing a line for each pair of clustered correspondences found between the model and the scene
-                viewer.addLine<PointType, PointType> (model_point, scene_point, 0, 255, 0, ss_line.str ());
-            }
-        }
-    }
-
-    while (!viewer.wasStopped ())
-    {
-        viewer.spinOnce ();
+        default:
+            break;
     }
 }
 
 
 // setters and getters
-bool model_based_object_detector::show_keypoints() const
-{
-    return show_keypoints_;
-}
-void model_based_object_detector::setShow_keypoints(bool show_keypoints)
-{
-    show_keypoints_ = show_keypoints;
-}
-
-bool model_based_object_detector::show_correspondences() const
-{
-    return show_correspondences_;
-}
-void model_based_object_detector::setShow_correspondences(bool show_correspondences)
-{
-    show_correspondences_ = show_correspondences;
-}
-
 bool model_based_object_detector::use_cloud_resolution() const
 {
     return use_cloud_resolution_;
