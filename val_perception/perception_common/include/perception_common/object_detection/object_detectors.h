@@ -1,5 +1,5 @@
-#ifndef OBJECT_LOCATOR_H
-#define OBJECT_LOCATOR_H
+#ifndef OBJECT_DETECTOR_H
+#define OBJECT_DETECTOR_H
 
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_cloud.h>
@@ -119,4 +119,4 @@ protected:
 
 } // end of namespace perception_utils
 
-#endif // OBJECT_LOCATOR_H
+#endif // OBJECT_DETECTOR_H
