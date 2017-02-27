@@ -1,9 +1,16 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(srcsim)
 
+find_package(ignition-math2 REQUIRED)
+
 if(NOT WIN32)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra ${IGNITION-MATH_CXX_FLAGS}")
 endif()
+
+include($ENV{ROS_ROOT}/core/rosbuild/FindPkgConfig.cmake)
+pkg_check_modules(OGRE OGRE)
+include_directories( ${OGRE_INCLUDE_DIRS} ${OGRE_INCLUDE_DIRS}/Paging/)    
+link_directories( ${OGRE_LIBRARY_DIRS} )
 
 find_package(catkin REQUIRED COMPONENTS
   gazebo_plugins
@@ -20,7 +27,6 @@ set (SRCSIM_VERSION_FULL ${SRCSIM_MAJOR_VERSION}.${SRCSIM_MINOR_VERSION}.${SRCSI
 
 find_package(gazebo REQUIRED)
 
-
 ########################
 ## Message generation ##
 ########################
@@ -28,6 +34,13 @@ find_package(gazebo REQUIRED)
 add_message_files(
   FILES
   Console.msg
+  Satellite.msg
+  Task.msg
+)
+
+add_service_files(
+  FILES
+  StartTask.srv
 )
 
 generate_messages()
@@ -44,11 +57,13 @@ include_directories(
   ${roscpp_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
   ${IGNITION-TRANSPORT_INCLUDE_DIRS}
+  ${IGNITION-MATH_INCLUDE_DIRS}
 )
 
 link_directories(
   ${GAZEBO_LIBRARY_DIRS}
   ${IGNITION-TRANSPORT_LIBRARY_DIRS}
+  ${IGNITION-MATH_LIBRARY_DIRS}
 )
 
 ##########################
@@ -107,6 +122,71 @@ install(TARGETS ${qual2_plugin_name}
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
 
+##########################
+##         Finals       ##
+##########################
+
+# Create the libFinalsPlugin.so library.
+set(finals_plugin_name FinalsPlugin)
+add_library(${finals_plugin_name} SHARED
+  src/FinalsPlugin.cc
+  src/Task.cc
+  src/Task1.cc
+  src/Task2.cc
+  src/Task3.cc
+  src/Checkpoint.cc
+)
+target_link_libraries(${finals_plugin_name}
+  ${GAZEBO_LIBRARIES}
+  ${roscpp_LIBRARIES}
+  ${IGNITION-TRANSPORT_LIBRARIES}
+)
+install(TARGETS ${finals_plugin_name}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
+
+##########################
+## Box plugin ##
+##########################
+
+# Create the libBoxContainsPlugin.so library.
+set(box_plugin_name BoxContainsPlugin)
+add_library(${box_plugin_name} SHARED
+  src/BoxContainsPlugin.cc
+)
+target_link_libraries(${box_plugin_name}
+  ${GAZEBO_LIBRARIES}
+  ${roscpp_LIBRARIES}
+  ${IGNITION-TRANSPORT_LIBRARIES}
+  ${IGNITION-MATH_LIBRARIES}
+)
+install(TARGETS ${box_plugin_name}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
+
+##########################
+## Satellite plugin ##
+##########################
+
+# Create the libSatellitePlugin.so library.
+set(satellite_plugin_name SatellitePlugin)
+add_library(${satellite_plugin_name} SHARED
+  src/SatellitePlugin.cc
+)
+target_link_libraries(${satellite_plugin_name}
+  ${GAZEBO_LIBRARIES}
+  ${roscpp_LIBRARIES}
+  ${IGNITION-TRANSPORT_LIBRARIES}
+)
+
+add_dependencies(${satellite_plugin_name} srcsim_generate_messages_cpp)
+
+install(TARGETS ${satellite_plugin_name}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
 
 #############
 ## Install ##
