@@ -1,6 +1,9 @@
 #include "perception_common/object_detection/object_detectors.h"
 #include <pcl_conversions/pcl_conversions.h>
 
+#include <visualization_msgs/Marker.h>
+#include <tf/tf.h>
+
 namespace perception_utils {
 
 model_based_object_detector::model_based_object_detector() {
@@ -41,7 +44,7 @@ double model_based_object_detector::computeCloudResolution (const pcl::PointClou
 }
 
 // This might never be used
-void model_based_object_detector::match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo){
+geometry_msgs::Pose model_based_object_detector::match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr model_cloud(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr scene_cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -61,7 +64,7 @@ void model_based_object_detector::match_model(const sensor_msgs::PointCloud2::Pt
 }
 
 
-void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model_cloud, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo){
+geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model_cloud, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr scene_cloud(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PCLPointCloud2 pcl_pc2;
@@ -74,11 +77,30 @@ void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::
 
 }
 
-void model_based_object_detector::match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene) {
+geometry_msgs::Pose model_based_object_detector::match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene) {
 
+     std::cout << "Saved " << model->points.size () << " data points to input:"
+         << std::endl;
+
+     std::cout << "size:" << scene->points.size() << std::endl;
+
+     pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
+//     icp.setInputCloud(model);
+     icp.setInputSource(model);
+     icp.setInputTarget(scene);
+     icp.setMaximumIterations(20);
+     icp.setEuclideanFitnessEpsilon(0.5);
+     pcl::PointCloud<pcl::PointXYZ> Final;
+     icp.align(Final);
+     std::cout << "has converged:" << icp.hasConverged() << " score: " <<
+     icp.getFitnessScore() << std::endl;
+     std::cout << icp.getFinalTransformation() << std::endl;
+     geometry_msgs::Pose goal;
+     set_frame(icp.getFinalTransformation(), goal);
+     return goal;
 }
 
-void model_based_object_detector::match_using_corrs(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
+geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
     pcl::PointCloud<PointType>::Ptr model_keypoints (new pcl::PointCloud<PointType> ());
     pcl::PointCloud<PointType>::Ptr scene_keypoints (new pcl::PointCloud<PointType> ());
     pcl::PointCloud<NormalType>::Ptr model_normals (new pcl::PointCloud<NormalType> ());
@@ -269,10 +291,12 @@ void model_based_object_detector::match_using_corrs(const pcl::PointCloud<PointT
         printf ("        t = < %0.3f, %0.3f, %0.3f >\n", translation (0), translation (1), translation (2));
     }
 
-
+    //Fix this
+    geometry_msgs::Pose goal;
+    return goal;
 }
 
-void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
+geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
 
     switch (algo) {
 
@@ -288,6 +312,28 @@ void model_based_object_detector::match_model(const pcl::PointCloud<PointType>::
     }
 }
 
+void model_based_object_detector::set_frame( Eigen::Matrix4f Transformation_matrix, geometry_msgs::Pose &goal){
+
+    tf::Matrix3x3 tf3d;
+    tf3d.setValue(static_cast<double>(Transformation_matrix(0,0)), static_cast<double>(Transformation_matrix(0,1)), static_cast<double>(Transformation_matrix(0,2)),
+                  static_cast<double>(Transformation_matrix(1,0)), static_cast<double>(Transformation_matrix(1,1)), static_cast<double>(Transformation_matrix(1,2)),
+                  static_cast<double>(Transformation_matrix(2,0)), static_cast<double>(Transformation_matrix(2,1)), static_cast<double>(Transformation_matrix(2,2)));
+
+    tf::Quaternion tfqt;
+    tf3d.getRotation(tfqt);
+
+
+    goal.position.x = static_cast<double>(Transformation_matrix(0,3));
+    goal.position.y = static_cast<double>(Transformation_matrix(1,3));
+    goal.position.z = static_cast<double>(Transformation_matrix(2,3));
+
+    goal.orientation.x = tfqt.getX();
+    goal.orientation.y = tfqt.getY();
+    goal.orientation.z = tfqt.getZ();
+    goal.orientation.w = tfqt.getW();
+
+    return;
+}
 
 // setters and getters
 bool model_based_object_detector::use_cloud_resolution() const

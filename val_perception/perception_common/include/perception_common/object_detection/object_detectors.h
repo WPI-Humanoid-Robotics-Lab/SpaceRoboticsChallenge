@@ -16,8 +16,11 @@
 #include <pcl/kdtree/impl/kdtree_flann.hpp>
 #include <pcl/common/transforms.h>
 #include <pcl/console/parse.h>
+#include <pcl/registration/icp.h>
+
 
 #include <sensor_msgs/point_cloud_conversion.h>
+#include <geometry_msgs/Pose.h>
 
 namespace perception_utils{
 
@@ -51,7 +54,7 @@ public:
      * @param scene pointer to the pcl pointcloud of scene
      * @param algo  detection algorithm to be used.
      */
-    void match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo);
+    geometry_msgs::Pose match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo);
 
     /**
      * @brief match_model method matches a model in a scene and returns SE3 matrix for the position and orientation of origin of the model wrt the scene
@@ -59,7 +62,7 @@ public:
      * @param scene pointer to ros pointcloud2 of scene
      * @param algo  detection algorithm to be used.
      */
-    void match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo);
+    geometry_msgs::Pose match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo);
 
     /**
      * @brief match_model method matches a model in a scene and returns SE3 matrix for the position and orientation of origin of the model wrt the scene
@@ -67,16 +70,18 @@ public:
      * @param scene pointer to ros pointcloud2 of scene
      * @param algo detection algorithm to be used.
      */
-    void match_model(const pcl::PointCloud<PointType>::Ptr model_cloud, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo);
+    geometry_msgs::Pose match_model(const pcl::PointCloud<PointType>::Ptr model_cloud, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo);
     /**
      * @brief match_using_corrs matches a model in a scene using correspondence grouping and returns SE3 matrix for the position and orientation of the origin of the model wrt the scene
      * @param model pointer to the pcl pointcloud of model
      * @param scene pointer to the pcl pointcloud of scene
      * @param algo  detection algorithm to be used. It can be either HOUGH or GC.
      */
-    void match_using_corrs(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo);
+    geometry_msgs::Pose match_using_corrs(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo);
 
-    void match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene);
+    geometry_msgs::Pose match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene);
+
+    void set_frame(Eigen::Matrix4f Transformation_matrix, geometry_msgs::Pose &goal);
 
     bool use_cloud_resolution() const;
     void setUse_cloud_resolution(bool use_cloud_resolution);
