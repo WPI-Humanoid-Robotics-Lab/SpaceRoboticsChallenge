@@ -1,0 +1,18 @@
+[submodule "external/vigir_repos/vigir_footstep_planning_core"]
+	path = external/vigir_repos/vigir_footstep_planning_core
+	url = https://github.com/team-vigir/vigir_footstep_planning_core.git
+[submodule "external/vigir_repos/vigir_terrain_classifier"]
+	path = external/vigir_repos/vigir_terrain_classifier
+	url = https://github.com/team-vigir/vigir_terrain_classifier.git
+[submodule "external/vigir_repos/vigir_footstep_planning_basics"]
+	path = external/vigir_repos/vigir_footstep_planning_basics
+	url = https://github.com/team-vigir/vigir_footstep_planning_basics.git
+[submodule "external/vigir_repos/vigir_footstep_planning_msgs"]
+	path = external/vigir_repos/vigir_footstep_planning_msgs
+	url = https://github.com/team-vigir/vigir_footstep_planning_msgs.git
+[submodule "external/vigir_repos/vigir_generic_params"]
+	path = external/vigir_repos/vigir_generic_params
+	url = https://github.com/team-vigir/vigir_generic_params.git
+[submodule "external/vigir_repos/vigir_pluginlib"]
+	path = external/vigir_repos/vigir_pluginlib
+	url = https://github.com/team-vigir/vigir_pluginlib.git
