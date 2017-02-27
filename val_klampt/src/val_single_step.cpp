@@ -31,20 +31,23 @@ vector<int>* ValSingleStep::LockJoints(vector<int>* limbIndices){
 	limbIndices->push_back(3);//Torso R
 	limbIndices->push_back(4);//Torso P
 	limbIndices->push_back(5);//Torso y
+
+	limbIndices->push_back(21);
+	limbIndices->push_back(11);
 	// //waist
-	for(int j=22; j<25; j++)
+	for(int j=24; j<26; j++)
 	{			limbIndices->push_back(j);		}
 	//neck
-	for(int j=47; j<50; j++)
+	for(int j=49; j<51; j++)
 	{			limbIndices->push_back(j);	}
 
 	//left arm and hand, excluding shoulder roll.
-	for(int j=26; j<46; j++)
+	for(int j=28; j<47; j++)
 	{		//if(j != 27 )
 				limbIndices->push_back(j);
 	}
 	//Right arm and hand, excluding shoulder roll.
-	for(int j=63; j<83; j++)
+	for(int j=65; j<84; j++)
 	{		//if(j != 64 )
 				limbIndices->push_back(j);
 	}
@@ -144,7 +147,7 @@ void ValSingleStep::walk(MultiPath& mpath, int leg, float x, float y, float z){
 	Config startconfig=plan->setstartconfig();
 	Config robotstartconfig=startconfig;
 	Config transitionconfig=startconfig;
-
+	std::cout << "startconfig" <<startconfig<< '\n';
 
 
 	float leg_height = .05;
@@ -177,45 +180,45 @@ void ValSingleStep::walk(MultiPath& mpath, int leg, float x, float y, float z){
     startconfig=transitionconfig;
   }
 
-
-
-  // lift right
-	transitionconfig=LiftLeg(leg, startconfig, leg_height);
-	plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
-	startconfig=transitionconfig;
-
-	//move right
-	transitionconfig=moveleg(leg, x, y, z, startconfig);
-	plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
-	startconfig=transitionconfig;
-
-	//place right
-	transitionconfig=placeleg(leg, startconfig,leg_height);
-	plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
-	startconfig=transitionconfig;
-
-  if(!leg)
-  {
-    //MOVE COM
-    // //move to left
-    transitionconfig=movecom(startconfig, -right_movement, 0, 1.2);
-    plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
-    startconfig=transitionconfig;
-    //
-    //MOVE COM
-    transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
-    plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
-    startconfig=transitionconfig;
-  }else{
-    //MOVE COM
-    // //move to left
-    transitionconfig=movecom(startconfig, right_movement, 0, 1.2);
-    plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
-    startconfig=transitionconfig;
-    //
-    //MOVE COM
-    transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
-    plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
-    startconfig=transitionconfig;
-  }
+	//
+	//
+  // // lift right
+	// transitionconfig=LiftLeg(leg, startconfig, leg_height);
+	// plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
+	// startconfig=transitionconfig;
+	//
+	// //move right
+	// transitionconfig=moveleg(leg, x, y, z, startconfig);
+	// plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
+	// startconfig=transitionconfig;
+	//
+	// //place right
+	// transitionconfig=placeleg(leg, startconfig,leg_height);
+	// plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
+	// startconfig=transitionconfig;
+	//
+  // if(!leg)
+  // {
+  //   //MOVE COM
+  //   // //move to left
+  //   transitionconfig=movecom(startconfig, -right_movement, 0, 1.2);
+  //   plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
+  //   startconfig=transitionconfig;
+  //   //
+  //   //MOVE COM
+  //   transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
+  //   plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
+  //   startconfig=transitionconfig;
+  // }else{
+  //   //MOVE COM
+  //   // //move to left
+  //   transitionconfig=movecom(startconfig, right_movement, 0, 1.2);
+  //   plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
+  //   startconfig=transitionconfig;
+  //   //
+  //   //MOVE COM
+  //   transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
+  //   plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
+  //   startconfig=transitionconfig;
+  // }
 }
