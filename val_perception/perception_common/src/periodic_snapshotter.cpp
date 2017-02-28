@@ -45,7 +45,7 @@
 
 /***
  * This a simple test app that requests a point cloud from the
- * point_cloud_assembler every 4 seconds, and then publishes the
+ * point_cloud_assembler every x seconds, and then publishes the
  * resulting data
  */
 
@@ -103,7 +103,18 @@ void PeriodicSnapshotter::timerCallback(const ros::TimerEvent& e)
     }
 }
 
+/// @todo configure this method as a callback on assemble_cloud2
+void PeriodicSnapshotter::mergeClouds(sensor_msgs::PointCloud2::Ptr msg){
+    if (!prev_msg_.data.empty()){
+        // merge the current msg with previous msg
+        // tutorial available at http://www.pointclouds.org/documentation/tutorials/pairwise_incremental_registration.php#pairwise-incremental-registration
 
+        // publish the merged message
+
+    }
+
+//    prev_msg_ = mergedcloud
+}
 
 int main(int argc, char **argv)
 {
