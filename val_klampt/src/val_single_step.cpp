@@ -28,15 +28,20 @@ vector<int>* ValSingleStep::LockJoints(vector<int>* limbIndices){
 
 	// limbIndices->push_back(1);//torso Y
 	// limbIndices->push_back(2);//torso Z pos
-	limbIndices->push_back(3);//Torso R
-	limbIndices->push_back(4);//Torso P
-	limbIndices->push_back(5);//Torso y
+	limbIndices->push_back(3);//base R
+	limbIndices->push_back(4);//base P
+	limbIndices->push_back(5);//base y
+	// limbIndices->push_back(6);//left_hip yaw
+	// limbIndices->push_back(7);//left_hip roll
+	// limbIndices->push_back(8);//left_hip pitch
 
-	limbIndices->push_back(21);
-	limbIndices->push_back(11);
+
+	// limbIndices->push_back(21); //RIGHT FOOT ROLL
+	// limbIndices->push_back(11); //LEFT FOOT ROLL
 	// //waist
-	for(int j=24; j<26; j++)
-	{			limbIndices->push_back(j);		}
+	limbIndices->push_back(24); //torso yaw
+	limbIndices->push_back(25); //torso pitch
+	limbIndices->push_back(26); //torso roll
 	//neck
 	for(int j=49; j<51; j++)
 	{			limbIndices->push_back(j);	}
@@ -180,45 +185,45 @@ void ValSingleStep::walk(MultiPath& mpath, int leg, float x, float y, float z){
     startconfig=transitionconfig;
   }
 
-	//
-	//
-  // // lift right
-	// transitionconfig=LiftLeg(leg, startconfig, leg_height);
-	// plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
-	// startconfig=transitionconfig;
-	//
-	// //move right
-	// transitionconfig=moveleg(leg, x, y, z, startconfig);
-	// plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
-	// startconfig=transitionconfig;
-	//
-	// //place right
-	// transitionconfig=placeleg(leg, startconfig,leg_height);
-	// plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
-	// startconfig=transitionconfig;
-	//
-  // if(!leg)
-  // {
-  //   //MOVE COM
-  //   // //move to left
-  //   transitionconfig=movecom(startconfig, -right_movement, 0, 1.2);
-  //   plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
-  //   startconfig=transitionconfig;
-  //   //
-  //   //MOVE COM
-  //   transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
-  //   plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
-  //   startconfig=transitionconfig;
-  // }else{
-  //   //MOVE COM
-  //   // //move to left
-  //   transitionconfig=movecom(startconfig, right_movement, 0, 1.2);
-  //   plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
-  //   startconfig=transitionconfig;
-  //   //
-  //   //MOVE COM
-  //   transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
-  //   plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
-  //   startconfig=transitionconfig;
-  // }
+	
+
+  // lift right
+	transitionconfig=LiftLeg(leg, startconfig, leg_height);
+	plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
+	startconfig=transitionconfig;
+
+	//move right
+	transitionconfig=moveleg(leg, x, y, z, startconfig);
+	plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
+	startconfig=transitionconfig;
+
+	//place right
+	transitionconfig=placeleg(leg, startconfig,leg_height);
+	plan->addmilestonepath(leg, startconfig, transitionconfig, mpath);
+	startconfig=transitionconfig;
+
+  if(!leg)
+  {
+    //MOVE COM
+    // //move to left
+    transitionconfig=movecom(startconfig, -right_movement, 0, 1.2);
+    plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
+    startconfig=transitionconfig;
+    //
+    //MOVE COM
+    transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
+    plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
+    startconfig=transitionconfig;
+  }else{
+    //MOVE COM
+    // //move to left
+    transitionconfig=movecom(startconfig, right_movement, 0, 1.2);
+    plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
+    startconfig=transitionconfig;
+    //
+    //MOVE COM
+    transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
+    plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
+    startconfig=transitionconfig;
+  }
 }

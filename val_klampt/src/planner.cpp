@@ -95,7 +95,7 @@ for(int i=0; i<activevalues.size(); i++){
 			}
 			//check if it's what we want
 
-			if(!(sample_checked = check_com(stretchspace.robot.q,goalcom[0],goalcom[1],comz,0.2,0.1,0.1))){//.1, .1, .1
+			if(!(sample_checked = check_com(stretchspace.robot.q,goalcom[0],goalcom[1],comz,0.1,0.1,0.1))){//.1, .1, .1
 				//clear, because it wasn't.
 				stretchspace.robot.q=clearworld(stretchspace.robot.q);
 			}
@@ -193,11 +193,14 @@ Config Planner::setstartconfig(){
 	int limbsize=2;
 
 	Config startconfig=world->GetRobot(world->robots[robot]->name)->q;
-	std::cout <<'\n'<<'\n'<< "setstartconfig startconfig " <<startconfig<< '\n'<<'\n';
 	startspace.SetHold(rlimbsState.lState[0].flatHold);
 	startspace.SetHold(rlimbsState.lState[1].flatHold);
-	// while(!startspace.IsFeasible(startspace.robot.q))
-	// 	startspace.Sample(startspace.robot.q);
+	// std::cout <<'\n'<<'\n'<< "setstartconfig startconfig " <<startconfig<< '\n'<<'\n';
+	while(!startspace.IsFeasible(startspace.robot.q))
+	{
+		std::cout << "START CONFIG SAMPLE" << '\n';
+		startspace.Sample(startspace.robot.q);
+	}
 	return startspace.robot.q;
 }
 
