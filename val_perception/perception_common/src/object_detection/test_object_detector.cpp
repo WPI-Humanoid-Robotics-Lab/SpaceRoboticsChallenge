@@ -2,6 +2,7 @@
 
 #include <pcl/io/pcd_io.h>
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <visualization_msgs/Marker.h>
 
 //Global variables. In actual implementation, these can be class variables
@@ -18,7 +19,7 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
 
     // This is a blocking call. In actual implementation, it should either start in a
     // new thread or should only populate a local variable for pointcloud.
-    visualize_point(detector.match_model(model, msg, detector.detection_algorithm::ICP));
+    visualize_point(detector.match_model(model, msg, detector.detection_algorithm::GC));
     return;
 }
 
@@ -63,7 +64,10 @@ int main(int argc, char** argv) {
     ros::NodeHandle n;
     marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
     ros::Subscriber sub = n.subscribe("/assembled_cloud2",10, laserCallBack);
-    std::string model_filename_ = "/home/ninja/Downloads/PCL_test/satellite_dish.pcd";
+    std::string model_filename_ = ros::package::getPath("val_task1") + "/models/satellite_dish_dense.pcd";
+    if(argc == 2) {
+        model_filename_ = argv[1];
+    }
     if (pcl::io::loadPCDFile (model_filename_, *model) < 0)
     {
         std::cout << "Error loading model cloud." << std::endl;

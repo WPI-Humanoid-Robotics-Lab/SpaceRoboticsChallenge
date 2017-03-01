@@ -81,7 +81,7 @@ public:
 
     geometry_msgs::Pose match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene);
 
-    void set_frame(Eigen::Matrix4f Transformation_matrix, geometry_msgs::Pose &goal);
+    void SE3_to_geometry_pose(Eigen::Matrix4f Transformation_matrix, geometry_msgs::Pose &goal);
 
     bool use_cloud_resolution() const;
     void setUse_cloud_resolution(bool use_cloud_resolution);

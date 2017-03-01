@@ -43,6 +43,23 @@ double model_based_object_detector::computeCloudResolution (const pcl::PointClou
     return res;
 }
 
+geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
+
+    switch (algo) {
+
+        case detection_algorithm::HOUGH:
+        case detection_algorithm::GC:
+            return match_using_corrs(model, scene, algo);
+
+        case detection_algorithm::ICP:
+            return match_using_ICP(model, scene);
+
+        default:
+            break;
+    }
+}
+
+
 // This might never be used
 geometry_msgs::Pose model_based_object_detector::match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo){
 
@@ -62,7 +79,6 @@ geometry_msgs::Pose model_based_object_detector::match_model(const sensor_msgs::
     return match_model(model_cloud, scene_cloud, algo);
 
 }
-
 
 geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model_cloud, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo){
 
@@ -96,7 +112,7 @@ geometry_msgs::Pose model_based_object_detector::match_using_ICP(const pcl::Poin
      icp.getFitnessScore() << std::endl;
      std::cout << icp.getFinalTransformation() << std::endl;
      geometry_msgs::Pose goal;
-     set_frame(icp.getFinalTransformation(), goal);
+     SE3_to_geometry_pose(icp.getFinalTransformation(), goal);
      return goal;
 }
 
@@ -296,23 +312,7 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
     return goal;
 }
 
-geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
-
-    switch (algo) {
-
-        case detection_algorithm::HOUGH:
-        case detection_algorithm::GC:
-            return match_using_corrs(model, scene, algo);
-
-        case detection_algorithm::ICP:
-            return match_using_ICP(model, scene);
-
-        default:
-            break;
-    }
-}
-
-void model_based_object_detector::set_frame( Eigen::Matrix4f Transformation_matrix, geometry_msgs::Pose &goal){
+void model_based_object_detector::SE3_to_geometry_pose( Eigen::Matrix4f Transformation_matrix, geometry_msgs::Pose &goal){
 
     tf::Matrix3x3 tf3d;
     tf3d.setValue(static_cast<double>(Transformation_matrix(0,0)), static_cast<double>(Transformation_matrix(0,1)), static_cast<double>(Transformation_matrix(0,2)),
