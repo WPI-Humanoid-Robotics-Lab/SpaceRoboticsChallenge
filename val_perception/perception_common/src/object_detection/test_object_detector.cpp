@@ -19,7 +19,9 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
 
     // This is a blocking call. In actual implementation, it should either start in a
     // new thread or should only populate a local variable for pointcloud.
-    visualize_point(detector.match_model(model, msg, detector.detection_algorithm::ICP));
+    perception_utils::object_detection_Correspondence corrs_algo;
+    perception_utils::object_detection_ICP icp_algo;
+    visualize_point(detector.match_model(model, msg, &icp_algo));
     return;
 }
 

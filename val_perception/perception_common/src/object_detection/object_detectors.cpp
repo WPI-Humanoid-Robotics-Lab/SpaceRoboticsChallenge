@@ -2,19 +2,10 @@
 #include <pcl_conversions/pcl_conversions.h>
 
 #include <visualization_msgs/Marker.h>
-#include <tf/tf.h>
 
 namespace perception_utils {
 
 model_based_object_detector::model_based_object_detector() {
-    use_cloud_resolution_   = true;
-    use_hough_              = true;
-    model_ss_               = 0.03f;
-    scene_ss_               = 0.03f;
-    rf_rad_                 = 0.015f;
-    descr_rad_              = 0.02f;
-    cg_size_                = 0.01f;
-    cg_thresh_              = 5.0f;
 }
 
 double model_based_object_detector::computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud) {
@@ -47,19 +38,22 @@ geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointClo
 
     switch (algo->get_algorithm_name()) {
 
-        case perception_utils::detection_algorithm::HOUGH:
-        case perception_utils::detection_algorithm::GC:
-            return match_using_corrs(model, scene, algo);
-
-        case perception_utils::detection_algorithm::ICP:
-            perception_utils::object_detection_ICP* icp_algo = static_cast<perception_utils::object_detection_ICP*>(algo);
-            return match_using_ICP(model, scene, icp_algo);
-
-        default:
-            break;
+    case perception_utils::detection_algorithm::CORRESPONDENCE:
+    {
+        perception_utils::object_detection_Correspondence* corrs_algo = static_cast<perception_utils::object_detection_Correspondence*>(algo);
+        return match_using_corrs(model, scene, corrs_algo);
+    }
+    case perception_utils::detection_algorithm::ICP:
+    {
+        perception_utils::object_detection_ICP* icp_algo = static_cast<perception_utils::object_detection_ICP*>(algo);
+        return match_using_ICP(model, scene, icp_algo);
+    }
+    default:
+    {
+        break;
+    }
     }
 }
-
 
 // This might never be used
 geometry_msgs::Pose model_based_object_detector::match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, perception_utils::object_detection_algorithm* algo){
@@ -88,7 +82,7 @@ geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointClo
     pcl_conversions::toPCL(*scene,pcl_pc2);
     pcl::fromPCLPointCloud2(pcl_pc2,*scene_cloud);
 
-//    pcl::io::savePCDFile("/home/ninja/Downloads/PCL_test/scene.pcd",*scene);
+    //    pcl::io::savePCDFile("/home/ninja/Downloads/PCL_test/scene.pcd",*scene);
 
     return match_model(model_cloud, scene_cloud, algo);
 
@@ -96,28 +90,28 @@ geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointClo
 
 geometry_msgs::Pose model_based_object_detector::match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_ICP* algo) {
 
-     std::cout << "Saved " << model->points.size () << " data points to input:"
-         << std::endl;
+    std::cout << "Saved " << model->points.size () << " data points to input:"
+              << std::endl;
 
-     std::cout << "size:" << scene->points.size() << std::endl;
+    std::cout << "size:" << scene->points.size() << std::endl;
 
-     pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
-//     icp.setInputCloud(model);
-     icp.setInputSource(model);
-     icp.setInputTarget(scene);
-     icp.setMaximumIterations(algo->get_max_iterations());
-     icp.setEuclideanFitnessEpsilon(algo->get_fitness_epsilon());
-     pcl::PointCloud<pcl::PointXYZ> Final;
-     icp.align(Final);
-     std::cout << "has converged:" << icp.hasConverged() << " score: " <<
-     icp.getFitnessScore() << std::endl;
-     std::cout << icp.getFinalTransformation() << std::endl;
-     geometry_msgs::Pose goal;
-     SE3_to_geometry_pose(icp.getFinalTransformation(), goal);
-     return goal;
+    pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
+    //     icp.setInputCloud(model);
+    icp.setInputSource(model);
+    icp.setInputTarget(scene);
+    icp.setMaximumIterations(algo->get_max_iterations());
+    icp.setEuclideanFitnessEpsilon(algo->get_fitness_epsilon());
+    pcl::PointCloud<pcl::PointXYZ> Final;
+    icp.align(Final);
+    std::cout << "has converged:" << icp.hasConverged() << " score: " <<
+                 icp.getFitnessScore() << std::endl;
+    std::cout << icp.getFinalTransformation() << std::endl;
+    geometry_msgs::Pose goal;
+    SE3_to_geometry_pose(icp.getFinalTransformation(), goal);
+    return goal;
 }
 
-geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
+geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_Correspondence* algo){
     pcl::PointCloud<PointType>::Ptr model_keypoints (new pcl::PointCloud<PointType> ());
     pcl::PointCloud<PointType>::Ptr scene_keypoints (new pcl::PointCloud<PointType> ());
     pcl::PointCloud<NormalType>::Ptr model_normals (new pcl::PointCloud<NormalType> ());
@@ -128,24 +122,24 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
     //
     //  Set up resolution invariance
     //
-    if (use_cloud_resolution_)
+    if (algo->get_use_cloud_resolution())
     {
         float resolution = static_cast<float> (computeCloudResolution (model));
         if (resolution != 0.0f)
         {
-            model_ss_   *= resolution;
-            scene_ss_   *= resolution;
-            rf_rad_     *= resolution;
-            descr_rad_  *= resolution;
-            cg_size_    *= resolution;
+            algo->set_model_ss( algo->get_model_ss()*resolution);
+            algo->set_scene_ss(algo->get_scene_ss()*resolution);
+            algo->set_rf_rad(algo->get_rf_rad()*resolution);
+            algo->set_descr_rad(algo->get_descr_rad()* resolution);
+            algo->set_cg_size(algo->get_cg_size()*resolution);
         }
 
         std::cout << "Model resolution:       " << resolution << std::endl;
-        std::cout << "Model sampling size:    " << model_ss_ << std::endl;
-        std::cout << "Scene sampling size:    " << scene_ss_ << std::endl;
-        std::cout << "LRF support radius:     " << rf_rad_ << std::endl;
-        std::cout << "SHOT descriptor radius: " << descr_rad_ << std::endl;
-        std::cout << "Clustering bin size:    " << cg_size_ << std::endl << std::endl;
+        std::cout << "Model sampling size:    " << algo->get_model_ss() << std::endl;
+        std::cout << "Scene sampling size:    " << algo->get_scene_ss()<< std::endl;
+        std::cout << "LRF support radius:     " << algo->get_rf_rad()<< std::endl;
+        std::cout << "SHOT descriptor radius: " << algo->get_descr_rad()<< std::endl;
+        std::cout << "Clustering bin size:    " << algo->get_cg_size()<< std::endl << std::endl;
     }
 
     //
@@ -166,7 +160,7 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
     ///TODO: Sumanth: please add preprocessor directives to use the right call based on pcl version
     pcl::UniformSampling<PointType> uniform_sampling;
     uniform_sampling.setInputCloud (model);
-    uniform_sampling.setRadiusSearch (model_ss_);
+    uniform_sampling.setRadiusSearch (algo->get_model_ss());
     //uniform_sampling.filter (*model_keypoints);
     pcl::PointCloud<int> keypointIndices1;
     uniform_sampling.compute(keypointIndices1);
@@ -175,7 +169,7 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
 
 
     uniform_sampling.setInputCloud (scene);
-    uniform_sampling.setRadiusSearch (scene_ss_);
+    uniform_sampling.setRadiusSearch (algo->get_scene_ss());
     //uniform_sampling.filter (*scene_keypoints);
     pcl::PointCloud<int> keypointIndices2;
     uniform_sampling.compute(keypointIndices2);
@@ -186,7 +180,7 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
     //  Compute Descriptor for keypoints
     //
     pcl::SHOTEstimationOMP<PointType, NormalType, DescriptorType> descr_est;
-    descr_est.setRadiusSearch (descr_rad_);
+    descr_est.setRadiusSearch (algo->get_descr_rad());
 
     descr_est.setInputCloud (model_keypoints);
     descr_est.setInputNormals (model_normals);
@@ -232,7 +226,7 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
     std::vector<pcl::Correspondences> clustered_corrs;
 
     //  Using Hough3D
-    if (algo == detection_algorithm::HOUGH)
+    if (algo->get_use_hough())
     {
         //
         //  Compute (Keypoints) Reference Frames only for Hough
@@ -242,7 +236,7 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
 
         pcl::BOARDLocalReferenceFrameEstimation<PointType, NormalType, RFType> rf_est;
         rf_est.setFindHoles (true);
-        rf_est.setRadiusSearch (rf_rad_);
+        rf_est.setRadiusSearch (algo->get_rf_rad());
 
         rf_est.setInputCloud (model_keypoints);
         rf_est.setInputNormals (model_normals);
@@ -256,8 +250,8 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
 
         //  Clustering
         pcl::Hough3DGrouping<PointType, PointType, RFType, RFType> clusterer;
-        clusterer.setHoughBinSize (cg_size_);
-        clusterer.setHoughThreshold (cg_thresh_);
+        clusterer.setHoughBinSize (algo->get_cg_size());
+        clusterer.setHoughThreshold (algo->get_cg_thresh());
         clusterer.setUseInterpolation (true);
         clusterer.setUseDistanceWeight (false);
 
@@ -270,11 +264,11 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
         //clusterer.cluster (clustered_corrs);
         clusterer.recognize (rototranslations, clustered_corrs);
     }
-    else if (algo == detection_algorithm::GC)// Using GeometricConsistency
+    else // Using GeometricConsistency
     {
         pcl::GeometricConsistencyGrouping<PointType, PointType> gc_clusterer;
-        gc_clusterer.setGCSize (cg_size_);
-        gc_clusterer.setGCThreshold (cg_thresh_);
+        gc_clusterer.setGCSize (algo->get_cg_size());
+        gc_clusterer.setGCThreshold (algo->get_cg_thresh());
 
         gc_clusterer.setInputCloud (model_keypoints);
         gc_clusterer.setSceneCloud (scene_keypoints);
@@ -282,9 +276,6 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
 
         //gc_clusterer.cluster (clustered_corrs);
         gc_clusterer.recognize (rototranslations, clustered_corrs);
-    }
-    else {
-        std::cout<<"Please specify a known algorithm for Correspondence Grouping";
     }
 
     //
@@ -308,96 +299,34 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
         printf ("        t = < %0.3f, %0.3f, %0.3f >\n", translation (0), translation (1), translation (2));
     }
 
-    //Fix this
     geometry_msgs::Pose goal;
+    Eigen::Matrix4f transformation_matrix;
+    if (!rototranslations.empty()) {
+        transformation_matrix = rototranslations[0].block<4,4>(0, 0);
+        SE3_to_geometry_pose(transformation_matrix, goal);
+    }
+
     return goal;
 }
 
-void model_based_object_detector::SE3_to_geometry_pose( Eigen::Matrix4f Transformation_matrix, geometry_msgs::Pose &goal){
-
-    tf::Matrix3x3 tf3d;
-    tf3d.setValue(static_cast<double>(Transformation_matrix(0,0)), static_cast<double>(Transformation_matrix(0,1)), static_cast<double>(Transformation_matrix(0,2)),
-                  static_cast<double>(Transformation_matrix(1,0)), static_cast<double>(Transformation_matrix(1,1)), static_cast<double>(Transformation_matrix(1,2)),
-                  static_cast<double>(Transformation_matrix(2,0)), static_cast<double>(Transformation_matrix(2,1)), static_cast<double>(Transformation_matrix(2,2)));
-
-    tf::Quaternion tfqt;
-    tf3d.getRotation(tfqt);
 
 
-    goal.position.x = static_cast<double>(Transformation_matrix(0,3));
-    goal.position.y = static_cast<double>(Transformation_matrix(1,3));
-    goal.position.z = static_cast<double>(Transformation_matrix(2,3));
-
-    goal.orientation.x = tfqt.getX();
-    goal.orientation.y = tfqt.getY();
-    goal.orientation.z = tfqt.getZ();
-    goal.orientation.w = tfqt.getW();
-
-    return;
+object_detection_Correspondence::object_detection_Correspondence(bool use_cloud_resolution, bool use_hough, float model_ss, float scene_ss, float rf_rad, float descr_rad, float cg_size, float cg_thresh)
+{
+    use_cloud_resolution_   = use_cloud_resolution;
+    use_hough_              = use_hough;
+    model_ss_               = model_ss;
+    scene_ss_               = scene_ss;
+    rf_rad_                 = rf_rad;
+    descr_rad_              = descr_rad;
+    cg_size_                = cg_size;
+    cg_thresh_              = cg_thresh;
 }
 
-// setters and getters
-bool model_based_object_detector::use_cloud_resolution() const
+object_detection_ICP::object_detection_ICP(unsigned int max_iterations, float fitness_epsilon)
 {
-    return use_cloud_resolution_;
-}
-void model_based_object_detector::setUse_cloud_resolution(bool use_cloud_resolution)
-{
-    use_cloud_resolution_ = use_cloud_resolution;
-}
-
-float model_based_object_detector::model_ss() const
-{
-    return model_ss_;
-}
-void model_based_object_detector::setModel_ss(float model_ss)
-{
-    model_ss_ = model_ss;
-}
-
-float model_based_object_detector::scene_ss() const
-{
-    return scene_ss_;
-}
-void model_based_object_detector::setScene_ss(float scene_ss)
-{
-    scene_ss_ = scene_ss;
-}
-
-float model_based_object_detector::rf_rad() const
-{
-    return rf_rad_;
-}
-void model_based_object_detector::setRf_rad(float rf_rad)
-{
-    rf_rad_ = rf_rad;
-}
-
-float model_based_object_detector::descr_rad() const
-{
-    return descr_rad_;
-}
-void model_based_object_detector::setDescr_rad(float descr_rad)
-{
-    descr_rad_ = descr_rad;
-}
-
-float model_based_object_detector::cg_size() const
-{
-    return cg_size_;
-}
-void model_based_object_detector::setCg_size(float cg_size)
-{
-    cg_size_ = cg_size;
-}
-
-float model_based_object_detector::cg_thresh() const
-{
-    return cg_thresh_;
-}
-void model_based_object_detector::setCg_thresh(float cg_thresh)
-{
-    cg_thresh_ = cg_thresh;
+    max_iterations_ = max_iterations;
+    fitness_epsilon_ = fitness_epsilon;
 }
 
 }
