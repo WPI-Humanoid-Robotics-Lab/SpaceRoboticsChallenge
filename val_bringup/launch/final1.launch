@@ -10,8 +10,9 @@
    </include>
 
 
-   <!-- Start spinning the lidar   @TODO: implement this using a parameter or check if one exists already-->
-   <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /multisense/set_spindle_speed -l std_msgs/Float64 1.0"/>
+   <!-- Start spinning the lidar. Lidar speed is in rad/s. periodic snapshotter is set at 6s. To get a complete 360 pointcloud
+   we need pi/6 rad/s speed. it is set slightly higher than that to allow for little overlap-->
+   <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /multisense/set_spindle_speed -l std_msgs/Float64 0.55"/>
 
    <!-- Start stereo_image_proc to pusblish disparity image -->
    <node ns="/multisense/camera" name="stereo_proc" pkg="stereo_image_proc" type="stereo_image_proc" respawn="false" output="log">
