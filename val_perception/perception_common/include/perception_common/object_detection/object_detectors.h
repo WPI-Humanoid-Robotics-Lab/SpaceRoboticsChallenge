@@ -122,6 +122,42 @@ protected:
 
 };
 
+enum class detection_algorithm{
+    HOUGH = 0,
+    GC = 1,
+    ICP
+};
+
+class object_detection_algorithm{
+public:
+      virtual detection_algorithm get_algorithm_name()=0;
+protected:
+      object_detection_algorithm();
+};
+
+class object_detection_ICP:object_detection_algorithm {
+public:
+    object_detection_ICP();
+    inline unsigned int get_max_iterations() const;
+    inline void set_max_iterations(unsigned int max_iterations = 5){
+        max_iterations_ = max_iterations;
+    }
+
+    inline float get_fitness_epsilon() const;
+    inline void set_fitness_epsilon(float fitness_epsilon=0.5){
+        fitness_epsilon_ = fitness_epsilon;
+    }
+
+    virtual detection_algorithm get_algorithm_name() override{
+        return detection_algorithm::ICP;
+    }
+
+protected:
+    unsigned int max_iterations_;
+    float fitness_epsilon_;
+};
+
+
 } // end of namespace perception_utils
 
 #endif // OBJECT_DETECTOR_H

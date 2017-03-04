@@ -43,16 +43,17 @@ double model_based_object_detector::computeCloudResolution (const pcl::PointClou
     return res;
 }
 
-geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, model_based_object_detector::detection_algorithm algo){
+geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_algorithm* algo){
 
-    switch (algo) {
+    switch (algo->get_algorithm_name()) {
 
-        case detection_algorithm::HOUGH:
-        case detection_algorithm::GC:
+        case perception_utils::detection_algorithm::HOUGH:
+        case perception_utils::detection_algorithm::GC:
             return match_using_corrs(model, scene, algo);
 
-        case detection_algorithm::ICP:
-            return match_using_ICP(model, scene);
+        case perception_utils::detection_algorithm::ICP:
+            perception_utils::object_detection_ICP* icp_algo = static_cast<perception_utils::object_detection_ICP*>(algo);
+            return match_using_ICP(model, scene, icp_algo);
 
         default:
             break;
@@ -61,7 +62,7 @@ geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointClo
 
 
 // This might never be used
-geometry_msgs::Pose model_based_object_detector::match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo){
+geometry_msgs::Pose model_based_object_detector::match_model(const sensor_msgs::PointCloud2::Ptr model, const sensor_msgs::PointCloud2::Ptr scene, perception_utils::object_detection_algorithm* algo){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr model_cloud(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr scene_cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -80,7 +81,7 @@ geometry_msgs::Pose model_based_object_detector::match_model(const sensor_msgs::
 
 }
 
-geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model_cloud, const sensor_msgs::PointCloud2::Ptr scene, model_based_object_detector::detection_algorithm algo){
+geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointCloud<PointType>::Ptr model_cloud, const sensor_msgs::PointCloud2::Ptr scene, perception_utils::object_detection_algorithm* algo){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr scene_cloud(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PCLPointCloud2 pcl_pc2;
@@ -93,7 +94,7 @@ geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointClo
 
 }
 
-geometry_msgs::Pose model_based_object_detector::match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene) {
+geometry_msgs::Pose model_based_object_detector::match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_ICP* algo) {
 
      std::cout << "Saved " << model->points.size () << " data points to input:"
          << std::endl;
@@ -104,8 +105,8 @@ geometry_msgs::Pose model_based_object_detector::match_using_ICP(const pcl::Poin
 //     icp.setInputCloud(model);
      icp.setInputSource(model);
      icp.setInputTarget(scene);
-     icp.setMaximumIterations(20);
-     icp.setEuclideanFitnessEpsilon(0.5);
+     icp.setMaximumIterations(algo->get_max_iterations());
+     icp.setEuclideanFitnessEpsilon(algo->get_fitness_epsilon());
      pcl::PointCloud<pcl::PointXYZ> Final;
      icp.align(Final);
      std::cout << "has converged:" << icp.hasConverged() << " score: " <<
