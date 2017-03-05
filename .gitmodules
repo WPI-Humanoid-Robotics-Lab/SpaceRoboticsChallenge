@@ -16,3 +16,6 @@
 [submodule "external/vigir_repos/vigir_pluginlib"]
 	path = external/vigir_repos/vigir_pluginlib
 	url = https://github.com/team-vigir/vigir_pluginlib.git
+[submodule "external/decision_making"]
+	path = external/decision_making
+	url = https://github.com/cogniteam/decision_making.git
