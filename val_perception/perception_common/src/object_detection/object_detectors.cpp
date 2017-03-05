@@ -121,9 +121,28 @@ geometry_msgs::Pose model_based_object_detector::match_using_ICP(const pcl::Poin
 
 geometry_msgs::Pose model_based_object_detector::match_using_NDT(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, object_detection_NDT *algo)
 {
+    std::cout << "Saved " << model->points.size () << " data points to input:"
+              << std::endl;
 
+    std::cout << "size:" << scene->points.size() << std::endl;
+
+    //NDT declaration
+    pcl::NormalDistributionsTransform<pcl::PointXYZ, pcl::PointXYZ> ndt;
+    ndt.setInputSource(model);
+    ndt.setInputTarget(scene);
+    ndt.setTransformationEpsilon(algo->get_fitness_epsilon());
+    ndt.setStepSize(algo->get_step_size());
+    ndt.setResolution(algo->get_grid_resolution());
+    ndt.setMaximumIterations(algo->get_max_iterations());
+    pcl::PointCloud<pcl::PointXYZ>::Ptr output_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+    ndt.align(*output_cloud);
+    std::cout << "has converged:" << ndt.hasConverged() << " score: " <<
+                 ndt.getFitnessScore() << std::endl;
+    std::cout << ndt.getFinalTransformation() << std::endl;
     geometry_msgs::Pose goal;
+    SE3_to_geometry_pose(ndt.getFinalTransformation(), goal);
     return goal;
+
 }
 
 geometry_msgs::Pose model_based_object_detector::match_using_SACIA(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_SACIA* algo) {
@@ -398,7 +417,6 @@ geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::Po
 }
 
 
-
 object_detection_Correspondence::object_detection_Correspondence(bool use_cloud_resolution, bool use_hough, float model_ss, float scene_ss, float rf_rad, float descr_rad, float cg_size, float cg_thresh)
 {
     use_cloud_resolution_   = use_cloud_resolution;
@@ -417,8 +435,11 @@ object_detection_ICP::object_detection_ICP(unsigned int max_iterations, float fi
     fitness_epsilon_ = fitness_epsilon;
 }
 
-object_detection_NDT::object_detection_NDT(unsigned int param1, float param2){
-
+object_detection_NDT::object_detection_NDT(unsigned int max_iterations, float fitness_epsilon, float step_size, float grid_resolution){
+    max_iterations_ = max_iterations;
+    fitness_epsilon_ = fitness_epsilon;
+    step_size_ = step_size;
+    grid_resolution_ = grid_resolution;
 }
 object_detection_SACIA::object_detection_SACIA()
 {

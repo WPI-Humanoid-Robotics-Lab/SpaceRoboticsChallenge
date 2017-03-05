@@ -30,6 +30,8 @@
 
 #include <pcl_conversions/pcl_conversions.h>
 
+#include <pcl/registration/ndt.h>
+
 #include <sensor_msgs/point_cloud_conversion.h>
 #include <geometry_msgs/Pose.h>
 #include <tf/tf.h>
@@ -308,12 +310,35 @@ protected:
 
 class object_detection_NDT: public object_detection_algorithm {
 public:
-    object_detection_NDT(unsigned int param1=5, float param2=0.01f);
-    inline unsigned int get_param1() const{
-        return param1_;
+    object_detection_NDT(unsigned int max_iterations=100, float fitness_epsilon=1.0f, float step_size = 1.0f, float grid_resolution = 50.0);
+
+    inline unsigned int get_max_iterations() const{
+        return max_iterations_;
     }
-    inline void set_param1(unsigned int param1 = 5){
-        param1_ = param1;
+    inline void set_max_iterations(unsigned int max_iterations = 20){
+        max_iterations_ = max_iterations;
+    }
+
+
+    inline float get_fitness_epsilon() const{
+        return fitness_epsilon_;
+    }
+    inline void set_fitness_epsilon(float fitness_epsilon= 0.01f){
+        fitness_epsilon_ = fitness_epsilon;
+    }
+
+    inline float get_step_size() const{
+        return step_size_;
+    }
+    inline void set_step_size(float step_size= 0.01f){
+        step_size_ = step_size;
+    }
+
+    inline float get_grid_resolution() const{
+        return grid_resolution_;
+    }
+    inline void set_grid_resolution(float grid_resolution= 0.01f){
+        grid_resolution_ = grid_resolution;
     }
 
     virtual detection_algorithm get_algorithm_name() override{
@@ -321,8 +346,10 @@ public:
     }
 
 protected:
-    unsigned int param1_;
-    float param2_;
+    unsigned int max_iterations_;
+    float fitness_epsilon_;
+    float step_size_;
+    float grid_resolution_;
 };
 
 } // end of namespace perception_utils
