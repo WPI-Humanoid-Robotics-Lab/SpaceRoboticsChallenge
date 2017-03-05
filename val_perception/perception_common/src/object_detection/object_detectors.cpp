@@ -47,6 +47,11 @@ geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointClo
         perception_utils::object_detection_ICP* icp_algo = static_cast<perception_utils::object_detection_ICP*>(algo);
         return match_using_ICP(model, scene, icp_algo);
     }
+    case perception_utils::detection_algorithm::NDT:
+    {
+        perception_utils::object_detection_NDT* ndt_algo = static_cast<perception_utils::object_detection_NDT*>(algo);
+        return match_using_NDT(model, scene, ndt_algo);
+    }
     default:
     {
         break;
@@ -107,6 +112,13 @@ geometry_msgs::Pose model_based_object_detector::match_using_ICP(const pcl::Poin
     std::cout << icp.getFinalTransformation() << std::endl;
     geometry_msgs::Pose goal;
     SE3_to_geometry_pose(icp.getFinalTransformation(), goal);
+    return goal;
+}
+
+geometry_msgs::Pose model_based_object_detector::match_using_NDT(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, object_detection_NDT *algo)
+{
+
+    geometry_msgs::Pose goal;
     return goal;
 }
 
