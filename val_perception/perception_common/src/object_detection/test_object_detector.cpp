@@ -31,7 +31,8 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
     pcl::PointCloud<pcl::PointXYZ>::Ptr trimmed_cloud (new pcl::PointCloud<pcl::PointXYZ> ());
     perception_utils::trim_around_point(msg, center, trimmed_cloud);
 
-//    ROS_INFO("Saving to file");
+    ROS_INFO("Size of trimmed cloud = %d", trimmed_cloud->size());
+    ROS_INFO("Size of Model cloud = %d", model->size());
 //    pcl::io::savePCDFile("/home/ninja/Downloads/PCL_test/scene_trimmed.pcd",*trimmed_cloud);
 
 
@@ -40,6 +41,7 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
     perception_utils::object_detection_ICP icp_algo;
     perception_utils::object_detection_SACIA sacia_algo;
     perception_utils::object_detection_NDT ndt_algo;
+
     geometry_msgs::Pose goal = detector.match_model(model, trimmed_cloud, &icp_algo);
 
     pcl::transformPointCloud (*model, *model, Eigen::Vector3f (goal.position.x, goal.position.y, goal.position.z),
