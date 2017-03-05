@@ -40,6 +40,7 @@ class object_detection_algorithm;
 class object_detection_ICP;
 class object_detection_SACIA;
 class object_detection_Correspondence;
+class object_detection_NDT;
 
 typedef pcl::PointXYZ       PointType;
 typedef pcl::Normal         NormalType;
@@ -117,7 +118,8 @@ void trim_around_point(const sensor_msgs::PointCloud2::Ptr scene, const geometry
 enum class detection_algorithm{
     CORRESPONDENCE=0,
     SACIA=1,
-    ICP
+    ICP,
+    NDT
 };
 
 /**
@@ -165,6 +167,7 @@ public:
     geometry_msgs::Pose match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_ICP* algo);
 
     geometry_msgs::Pose match_using_SACIA(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_SACIA* algo);
+    geometry_msgs::Pose match_using_NDT(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_NDT* algo);
 
 protected:
     double computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud);
@@ -301,6 +304,25 @@ protected:
     float descr_rad_;
     float cg_size_;
     float cg_thresh_;
+};
+
+class object_detection_NDT: public object_detection_algorithm {
+public:
+    object_detection_NDT(unsigned int param1=5, float param2=0.01f);
+    inline unsigned int get_param1() const{
+        return param1_;
+    }
+    inline void set_param1(unsigned int param1 = 5){
+        param1_ = param1;
+    }
+
+    virtual detection_algorithm get_algorithm_name() override{
+        return detection_algorithm::NDT;
+    }
+
+protected:
+    unsigned int param1_;
+    float param2_;
 };
 
 } // end of namespace perception_utils

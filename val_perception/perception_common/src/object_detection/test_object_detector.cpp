@@ -21,11 +21,13 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
     // This is a blocking call. In actual implementation, it should either start in a
     // new thread or should only populate a local variable for pointcloud.
 
+    //detect using stereocam to get approximate location
     geometry_msgs::Point center;
     center.x = 1.84;
     center.y = 0.97;
     center.z = 0.90;
 
+    //trim point cloud to only the area of interest
     pcl::PointCloud<pcl::PointXYZ>::Ptr trimmed_cloud (new pcl::PointCloud<pcl::PointXYZ> ());
     perception_utils::trim_around_point(msg, center, trimmed_cloud);
 
@@ -34,13 +36,16 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
     pcl::toPCLPointCloud2(*trimmed_cloud, pcl_pc2);
     pcl_conversions::moveFromPCL(pcl_pc2, output);
     output.header = msg->header;
-    ROS_INFO("Point loud size : %d", output.data.size());
     pcl_pub.publish(output);
 
+
+    // precise detection using pcl
     perception_utils::object_detection_Correspondence corrs_algo;
     perception_utils::object_detection_ICP icp_algo;
     perception_utils::object_detection_SACIA sacia_algo;
     visualize_point(detector.match_model(model, trimmed_cloud, &sacia_algo));
+    perception_utils::object_detection_NDT ndt_algo;
+    visualize_point(detector.match_model(model, trimmed_cloud, &ndt_algo));
 
     return;
 }
