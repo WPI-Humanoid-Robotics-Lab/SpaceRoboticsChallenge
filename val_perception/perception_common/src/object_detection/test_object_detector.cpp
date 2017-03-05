@@ -31,22 +31,29 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
     pcl::PointCloud<pcl::PointXYZ>::Ptr trimmed_cloud (new pcl::PointCloud<pcl::PointXYZ> ());
     perception_utils::trim_around_point(msg, center, trimmed_cloud);
 
-    sensor_msgs::PointCloud2 output;
-    pcl::PCLPointCloud2 pcl_pc2;
-    pcl::toPCLPointCloud2(*trimmed_cloud, pcl_pc2);
-    pcl_conversions::moveFromPCL(pcl_pc2, output);
-    output.header = msg->header;
-    pcl_pub.publish(output);
+//    ROS_INFO("Saving to file");
+//    pcl::io::savePCDFile("/home/ninja/Downloads/PCL_test/scene_trimmed.pcd",*trimmed_cloud);
 
 
     // precise detection using pcl
     perception_utils::object_detection_Correspondence corrs_algo;
     perception_utils::object_detection_ICP icp_algo;
     perception_utils::object_detection_SACIA sacia_algo;
-    visualize_point(detector.match_model(model, trimmed_cloud, &sacia_algo));
     // perception_utils::object_detection_NDT ndt_algo;
+    geometry_msgs::Pose goal = detector.match_model(model, trimmed_cloud, &sacia_algo);
     // visualize_point(detector.match_model(model, trimmed_cloud, &ndt_algo));
 
+    pcl::transformPointCloud (*model, *model, Eigen::Vector3f (goal.position.x, goal.position.y, goal.position.z),
+                              Eigen::Quaternionf (goal.orientation.w, goal.orientation.x, goal.orientation.y, goal.orientation.z));
+
+    sensor_msgs::PointCloud2 output;
+    pcl::PCLPointCloud2 pcl_pc2;
+    pcl::toPCLPointCloud2(*model, pcl_pc2);
+    pcl_conversions::moveFromPCL(pcl_pc2, output);
+    output.header = msg->header;
+    pcl_pub.publish(output);
+
+    visualize_point(goal);
     return;
 }
 
@@ -90,7 +97,7 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "test_object_detection");
     ros::NodeHandle n;
     marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-    pcl_pub = n.advertise<sensor_msgs::PointCloud2>("trimmed_cloud", 10);
+    pcl_pub = n.advertise<sensor_msgs::PointCloud2>("transformed_model", 10);
     ros::Subscriber sub = n.subscribe("/assembled_cloud2",10, laserCallBack);
     std::string model_filename_ = ros::package::getPath("val_task1") + "/models/model_dense.pcd";
     if(argc == 2) {

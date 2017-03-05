@@ -106,7 +106,7 @@ void trim_around_point(const sensor_msgs::PointCloud2::Ptr scene, const geometry
     // Trim in z
     passthrough_filt.setInputCloud (cloud_out);
     passthrough_filt.setFilterFieldName ("z");
-    passthrough_filt.setFilterLimits (center.z - z_max_trim_limit, center.z + z_max_trim_limit);
+    passthrough_filt.setFilterLimits (0.02, center.z + z_max_trim_limit);
     passthrough_filt.filter (*cloud_out);
 
     return;

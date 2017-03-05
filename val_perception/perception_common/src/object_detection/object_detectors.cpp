@@ -92,9 +92,6 @@ geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointClo
     pcl::PCLPointCloud2 pcl_pc2;
     pcl_conversions::toPCL(*scene,pcl_pc2);
     pcl::fromPCLPointCloud2(pcl_pc2,*scene_cloud);
-
-    //    pcl::io::savePCDFile("/home/ninja/Downloads/PCL_test/scene.pcd",*scene);
-
     return match_model(model_cloud, scene_cloud, algo);
 
 }
@@ -419,9 +416,12 @@ object_detection_ICP::object_detection_ICP(unsigned int max_iterations, float fi
     fitness_epsilon_ = fitness_epsilon;
 }
 
+object_detection_NDT::object_detection_NDT(unsigned int param1, float param2){
+
+}
 object_detection_SACIA::object_detection_SACIA()
 {
-    
+
 }
 
 
