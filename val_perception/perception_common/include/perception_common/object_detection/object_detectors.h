@@ -38,6 +38,7 @@ namespace perception_utils{
 
 class object_detection_algorithm;
 class object_detection_ICP;
+class object_detection_SACIA;
 class object_detection_Correspondence;
 class object_detection_NDT;
 
@@ -116,6 +117,7 @@ void trim_around_point(const sensor_msgs::PointCloud2::Ptr scene, const geometry
  */
 enum class detection_algorithm{
     CORRESPONDENCE=0,
+    SACIA=1,
     ICP,
     NDT
 };
@@ -164,6 +166,7 @@ public:
 
     geometry_msgs::Pose match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_ICP* algo);
 
+    geometry_msgs::Pose match_using_SACIA(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_SACIA* algo);
     geometry_msgs::Pose match_using_NDT(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_NDT* algo);
 
 protected:
@@ -208,6 +211,17 @@ public:
 protected:
     unsigned int max_iterations_;
     float fitness_epsilon_;
+};
+
+class object_detection_SACIA: public object_detection_algorithm{
+public:
+    object_detection_SACIA();
+
+    virtual detection_algorithm get_algorithm_name() override{
+        return detection_algorithm::SACIA;
+    }
+protected:
+    int testino;
 };
 
 class object_detection_Correspondence: public object_detection_algorithm {

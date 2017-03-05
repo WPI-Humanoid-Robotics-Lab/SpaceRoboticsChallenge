@@ -38,8 +38,10 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
     // precise detection using pcl
     perception_utils::object_detection_Correspondence corrs_algo;
     perception_utils::object_detection_ICP icp_algo;
+    perception_utils::object_detection_SACIA sacia_algo;
     perception_utils::object_detection_NDT ndt_algo;
     geometry_msgs::Pose goal = detector.match_model(model, trimmed_cloud, &icp_algo);
+
     pcl::transformPointCloud (*model, *model, Eigen::Vector3f (goal.position.x, goal.position.y, goal.position.z),
                               Eigen::Quaternionf (goal.orientation.w, goal.orientation.x, goal.orientation.y, goal.orientation.z));
 

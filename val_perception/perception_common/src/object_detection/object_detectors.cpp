@@ -1,6 +1,8 @@
 #include "perception_common/object_detection/object_detectors.h"
 
 #include <visualization_msgs/Marker.h>
+#include <perception_common/FeatureCloud.h>
+#include <perception_common/TemplateAlignment.h>
 
 namespace perception_utils {
 
@@ -41,6 +43,11 @@ geometry_msgs::Pose model_based_object_detector::match_model(const pcl::PointClo
     {
         perception_utils::object_detection_Correspondence* corrs_algo = static_cast<perception_utils::object_detection_Correspondence*>(algo);
         return match_using_corrs(model, scene, corrs_algo);
+    }
+    case perception_utils::detection_algorithm::SACIA:
+    {
+        perception_utils::object_detection_SACIA* sacia_algo = static_cast<perception_utils::object_detection_SACIA*>(algo);
+        return match_using_SACIA(model, scene, sacia_algo);
     }
     case perception_utils::detection_algorithm::ICP:
     {
@@ -118,6 +125,79 @@ geometry_msgs::Pose model_based_object_detector::match_using_NDT(const pcl::Poin
     geometry_msgs::Pose goal;
     return goal;
 }
+
+geometry_msgs::Pose model_based_object_detector::match_using_SACIA(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_SACIA* algo) {
+    std::vector<FeatureCloud> object_templates;
+    object_templates.resize (0);
+
+    FeatureCloud template_cloud;
+    template_cloud.loadInputCloud (model);
+    object_templates.push_back (template_cloud);
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+    cloud = scene;
+    // pcl::io::loadPCDFile (scene, *cloud);
+
+    // Filtering the cloud (should use camera initial guess)
+    const float depth_limit = 1.0;
+    pcl::PassThrough<pcl::PointXYZ> pass;
+    pass.setInputCloud (cloud);
+    pass.setFilterFieldName ("z");
+    pass.setFilterLimits (0.1, 2);
+    pass.filter (*cloud);
+    pass.setFilterFieldName ("x");
+    pass.setFilterLimits (0.6, 2.7);
+    pass.filter (*cloud);
+    pass.setFilterFieldName ("y");
+    pass.setFilterLimits (0, 4);
+    pass.filter (*cloud);
+    // downsampling the point cloud
+    const float voxel_grid_size = 0.005f;
+    pcl::VoxelGrid<pcl::PointXYZ> vox_grid;
+    vox_grid.setInputCloud (cloud);
+    vox_grid.setLeafSize (voxel_grid_size, voxel_grid_size, voxel_grid_size);
+    //vox_grid.filter (*cloud); // Please see this http://www.pcl-developers.org/Possible-problem-in-new-VoxelGrid-implementation-from-PCL-1-5-0-td5490361.html
+    pcl::PointCloud<pcl::PointXYZ>::Ptr tempCloud (new pcl::PointCloud<pcl::PointXYZ>); 
+    vox_grid.filter (*tempCloud);
+    cloud = tempCloud; 
+
+    // Assign to the target FeatureCloud
+    FeatureCloud target_cloud;
+    target_cloud.setInputCloud (cloud);
+
+    // Set the TemplateAlignment inputs
+    TemplateAlignment template_align;
+    for (size_t i = 0; i < object_templates.size (); ++i)
+    {
+    template_align.addTemplateCloud (object_templates[i]);
+    }
+    template_align.setTargetCloud (target_cloud);
+
+    // Find the best template alignment
+    TemplateAlignment::Result best_alignment;
+    int best_index = template_align.findBestAlignment (best_alignment);
+    const FeatureCloud &best_template = object_templates[best_index];
+
+    // Print the alignment fitness score (values less than 0.00002 are good)
+    printf ("Best fitness score: %f\n", best_alignment.fitness_score);
+
+    // Print the rotation matrix and translation vector
+    Eigen::Matrix3f rotation = best_alignment.final_transformation.block<3,3>(0, 0);
+    Eigen::Vector3f translation = best_alignment.final_transformation.block<3,1>(0, 3);
+
+    printf ("\n");
+    printf ("    | %6.3f %6.3f %6.3f | \n", rotation (0,0), rotation (0,1), rotation (0,2));
+    printf ("R = | %6.3f %6.3f %6.3f | \n", rotation (1,0), rotation (1,1), rotation (1,2));
+    printf ("    | %6.3f %6.3f %6.3f | \n", rotation (2,0), rotation (2,1), rotation (2,2));
+    printf ("\n");
+    printf ("t = < %0.3f, %0.3f, %0.3f >\n", translation (0), translation (1), translation (2));
+
+
+    geometry_msgs::Pose goal;
+    SE3_to_geometry_pose(best_alignment.final_transformation, goal);
+    return goal;
+}
+
 
 geometry_msgs::Pose model_based_object_detector::match_using_corrs(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_Correspondence* algo){
     pcl::PointCloud<PointType>::Ptr model_keypoints (new pcl::PointCloud<PointType> ());
@@ -337,7 +417,10 @@ object_detection_ICP::object_detection_ICP(unsigned int max_iterations, float fi
     fitness_epsilon_ = fitness_epsilon;
 }
 
-object_detection_NDT::object_detection_NDT(unsigned int param1, float param2)
+object_detection_NDT::object_detection_NDT(unsigned int param1, float param2){
+
+}
+object_detection_SACIA::object_detection_SACIA()
 {
 
 }
