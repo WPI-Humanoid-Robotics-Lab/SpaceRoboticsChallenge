@@ -153,13 +153,13 @@ geometry_msgs::Pose model_based_object_detector::match_using_SACIA(const pcl::Po
     template_cloud.loadInputCloud (model);
     object_templates.push_back (template_cloud);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<PointType>::Ptr cloud (new pcl::PointCloud<PointType>);
     cloud = scene;
     // pcl::io::loadPCDFile (scene, *cloud);
 
     // Filtering the cloud (should use camera initial guess)
     const float depth_limit = 1.0;
-    pcl::PassThrough<pcl::PointXYZ> pass;
+    pcl::PassThrough<PointType> pass;
     pass.setInputCloud (cloud);
     pass.setFilterFieldName ("z");
     pass.setFilterLimits (0.1, 2);
@@ -172,11 +172,10 @@ geometry_msgs::Pose model_based_object_detector::match_using_SACIA(const pcl::Po
     pass.filter (*cloud);
     // downsampling the point cloud
     const float voxel_grid_size = 0.005f;
-    pcl::VoxelGrid<pcl::PointXYZ> vox_grid;
+    pcl::VoxelGrid<PointType> vox_grid;
     vox_grid.setInputCloud (cloud);
     vox_grid.setLeafSize (voxel_grid_size, voxel_grid_size, voxel_grid_size);
-    //vox_grid.filter (*cloud); // Please see this http://www.pcl-developers.org/Possible-problem-in-new-VoxelGrid-implementation-from-PCL-1-5-0-td5490361.html
-    pcl::PointCloud<pcl::PointXYZ>::Ptr tempCloud (new pcl::PointCloud<pcl::PointXYZ>); 
+    pcl::PointCloud<PointType>::Ptr tempCloud (new pcl::PointCloud<PointType>); 
     vox_grid.filter (*tempCloud);
     cloud = tempCloud; 
 
