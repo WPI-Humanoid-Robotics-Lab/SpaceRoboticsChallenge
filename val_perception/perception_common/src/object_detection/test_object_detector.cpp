@@ -9,6 +9,7 @@
 pcl::PointCloud<pcl::PointXYZ>::Ptr model (new pcl::PointCloud<pcl::PointXYZ> ());
 perception_utils::model_based_object_detector detector;
 ros::Publisher marker_pub;
+ros::Publisher pcl_pub;
 void visualize_point(geometry_msgs::Pose goal);
 
 //Listening to the assembled cloud
@@ -19,9 +20,27 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
 
     // This is a blocking call. In actual implementation, it should either start in a
     // new thread or should only populate a local variable for pointcloud.
+
+    geometry_msgs::Point center;
+    center.x = 1.84;
+    center.y = 0.97;
+    center.z = 0.90;
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr trimmed_cloud (new pcl::PointCloud<pcl::PointXYZ> ());
+    perception_utils::trim_around_point(msg, center, trimmed_cloud);
+
+    sensor_msgs::PointCloud2 output;
+    pcl::PCLPointCloud2 pcl_pc2;
+    pcl::toPCLPointCloud2(*trimmed_cloud, pcl_pc2);
+    pcl_conversions::moveFromPCL(pcl_pc2, output);
+    output.header = msg->header;
+    ROS_INFO("Point loud size : %d", output.data.size());
+    pcl_pub.publish(output);
+
     perception_utils::object_detection_Correspondence corrs_algo;
     perception_utils::object_detection_ICP icp_algo;
-    visualize_point(detector.match_model(model, msg, &icp_algo));
+    visualize_point(detector.match_model(model, trimmed_cloud, &icp_algo));
+
     return;
 }
 
@@ -65,8 +84,9 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "test_object_detection");
     ros::NodeHandle n;
     marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
+    pcl_pub = n.advertise<sensor_msgs::PointCloud2>("trimmed_cloud", 10);
     ros::Subscriber sub = n.subscribe("/assembled_cloud2",10, laserCallBack);
-    std::string model_filename_ = ros::package::getPath("val_task1") + "/models/satellite_dish_dense.pcd";
+    std::string model_filename_ = ros::package::getPath("val_task1") + "/models/model_dense.pcd";
     if(argc == 2) {
         model_filename_ = argv[1];
     }

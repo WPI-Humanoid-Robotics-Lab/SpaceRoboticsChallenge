@@ -1,23 +1,34 @@
-#ifndef OBJECT_DETECTOR_H
-#define OBJECT_DETECTOR_H
+#ifndef OBJECT_DETECTORS_H
+#define OBJECT_DETECTORS_H
 
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_cloud.h>
 #include <pcl/correspondence.h>
+
 #include <pcl/features/normal_3d_omp.h>
 #include <pcl/features/shot_omp.h>
 #include <pcl/features/board.h>
+
+#include <pcl/filters/passthrough.h>
 //#include <pcl/filters/uniform_sampling.h>  //uncomment this for any other version of pcl
+
 #include <pcl/keypoints/uniform_sampling.h> //comment this for any other version of pcl than 1.7
+
 #include <pcl/recognition/cg/hough_3d.h>
 #include <pcl/recognition/cg/geometric_consistency.h>
+
 #include <pcl/visualization/pcl_visualizer.h>
+
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/kdtree/impl/kdtree_flann.hpp>
+
 #include <pcl/common/transforms.h>
+
 #include <pcl/console/parse.h>
+
 #include <pcl/registration/icp.h>
 
+#include <pcl_conversions/pcl_conversions.h>
 
 #include <sensor_msgs/point_cloud_conversion.h>
 #include <geometry_msgs/Pose.h>
@@ -34,6 +45,11 @@ typedef pcl::Normal         NormalType;
 typedef pcl::ReferenceFrame RFType;
 typedef pcl::SHOT352        DescriptorType;
 
+/**
+ * @brief SE3_to_geometry_pose converts a 4x4 tranformation matrix to geometry pose message
+ * @param transformation_matrix 4x4 transformation matrix.
+ * @param goal  geometry_msgs::Pose reference to store the converted transformation matrix
+ */
 void SE3_to_geometry_pose( Eigen::Matrix4f transformation_matrix, geometry_msgs::Pose &goal){
 
     tf::Matrix3x3 tf3d;
@@ -57,6 +73,42 @@ void SE3_to_geometry_pose( Eigen::Matrix4f transformation_matrix, geometry_msgs:
     return;
 }
 
+
+/**
+ * @brief trim_around_point trims the input point cloud to a cubic volume of size 2*MAX_TRIM_LIMIT
+ * @param scene pointcloud to be trimmed
+ * @param center    point about which the pointcloud is to be trimmed
+ * @param cloud_out output pointcloud
+ */
+void trim_around_point(const sensor_msgs::PointCloud2::Ptr scene, const geometry_msgs::Point &center, pcl::PointCloud<PointType>::Ptr cloud_out,
+                       float x_max_trim_limit=0.7f, float y_max_trim_limit=0.7f, float z_max_trim_limit=3.0f){
+
+    pcl::PassThrough<pcl::PointXYZ>     passthrough_filt;
+    pcl::PCLPointCloud2                 pcl_pc2;
+
+    pcl_conversions::toPCL(*scene, pcl_pc2);
+    pcl::fromPCLPointCloud2(pcl_pc2, *cloud_out);
+
+    // Trim in x
+    passthrough_filt.setInputCloud (cloud_out);
+    passthrough_filt.setFilterFieldName ("x");
+    passthrough_filt.setFilterLimits (center.x - x_max_trim_limit, center.x + x_max_trim_limit);
+    passthrough_filt.filter (*cloud_out);
+
+    // Trim in y
+    passthrough_filt.setInputCloud (cloud_out);
+    passthrough_filt.setFilterFieldName ("y");
+    passthrough_filt.setFilterLimits (center.y - y_max_trim_limit, center.y + y_max_trim_limit);
+    passthrough_filt.filter (*cloud_out);
+
+    // Trim in z
+    passthrough_filt.setInputCloud (cloud_out);
+    passthrough_filt.setFilterFieldName ("z");
+    passthrough_filt.setFilterLimits (center.z - z_max_trim_limit, center.z + z_max_trim_limit);
+    passthrough_filt.filter (*cloud_out);
+
+    return;
+}
 
 /**
  * @brief The detection_algorithm enum provides a list of algorithms which can be used for detection.
@@ -115,8 +167,15 @@ protected:
 
 };
 
+/**
+ * @brief The object_detection_algorithm class is a virtual class for declaring new object detection algorithm
+ */
 class object_detection_algorithm{
 public:
+    /**
+     * @brief get_algorithm_name returns the type of algorithm which is used for creating appropriate pointer and call the right function.
+     * @return
+     */
     virtual detection_algorithm get_algorithm_name()=0;
 
 };
@@ -231,4 +290,4 @@ protected:
 
 } // end of namespace perception_utils
 
-#endif // OBJECT_DETECTOR_H
+#endif // OBJECT_DETECTORS_H
