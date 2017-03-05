@@ -44,8 +44,8 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
     perception_utils::object_detection_ICP icp_algo;
     perception_utils::object_detection_SACIA sacia_algo;
     visualize_point(detector.match_model(model, trimmed_cloud, &sacia_algo));
-    perception_utils::object_detection_NDT ndt_algo;
-    visualize_point(detector.match_model(model, trimmed_cloud, &ndt_algo));
+    // perception_utils::object_detection_NDT ndt_algo;
+    // visualize_point(detector.match_model(model, trimmed_cloud, &ndt_algo));
 
     return;
 }

@@ -14,8 +14,7 @@
 class TemplateAlignment
 {
   public:
-
-    // A struct for storing alignment results
+    typedef pcl::PointXYZ       PointType;
     struct Result
     {
       float fitness_score;
@@ -56,7 +55,7 @@ class TemplateAlignment
       sac_ia_.setInputSource (template_cloud.getPointCloud ());
       sac_ia_.setSourceFeatures (template_cloud.getLocalFeatures ());
 
-      pcl::PointCloud<pcl::PointXYZ> registration_output;
+      pcl::PointCloud<PointType> registration_output;
       sac_ia_.align (registration_output);
 
       result.fitness_score = (float) sac_ia_.getFitnessScore (max_correspondence_distance_);
@@ -104,7 +103,7 @@ class TemplateAlignment
     FeatureCloud target_;
 
     // The Sample Consensus Initial Alignment (SAC-IA) registration routine and its parameters
-    pcl::SampleConsensusInitialAlignment<pcl::PointXYZ, pcl::PointXYZ, pcl::FPFHSignature33> sac_ia_;
+    pcl::SampleConsensusInitialAlignment<PointType, PointType, pcl::FPFHSignature33> sac_ia_;
     float min_sample_distance_;
     float max_correspondence_distance_;
     int nr_iterations_;
