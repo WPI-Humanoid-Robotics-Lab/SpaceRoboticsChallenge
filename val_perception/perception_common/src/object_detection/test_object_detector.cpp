@@ -42,7 +42,9 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
     perception_utils::object_detection_SACIA sacia_algo;
     perception_utils::object_detection_NDT ndt_algo;
 
-    geometry_msgs::Pose goal = detector.match_model(model, trimmed_cloud, &icp_algo);
+    // perception_utils::object_detection_NDT ndt_algo;
+    geometry_msgs::Pose goal = detector.match_model(model, trimmed_cloud, &sacia_algo);
+    // visualize_point(detector.match_model(model, trimmed_cloud, &ndt_algo));
 
     pcl::transformPointCloud (*model, *model, Eigen::Vector3f (goal.position.x, goal.position.y, goal.position.z),
                               Eigen::Quaternionf (goal.orientation.w, goal.orientation.x, goal.orientation.y, goal.orientation.z));
@@ -100,7 +102,8 @@ int main(int argc, char** argv) {
     marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
     pcl_pub = n.advertise<sensor_msgs::PointCloud2>("transformed_model", 10);
     ros::Subscriber sub = n.subscribe("/assembled_cloud2",10, laserCallBack);
-    std::string model_filename_ = ros::package::getPath("val_task1") + "/models/Mesh03.pcd";
+    std::string model_filename_ = ros::package::getPath("val_task1") + "/models/two_valves.pcd";
+
     if(argc == 2) {
         model_filename_ = argv[1];
     }
