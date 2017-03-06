@@ -191,19 +191,33 @@ public:
 
 class object_detection_ICP: public object_detection_algorithm {
 public:
-    object_detection_ICP(unsigned int max_iterations=5, float fitness_epsilon=0.01f);
+    object_detection_ICP(unsigned int max_iterations=10, float fitness_epsilon=0.5f, float transformation_epsilon=1e-5, float max_correspondence_distance=0.1);
     inline unsigned int get_max_iterations() const{
         return max_iterations_;
     }
-    inline void set_max_iterations(unsigned int max_iterations = 5){
+    void set_max_iterations(unsigned int max_iterations = 5){
         max_iterations_ = max_iterations;
     }
 
     inline float get_fitness_epsilon() const{
         return fitness_epsilon_;
     }
-    inline void set_fitness_epsilon(float fitness_epsilon=0.5){
+    void set_fitness_epsilon(float fitness_epsilon=0.5){
         fitness_epsilon_ = fitness_epsilon;
+    }
+
+    inline float get_transformation_epsilon() const{
+        return transformation_epsilon_;
+    }
+    void set_transformation_epsilon_(float transofrmation_epsilon=1e-5){
+        transformation_epsilon_ = transofrmation_epsilon;
+    }
+
+    inline float get_max_correspondence_distance() const{
+        return max_correspondence_distance_;
+    }
+    void set_max_correspondence_distance(float max_correspondence_distance=0.1){
+        max_correspondence_distance_ = max_correspondence_distance;
     }
 
     virtual detection_algorithm get_algorithm_name() override{
@@ -213,6 +227,19 @@ public:
 protected:
     unsigned int max_iterations_;
     float fitness_epsilon_;
+    float transformation_epsilon_;
+    float max_correspondence_distance_;
+
+    /*
+// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored)
+icp.setMaxCorrespondenceDistance (0.05);
+// Set the maximum number of iterations (criterion 1)
+icp.setMaximumIterations (50);
+// Set the transformation epsilon (criterion 2)
+icp.setTransformationEpsilon (1e-8);
+// Set the euclidean distance difference epsilon (criterion 3)
+icp.setEuclideanFitnessEpsilon (1);
+*/
 };
 
 class object_detection_SACIA: public object_detection_algorithm{

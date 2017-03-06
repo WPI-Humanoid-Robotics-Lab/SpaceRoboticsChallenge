@@ -10,6 +10,7 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr model (new pcl::PointCloud<pcl::PointXYZ> ()
 perception_utils::model_based_object_detector detector;
 ros::Publisher marker_pub;
 ros::Publisher pcl_pub;
+ros::Publisher trimmed_cloud_pub;
 void visualize_point(geometry_msgs::Pose goal);
 
 //Listening to the assembled cloud
@@ -33,18 +34,15 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
 
     ROS_INFO("Size of trimmed cloud = %d", trimmed_cloud->size());
     ROS_INFO("Size of Model cloud = %d", model->size());
-//    pcl::io::savePCDFile("/home/ninja/Downloads/PCL_test/scene_trimmed.pcd",*trimmed_cloud);
 
 
     // precise detection using pcl
     perception_utils::object_detection_Correspondence corrs_algo;
-    perception_utils::object_detection_ICP icp_algo;
+    perception_utils::object_detection_ICP icp_algo(500, 0.05, 0, 0.9);
     perception_utils::object_detection_SACIA sacia_algo;
     perception_utils::object_detection_NDT ndt_algo;
 
-    // perception_utils::object_detection_NDT ndt_algo;
-    geometry_msgs::Pose goal = detector.match_model(model, trimmed_cloud, &sacia_algo);
-    // visualize_point(detector.match_model(model, trimmed_cloud, &ndt_algo));
+    geometry_msgs::Pose goal = detector.match_model(model, trimmed_cloud, &icp_algo);
 
     pcl::transformPointCloud (*model, *model, Eigen::Vector3f (goal.position.x, goal.position.y, goal.position.z),
                               Eigen::Quaternionf (goal.orientation.w, goal.orientation.x, goal.orientation.y, goal.orientation.z));
@@ -55,6 +53,25 @@ void laserCallBack(const sensor_msgs::PointCloud2::Ptr msg) {
     pcl_conversions::moveFromPCL(pcl_pc2, output);
     output.header = msg->header;
     pcl_pub.publish(output);
+
+    /*
+    float theta = -M_PI/2;
+    Eigen::Affine3f transform = Eigen::Affine3f::Identity();
+      // Define a translation of 2.5 meters on the x axis.
+    transform.translation() << -2.095, -0.35, 0.0;
+    pcl::transformPointCloud (*trimmed_cloud, *trimmed_cloud, transform);
+    transform = Eigen::Affine3f::Identity();
+    // The same rotation matrix as before; theta radians arround Z axis
+    transform.rotate (Eigen::AngleAxisf (theta, Eigen::Vector3f::UnitZ()));
+    pcl::transformPointCloud (*trimmed_cloud, *trimmed_cloud, transform);
+    std::string filename = ros::package::getPath("val_task1") + "/models/transformed_model.pcd";
+    pcl::io::savePCDFile(filename,*trimmed_cloud);
+    */
+
+    pcl::toPCLPointCloud2(*trimmed_cloud, pcl_pc2);
+    pcl_conversions::moveFromPCL(pcl_pc2, output);
+    output.header = msg->header;
+    trimmed_cloud_pub.publish(output);
 
     visualize_point(goal);
     return;
@@ -99,10 +116,13 @@ void visualize_point(geometry_msgs::Pose goal){
 int main(int argc, char** argv) {
     ros::init(argc, argv, "test_object_detection");
     ros::NodeHandle n;
-    marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-    pcl_pub = n.advertise<sensor_msgs::PointCloud2>("transformed_model", 10);
+
+    marker_pub          = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
+    pcl_pub             = n.advertise<sensor_msgs::PointCloud2>("transformed_model", 10);
+    trimmed_cloud_pub   = n.advertise<sensor_msgs::PointCloud2>("trimmed_cloud", 10);
     ros::Subscriber sub = n.subscribe("/assembled_cloud2",10, laserCallBack);
-    std::string model_filename_ = ros::package::getPath("val_task1") + "/models/two_valves.pcd";
+
+    std::string model_filename_ = ros::package::getPath("val_task1") + "/models/transformed_model_1.pcd";
 
     if(argc == 2) {
         model_filename_ = argv[1];

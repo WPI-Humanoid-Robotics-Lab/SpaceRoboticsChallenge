@@ -104,11 +104,12 @@ geometry_msgs::Pose model_based_object_detector::match_using_ICP(const pcl::Poin
     std::cout << "size:" << scene->points.size() << std::endl;
 
     pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
-    //     icp.setInputCloud(model);
     icp.setInputSource(model);
     icp.setInputTarget(scene);
     icp.setMaximumIterations(algo->get_max_iterations());
     icp.setEuclideanFitnessEpsilon(algo->get_fitness_epsilon());
+    icp.setTransformationEpsilon(algo->get_transformation_epsilon());
+    icp.setMaxCorrespondenceDistance(algo->get_max_correspondence_distance());
     pcl::PointCloud<pcl::PointXYZ> Final;
     icp.align(Final);
     std::cout << "has converged:" << icp.hasConverged() << " score: " <<
@@ -428,10 +429,12 @@ object_detection_Correspondence::object_detection_Correspondence(bool use_cloud_
     cg_thresh_              = cg_thresh;
 }
 
-object_detection_ICP::object_detection_ICP(unsigned int max_iterations, float fitness_epsilon)
+object_detection_ICP::object_detection_ICP(unsigned int max_iterations, float fitness_epsilon, float transformation_epsilon, float max_correspondence_distance)
 {
     max_iterations_ = max_iterations;
     fitness_epsilon_ = fitness_epsilon;
+    transformation_epsilon_ = transformation_epsilon;
+    max_correspondence_distance_ = max_correspondence_distance;
 }
 
 object_detection_NDT::object_detection_NDT(unsigned int max_iterations, float fitness_epsilon, float step_size, float grid_resolution){
