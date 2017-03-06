@@ -141,7 +141,7 @@ include_directories(
 #  add_dependencies(src/flatgroundwalk.cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 ## Declare a C++ executable
  add_executable(klampt_footstep src/klampt_footstep.cpp src/limbstate.cpp src/robotlimbsstate.cpp src/planner.cpp
-                        src/val_single_step.cpp src/val_single_step.cpp src/timeassignment.cpp)
+                        src/val_single_step.cpp src/val_move_arm.cpp src/timeassignment.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

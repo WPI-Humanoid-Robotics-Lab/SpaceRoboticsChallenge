@@ -2,7 +2,7 @@
 #include <vector>
 class RobotLimbsState{
 	public:
-		static const int numlimbs=2;
+		static const int numlimbs=4;//(changed from 2)
 		RobotLimbsState();
 		vector<int> setjointstate(int leg);
 		vector<int> setfixedjoints(int leg);

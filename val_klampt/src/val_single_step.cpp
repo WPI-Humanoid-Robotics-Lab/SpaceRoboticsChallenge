@@ -10,22 +10,6 @@ ValSingleStep::ValSingleStep(char* simpath, Robot& rob){
 
 //lock necessary joints for motion.
 vector<int>* ValSingleStep::LockJoints(vector<int>* limbIndices){
-	//0 	- 6		numobj, torso XYZ RPY
-	//7 	- 12 	left_leg
-	//13 	- 15	zeros
-	//16	- 21 	r_leg
-	//22 				zero
-	//23	- 25	torso
-	//26 				zero
-	//27	- 46 	left hand
-	//47 				zero
-	//48	- 50 	head
-	//51	- 54 	zeros
-	//55 				Unknown%s
-	//56 	- 63	zeroes
-	//64	- 83 right hand
-
-
 	// limbIndices->push_back(1);//torso Y
 	// limbIndices->push_back(2);//torso Z pos
 	limbIndices->push_back(3);//base R
@@ -56,9 +40,6 @@ vector<int>* ValSingleStep::LockJoints(vector<int>* limbIndices){
 	{		//if(j != 64 )
 				limbIndices->push_back(j);
 	}
-
-
-
 	return limbIndices;
 
 }
@@ -156,36 +137,36 @@ void ValSingleStep::walk(MultiPath& mpath, int leg, float x, float y, float z){
 
 
 	float leg_height = .05;
-	float right_movement = .10;
-	float forward_movement = .5*y;
+	float right_movement = .12;
+	float forward_movement = .06;//.5*y;
 
   if(leg)
   {
     //MOVE COM
     // //move to left
-    transitionconfig=movecom(startconfig, -right_movement, 0, 1.2);
+    transitionconfig=movecom(startconfig, -right_movement, 0, z);
     plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
     startconfig=transitionconfig;
 
     //
     //MOVE COM
-    transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
+    transitionconfig=movecom(startconfig, 0, forward_movement, z);
     plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
     startconfig=transitionconfig;
   }else{
     //MOVE COM
     // //move to left
-    transitionconfig=movecom(startconfig, right_movement, 0, 1.2);
+    transitionconfig=movecom(startconfig, right_movement, 0, z);
     plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
     startconfig=transitionconfig;
     //
     //MOVE COM
-    transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
+    transitionconfig=movecom(startconfig, 0, forward_movement, z);
     plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
     startconfig=transitionconfig;
   }
 
-	
+
 
   // lift right
 	transitionconfig=LiftLeg(leg, startconfig, leg_height);
@@ -206,23 +187,23 @@ void ValSingleStep::walk(MultiPath& mpath, int leg, float x, float y, float z){
   {
     //MOVE COM
     // //move to left
-    transitionconfig=movecom(startconfig, -right_movement, 0, 1.2);
+    transitionconfig=movecom(startconfig, -right_movement, 0, z);
     plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
     startconfig=transitionconfig;
     //
-    //MOVE COM
-    transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
-    plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
-    startconfig=transitionconfig;
+    // //MOVE COM
+    // transitionconfig=movecom(startconfig, 0, forward_movement, z);
+    // plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
+    // startconfig=transitionconfig;
   }else{
     //MOVE COM
     // //move to left
-    transitionconfig=movecom(startconfig, right_movement, 0, 1.2);
+    transitionconfig=movecom(startconfig, right_movement, 0, z);
     plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
     startconfig=transitionconfig;
     //
     //MOVE COM
-    transitionconfig=movecom(startconfig, 0, forward_movement, 1.2);
+    transitionconfig=movecom(startconfig, 0, forward_movement, z);
     plan->addmilestonepath(3, startconfig,transitionconfig, mpath);
     startconfig=transitionconfig;
   }
