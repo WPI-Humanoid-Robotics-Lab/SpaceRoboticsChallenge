@@ -61,7 +61,7 @@ collision_check:
   # - 1 feet
   # - 2 upper body
   # - 4 foot contact support
-  collision_check_mask: 3 #4 su
+  collision_check_mask: 1 #4 su
 
   # footstep collision check accuracy
   # - 0 (just the circumcircle of the foot)
@@ -77,9 +77,9 @@ collision_check:
 ### step set params ########################################################
 foot:
   max:
-    step: {theta: 0.3} #0.4 su
+    step: {theta: 0.5} #0.4 su
     inverse:
-      step: {theta: -0.05} #0.30 su
+      step: {theta: -0.2} #0.30 su
 
 # define polygon for valid step position in view of supporting (=standing) foot
 step_range:
@@ -90,9 +90,9 @@ step_range:
   x: [ 0.00, -0.10, -0.08, -0.05,  0.05,  0.10,  0.13]
   y: [ 0.18,  0.18,  0.25,  0.30,  0.30,  0.25,  0.18]
   
-sway_duration: 0.0 # 0.10 su 
+sway_duration: 0.2 # 0.10 su 
 step_duration: 1.0 # 0.63 su 
-swing_height:  1 # 0.10 su      # Ignored if it is less than 0.1
+swing_height:  0.5 # 0.10 su      # Ignored if it is less than 0.1
 
 dynamics:
   body: # zero values will disable dynamic constraints
