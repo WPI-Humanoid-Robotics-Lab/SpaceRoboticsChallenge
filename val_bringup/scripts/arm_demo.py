@@ -13,7 +13,7 @@ from ihmc_msgs.msg import HandDesiredConfigurationRosMessage
 from ihmc_msgs.msg import HandTrajectoryRosMessage
 from ihmc_msgs.msg import SE3TrajectoryPointRosMessage
 
-ZERO_VECTOR = [0, 1.2, 2.0, 0.0, 0.0, 0.0, 0.0]
+ZERO_VECTOR = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 ELBOW_BENT_UP = [0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0]
 BUTTON_PRESS = [0.0, 0.1, 0.2, 0.3, 1.5, -0.5, -0.20]
 
@@ -24,15 +24,18 @@ def sendRightArmTrajectory():
 
     msg.robot_side = ArmTrajectoryRosMessage.RIGHT
 
-#    msg = appendTrajectoryPoint(msg, 2.0, ZERO_VECTOR)
+    msg = appendTrajectoryPoint(msg, 2.0, ZERO_VECTOR)
 #    msg = appendTrajectoryPoint(msg, 3.0, ELBOW_BENT_UP)
 #    msg = appendTrajectoryPoint(msg, 1.0, ZERO_VECTOR)
 #    msg = appendTrajectoryPoint(msg, 4.0, ZERO_VECTOR)
 
-    msg = appendTrajectoryPoint(msg, 2.0, BUTTON_PRESS)
+#    msg = appendTrajectoryPoint(msg, 2.0, BUTTON_PRESS)
     msg.unique_id = -1
 
     rospy.loginfo('publishing right trajectory')
+    armTrajectoryPublisher.publish(msg)
+    time.sleep(0.5)
+    msg.robot_side = ArmTrajectoryRosMessage.LEFT
     armTrajectoryPublisher.publish(msg)
 
 def closeHand():
@@ -65,9 +68,9 @@ def sendTaskSpaceTrajectory():
     pt = SE3TrajectoryPointRosMessage()
     pt.time = 2.0
     
-    pt.position.x = 0.9
-    pt.position.y = -0.4
-    pt.position.z = 1.28
+    pt.position.x = 0.28
+    pt.position.y = -0.7
+    pt.position.z = 1.0
     
     pt.orientation.w=1.0
     
