@@ -44,3 +44,98 @@ perception_common provides the basic functionality to access data from the ros t
 * perception common can be exported as a library in different package.
 
 
+#### Using model_based_object_detector class
+The model_based_object_detector class provides ability to detect an object in a pointcloud if a pointcloud model of that object is available. For example following lines can be used to detect using iterative closest point algorithm:
+```
+perception_utils::model_based_object_detector detector;
+perception_utils::object_detection_ICP icp_algo;
+
+# if pointcloud of model is loaded in *model object and that of scene is loaded in *scene then,
+geometry_msgs::Pose pose = detector.match_model(model, scene, &icp_algo);
+```
+
+Parameters to be passed to ICP can be modified using its getters and setters as follows:
+```
+perception_utils::model_based_object_detector detector;
+perception_utils::object_detection_ICP icp_algo;
+
+# customize the parameters for ICP
+icp_algo.set_fitness_epsilon(0.01f);
+icp_algo.set_max_iterations(10);
+
+# if pointcloud of model is loaded in *model object and that of scene is loaded in *scene then,
+geometry_msgs::Pose pose = detector.match_model(model, scene, &icp_algo);
+```
+
+##### Adding a new algorithm
+
+1. Add a new entry to enum class detection\_algorithm in `include/perception_common/object_detection/object_detectors.h`
+```
+enum class detection_algorithm{
+    CORRESPONDENCE=0,
+    SACIA,
+    ICP,
+    NDT,
+    NEW_ALGORITHM
+};
+```
+2. Define a new class for algorithm that extends `object_detection_algorithm`
+```
+class object_detection_NEW_ALGORITHM: public object_detection_algorithm {
+public:
+    object_detection_NEW_ALGORITHM(unsigned int param1=100);
+
+    inline unsigned int get_param1() const{
+        return param1_;
+    }
+    void set_param1(unsigned int param1 = 20){
+        param1_ = param1;
+    }
+virtual detection_algorithm get_algorithm_name() override{
+        return detection_algorithm::NEW_ALGORITHM;
+    }
+protected:
+    unsigned int param1_;
+};
+```
+3. Ensure that the new class has a default constructor that sets all the required parameters for the algorithm to their default values.
+4. Declare and define a function with signature like this 
+```
+geometry_msgs::Pose match_using_ICP(const pcl::PointCloud<PointType>::Ptr model, const pcl::PointCloud<PointType>::Ptr scene, perception_utils::object_detection_ICP* algo);
+```
+
+5. Modify switch case in match\_model function in `src/perception_common/object_detection/object_detectors.cpp` file
+```
+ switch (algo->get_algorithm_name()) {
+
+    case perception_utils::detection_algorithm::CORRESPONDENCE:
+    {
+        perception_utils::object_detection_Correspondence* corrs_algo = static_cast<perception_utils::object_detection_Correspondence*>(algo);
+        return match_using_corrs(model, scene, corrs_algo);
+    }
+    case perception_utils::detection_algorithm::SACIA:
+    {
+        perception_utils::object_detection_SACIA* sacia_algo = static_cast<perception_utils::object_detection_SACIA*>(algo);
+        return match_using_SACIA(model, scene, sacia_algo);
+    }
+    case perception_utils::detection_algorithm::ICP:
+    {
+        perception_utils::object_detection_ICP* icp_algo = static_cast<perception_utils::object_detection_ICP*>(algo);
+        return match_using_ICP(model, scene, icp_algo);
+    }
+    case perception_utils::detection_algorithm::NDT:
+    {
+        perception_utils::object_detection_NDT* ndt_algo = static_cast<perception_utils::object_detection_NDT*>(algo);
+        return match_using_NDT(model, scene, ndt_algo);
+    }
+    case perception_utils::detection_algorithm::NEW_ALGORITHM:
+    {
+        perception_utils::object_detection_NEW_ALGORITHM* new_algo = static_cast<perception_utils::object_detection_NEW_ALGORITHM*>(algo);
+        return match_using_NDT(model, scene, new_algo);
+    }
+    default:
+    {
+        break;
+    }
+    }
+```
