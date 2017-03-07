@@ -18,6 +18,7 @@
 #include "ros/time.h"
 #include "tf/tf.h"
 #include <val_common/val_common_defines.h>
+#include <nav_msgs/Odometry.h>
 
 /**
  * @brief The ValkyrieWalker class This class provides access to the footsteps of valkyrie. It can be used
@@ -112,7 +113,9 @@ private:
     ros::Time           cbTime;
     ros::Publisher      footsteps_to_val ;
     ros::Subscriber     footstep_status ;
+    ros::Subscriber     robot_pose;
     ros::ServiceClient  footstep_client ;
+
 
     tf2_ros::Buffer             tfBuffer;
     tf2_ros::TransformListener* tf_listener;
@@ -121,6 +124,7 @@ private:
 
     void footstepStatusCB(const ihmc_msgs::FootstepStatusRosMessage & msg);
     void getCurrentStep(int side , ihmc_msgs::FootstepDataRosMessage& foot);
+    void getRobotPose(const nav_msgs::Odometry & posemsg);
     void waitForSteps( int n);
     bool getFootstep(geometry_msgs::Pose2D &goal,ihmc_msgs::FootstepDataListRosMessage &list);
     ihmc_msgs::FootstepDataRosMessage* getOffsetStep(int side, float x, float y);

@@ -31,11 +31,12 @@ int main(int argc, char** argv)
         ROS_INFO("walk to dish");
         ros::Duration(0.5).sleep();
         walk.setWalkParms(transferTime, swingTime, 0);
-        x_offset = {0.4,0.8,1.2,1.6,2.0};
-        y_offset = {0,0,0,0,0};
-        //x_offset = {0,0};
-        //y_offset = {0.2,0.4};
-        walk.walkPreComputedSteps(x_offset, y_offset, LEFT);
+        geometry_msgs::Pose2D goal;
+        goal.x = 2.0;
+        goal.y = 0.6;
+        goal.theta = 1.57;
+        walk.walkToGoal(goal);
+        ROS_INFO("Command Executed");
         state = SET_DISH_PITCH;
     }
     case SET_DISH_PITCH:

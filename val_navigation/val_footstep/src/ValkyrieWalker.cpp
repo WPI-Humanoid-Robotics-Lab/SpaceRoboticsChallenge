@@ -128,7 +128,7 @@ bool ValkyrieWalker::getFootstep(geometry_msgs::Pose2D &goal,ihmc_msgs::Footstep
 
 
     start.x = startstep->location.x ;
-    start.y = startstep->location.y - 0.18;
+    start.y = startstep->location.y-0.18;
     //    std::cout<< "Start Position  x = " << start.x << "  y = " << start.y<<std::endl;
 
     start.theta = tf::getYaw(startstep->orientation);
@@ -192,6 +192,7 @@ ValkyrieWalker::ValkyrieWalker(ros::NodeHandle nh,double InTransferTime ,double 
     this->footstep_client = n.serviceClient <humanoid_nav_msgs::PlanFootsteps> ("plan_footsteps");
     this->footsteps_to_val = n.advertise<ihmc_msgs::FootstepDataListRosMessage>("/ihmc_ros/valkyrie/control/footstep_list",1,true);
     this->footstep_status = n.subscribe("/ihmc_ros/valkyrie/output/footstep_status", 20,&ValkyrieWalker::footstepStatusCB, this);
+    this->robot_pose=n.subscribe("/ihmc_ros/valkyrie/output/robot_pose",50,&ValkyrieWalker::getRobotPose,this);
 
     transfer_time = InTransferTime;
     swing_time = InSwingTime;
@@ -241,6 +242,12 @@ void ValkyrieWalker::getCurrentStep(int side , ihmc_msgs::FootstepDataRosMessage
         foot_frame = this->right_foot_frame;
     }
 
+
+    /* Can use to get the most current TF
+    ros::Time now = ros::Time::now();
+    tf_listener.waitForTransform( "world",foot_frame.data,now, ros::Duration(3.0));
+    tf_listener.lookupTransform( "world",foot_frame.data ,now, transform);
+    */
     geometry_msgs::TransformStamped transformStamped;
     transformStamped = tfBuffer.lookupTransform( "world",foot_frame.data,ros::Time(0),ros::Duration(10.0));
     foot.orientation = transformStamped.transform.rotation;
@@ -248,6 +255,11 @@ void ValkyrieWalker::getCurrentStep(int side , ihmc_msgs::FootstepDataRosMessage
     foot.robot_side = side;
     foot.trajectory_type = 0;
     return;
+}
+
+void ValkyrieWalker::getRobotPose(const nav_msgs::Odometry &posemsg)
+{
+
 }
 
 // gives footstep which are offset from current step (only for straight line)

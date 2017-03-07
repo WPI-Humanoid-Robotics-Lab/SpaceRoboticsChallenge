@@ -16,21 +16,26 @@ int main(int argc, char **argv)
     list.unique_id = -1;
 
     walk.WalkGivenSteps(list);
-   
 
- //
-
- geometry_msgs::Pose2D goal;
-
-
- goal.x = 1.0;
- goal.y = 0.0;
- goal.theta = 0.0; 
- walk.WalkToGoal(goal);
 */
+    //
 
- //walk.WalkNStepsForward(4,0.6);
- //walk.WalkNStepsBackward(5,0.4);
+    geometry_msgs::Pose2D goal;
+    bool flag =0;
+    while(ros::ok)
+    {
+        if (flag == 0) {
+            goal.x = 2.0;
+            goal.y = 0.6;
+            goal.theta = 1.57;
+            walk.walkToGoal(goal);
+            ROS_INFO("Command Executed");
+            flag =1;
+        }
+        ros::spinOnce();
+    }
+    //walk.WalkNStepsForward(4,0.6);
+    //walk.WalkNStepsBackward(5,0.4);
 
     return 0;
 }
