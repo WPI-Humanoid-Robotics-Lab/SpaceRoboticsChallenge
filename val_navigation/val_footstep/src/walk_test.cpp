@@ -74,9 +74,9 @@ int main(int argc, char **argv)
 
             trajPointR.unique_id = 1; //(int)ros::Time::now();
             trajPointR.time = 2; // reach instantenously
-            trajPointR.position.x = 0.3;
-            trajPointR.position.y = -0.1; //26366231343;
-            trajPointR.position.z = 0.04;
+            trajPointR.position.x = 0;//0.3;
+            trajPointR.position.y = 0;//-0.1; //26366231343;
+            trajPointR.position.z = 0;//0.04;
             trajPointR.orientation.x = 0; //-1.16587645216e-06;
             trajPointR.orientation.y = 0; //3.03336607205e-06;
             trajPointR.orientation.z = 0; //0.000763307697428;
@@ -85,23 +85,23 @@ int main(int argc, char **argv)
             wholebodymsg.right_foot_trajectory_message.taskspace_trajectory_points.push_back(trajPointR);
 
             trajPointR.unique_id = 2; //(int)ros::Time::now();
-            trajPointR.position.x = 0.4;
-            trajPointR.position.y = -0.0626366231343;
-            trajPointR.position.z = 0.0;
-            trajPointR.orientation.x = -1.16587645216e-06;
-            trajPointR.orientation.y = 3.03336607205e-06;
-            trajPointR.orientation.z = 0.000763307697428;
+            trajPointR.position.x = 0;//0.4;
+            trajPointR.position.y = 0;//-0.0626366231343;
+            trajPointR.position.z = 0;//0.0;
+            trajPointR.orientation.x = 0;//-1.16587645216e-06;
+            trajPointR.orientation.y = 0;//3.03336607205e-06;
+            trajPointR.orientation.z = 0;//0.000763307697428;
             trajPointR.orientation.w = 0.999999708675;
             trajPointR.time = 2.0;
             wholebodymsg.right_foot_trajectory_message.taskspace_trajectory_points.push_back(trajPointR);
 
             trajPointR.unique_id = 3; //(int)ros::Time::now();
-            trajPointR.position.x = 0.4;
-            trajPointR.position.y = -0.0626366231343;
+            trajPointR.position.x = 0;//0.4;
+            trajPointR.position.y = 0;//-0.0626366231343;
             trajPointR.position.z = 0.0;
-            trajPointR.orientation.x = -1.16587645216e-06;
-            trajPointR.orientation.y = 3.03336607205e-06;
-            trajPointR.orientation.z = 0.000763307697428;
+            trajPointR.orientation.x = 0;//-1.16587645216e-06;
+            trajPointR.orientation.y = 0;//3.03336607205e-06;
+            trajPointR.orientation.z = 0;//0.000763307697428;
             trajPointR.orientation.w = 0.999999708675;
             trajPointR.time = 3.0;
             wholebodymsg.right_foot_trajectory_message.taskspace_trajectory_points.push_back(trajPointR);
@@ -126,8 +126,8 @@ int main(int argc, char **argv)
 
             // left and right arms
 
-            float BUTTON_PRESS_PREPARE_R [] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-            float BUTTON_PRESS_PREPARE_L [] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            float BUTTON_PRESS_PREPARE_R [] = {0.6, 0.25, 0.2, 1.1, 0.0, 0.0, 0.0};
+            float BUTTON_PRESS_PREPARE_L [] = {-0.6, -0.25, 0.2, -1.1, 0.0, 0.0, 0.0};
 
             wholebodymsg.right_arm_trajectory_message.joint_trajectory_messages.resize(7);
             wholebodymsg.right_arm_trajectory_message = appendTrajectoryPoint(wholebodymsg.right_arm_trajectory_message, 2, BUTTON_PRESS_PREPARE_R);
@@ -145,12 +145,12 @@ int main(int argc, char **argv)
 
             trajPointPelvis.unique_id = 4; //(int)ros::Time::now();
             trajPointPelvis.time = 2; // reach instantenously
-            trajPointPelvis.position.x = 0.2;
-            trajPointPelvis.position.y = 0; //26366231343;
-            trajPointPelvis.position.z = 0.7;
-            trajPointPelvis.orientation.x = 0; //-1.16587645216e-06;
-            trajPointPelvis.orientation.y = 0; //3.03336607205e-06;
-            trajPointPelvis.orientation.z = 0; //0.000763307697428;
+            trajPointPelvis.position.x = 2.186;
+            trajPointPelvis.position.y = 1.037; //26366231343;
+            trajPointPelvis.position.z = 0.91;
+            trajPointPelvis.orientation.x = 0.25; //-1.16587645216e-06;
+            trajPointPelvis.orientation.y = 3.5; //3.03336607205e-06;
+            trajPointPelvis.orientation.z = -1.31; //0.000763307697428;
             trajPointPelvis.orientation.w = 1; //0.999999708675;
             trajPointPelvis.time = 0.0;
             wholebodymsg.pelvis_trajectory_message.taskspace_trajectory_points.push_back(trajPointPelvis);
@@ -182,9 +182,9 @@ int main(int argc, char **argv)
 
             trajPointLHand.unique_id = 10; //(int)ros::Time::now();
             trajPointLHand.time = 2; // reach instantenously
-            trajPointLHand.position.x = 0.2;
+            trajPointLHand.position.x = 0.0;
             trajPointLHand.position.y = 0.6; //26366231343;
-            trajPointLHand.position.z = 0.7;
+            trajPointLHand.position.z = 0.5;
             trajPointLHand.orientation.x = 0; //-1.16587645216e-06;
             trajPointLHand.orientation.y = 0; //3.03336607205e-06;
             trajPointLHand.orientation.z = 0; //0.000763307697428;
@@ -201,9 +201,9 @@ int main(int argc, char **argv)
 
             trajPointRHand.unique_id = 10; //(int)ros::Time::now();
             trajPointRHand.time = 2; // reach instantenously
-            trajPointRHand.position.x = 0.2;
+            trajPointRHand.position.x = 0.0;
             trajPointRHand.position.y = -0.6; //26366231343;
-            trajPointRHand.position.z = 0.7;
+            trajPointRHand.position.z = 0.5;
             trajPointRHand.orientation.x = 0; //-1.16587645216e-06;
             trajPointRHand.orientation.y = 0; //3.03336607205e-06;
             trajPointRHand.orientation.z = 0; //0.000763307697428;
@@ -214,6 +214,7 @@ int main(int argc, char **argv)
             pub.publish(wholebodymsg);
             ROS_INFO("Message published");
         }
+
         else
         {
             return 0;
