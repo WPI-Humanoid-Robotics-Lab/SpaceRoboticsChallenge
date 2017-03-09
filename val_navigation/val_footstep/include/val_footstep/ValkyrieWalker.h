@@ -127,7 +127,7 @@ private:
     void getRobotPose(const nav_msgs::Odometry & posemsg);
     void waitForSteps( int n);
     bool getFootstep(geometry_msgs::Pose2D &goal,ihmc_msgs::FootstepDataListRosMessage &list);
-    ihmc_msgs::FootstepDataRosMessage* getOffsetStep(int side, float x, float y);
+    ihmc_msgs::FootstepDataRosMessage* getOffsetStep(int side, float x, float y, float roll=0.0f, float pitch=0.0f, float yaw=0.0f);
 
 };
  int ValkyrieWalker::id = -1;
