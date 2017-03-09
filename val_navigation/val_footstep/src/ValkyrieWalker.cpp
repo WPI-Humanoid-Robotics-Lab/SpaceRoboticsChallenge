@@ -264,7 +264,7 @@ void ValkyrieWalker::getRobotPose(const nav_msgs::Odometry &posemsg)
 
 // gives footstep which are offset from current step (only for straight line)
 
-ihmc_msgs::FootstepDataRosMessage* ValkyrieWalker::getOffsetStep(int side , float x, float y)
+ihmc_msgs::FootstepDataRosMessage* ValkyrieWalker::getOffsetStep(int side , float x, float y, float roll, float pitch, float yaw)
 {
     ///\ todo shared pointer implementation
     ihmc_msgs::FootstepDataRosMessage *next = new ihmc_msgs::FootstepDataRosMessage();
