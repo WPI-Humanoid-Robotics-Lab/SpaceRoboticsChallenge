@@ -52,7 +52,7 @@ planner_configs:
     max_nearest_neighbors: 10  # use k nearest neighbors. default: 10
   PRMstarkConfigDefault:
     type: geometric::PRMstar
-leftArm:
+leftShoulderPalm:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -67,7 +67,7 @@ leftArm:
     - PRMstarkConfigDefault
   projection_evaluator: joints(leftShoulderRoll,leftShoulderYaw)
   longest_valid_segment_fraction: 0.05
-rightArm:
+rightShoulderPalm:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -80,9 +80,9 @@ rightArm:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(rightShoulderPitch,rightShoulderRoll)
+  projection_evaluator: joints(rightShoulderRoll,rightShoulderYaw)
   longest_valid_segment_fraction: 0.05
-rightPalm:
+rightTorsoPalm:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -97,7 +97,7 @@ rightPalm:
     - PRMstarkConfigDefault
   projection_evaluator: joints(torsoYaw,torsoPitch)
   longest_valid_segment_fraction: 0.05
-leftPalm:
+leftTorsoPalm:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
