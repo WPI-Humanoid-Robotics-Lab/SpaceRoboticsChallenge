@@ -65,7 +65,7 @@ leftShoulderPalm:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(leftShoulderRoll,leftShoulderYaw)
+  projection_evaluator: joints(leftShoulderPitch,leftShoulderRoll)
   longest_valid_segment_fraction: 0.05
 rightShoulderPalm:
   planner_configs:
@@ -80,7 +80,7 @@ rightShoulderPalm:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(rightShoulderRoll,rightShoulderYaw)
+  projection_evaluator: joints(rightShoulderPitch,rightShoulderRoll)
   longest_valid_segment_fraction: 0.05
 rightTorsoPalm:
   planner_configs:

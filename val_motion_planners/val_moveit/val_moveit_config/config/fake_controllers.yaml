@@ -1,6 +1,7 @@
 controller_list:
   - name: fake_leftShoulderPalm_controller
     joints:
+      - leftShoulderPitch
       - leftShoulderRoll
       - leftShoulderYaw
       - leftElbowPitch
@@ -9,6 +10,7 @@ controller_list:
       - leftWristPitch
   - name: fake_rightShoulderPalm_controller
     joints:
+      - rightShoulderPitch
       - rightShoulderRoll
       - rightShoulderYaw
       - rightElbowPitch

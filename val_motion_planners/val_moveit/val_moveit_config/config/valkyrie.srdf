@@ -10,10 +10,10 @@
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="leftShoulderPalm">
-        <chain base_link="leftShoulderPitchLink" tip_link="leftPalm" />
+        <chain base_link="torso" tip_link="leftPalm" />
     </group>
     <group name="rightShoulderPalm">
-        <chain base_link="rightShoulderPitchLink" tip_link="rightPalm" />
+        <chain base_link="torso" tip_link="rightPalm" />
     </group>
     <group name="rightTorsoPalm">
         <chain base_link="pelvis" tip_link="rightPalm" />
