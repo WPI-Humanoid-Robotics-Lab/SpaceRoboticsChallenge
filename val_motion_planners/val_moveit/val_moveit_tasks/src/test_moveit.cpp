@@ -22,6 +22,40 @@ int main(int argc, char** argv){
 
   moveit::planning_interface::MoveGroup group("rightShoulderPalm");
 
+ /**********************************************************
+  * This adds the detected wheel as an objectof the robot
+  * We need to import the mesh here below
+  * We need to specify the mesh positions below
+  * *******************************************************/
+
+//    Adding object to the robot to avoid collision
+//  moveit_msgs::CollisionObject collision_object;
+//  collision_object.header.frame_id = group.getPlanningFrame();
+//  collision_object.object.id = "wheels";
+
+//  shape_msgs::Mesh wheelMesh;
+//  wheelMesh.triangles =
+
+//  geometry_msgs::Pose wheelMeshPose;
+//  wheelMeshPose.orientation.w =
+//  wheelMeshPose.position.x =
+//  wheelMeshPose.position.y =
+//  wheelMeshPose.position.z =
+
+//  collision_object.meshes.push_back(wheelMesh);
+//  collision_object.mesh_poses.push_back(wheelMeshPose);
+//  collision_object.operation = collision_object.ADD;
+
+//  std::vector<moveit_msgs::CollisionObject> collision_objects;
+//  collision_objects.push_back(collision_object);
+
+//  ROS_INFO("Attach the object to the robot");
+//  group.attachObject(collision_object.id);
+
+//  /* Sleep to give Rviz time to show the object attached (different color). */
+//  sleep(4.0);
+
+
   // set the start state to the current state of the robot
   group.setStartStateToCurrentState();
 
