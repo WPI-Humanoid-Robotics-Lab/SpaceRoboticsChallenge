@@ -204,7 +204,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tabArm">
           <attribute name="title">
@@ -770,9 +770,8 @@ p, li { white-space: pre-wrap; }
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="btnGroupFeet"/>
   <buttongroup name="btnGroupDisplays"/>
   <buttongroup name="btnGroupRvizTools"/>
-  <buttongroup name="btnGroupArm"/>
+  <buttongroup name="btnGroupRvizTools"/>
  </buttongroups>
 </ui>

@@ -79,6 +79,8 @@ void ValkyrieGUI::initVariables()
     liveVideoSub    = it_.subscribe(imageTopic_.toStdString(),1,&ValkyrieGUI::liveVideoCallback,this,image_transport::TransportHints("raw"));
 
     jointStateSub_ = nh_.subscribe("/joint_states",1, &ValkyrieGUI::jointStateCallBack, this);
+
+    jointStateSub_ = nh_.subscribe("/joint_states",1, &ValkyrieGUI::jointStateCallBack, this);
 }
 
 void ValkyrieGUI::initActionsConnections()
@@ -280,7 +282,10 @@ void ValkyrieGUI::initDefaultValues() {
     //configure arm sliders
     getArmState();
 
-    //    jointStateSub_.shutdown();
+    //configure arm sliders
+    getArmState();
+
+//    jointStateSub_.shutdown();
 }
 
 void ValkyrieGUI::initValkyrieControllers() {
@@ -300,55 +305,48 @@ void ValkyrieGUI::initValkyrieControllers() {
 
 void ValkyrieGUI::getArmState()
 {
-    if(jointNames_.empty()){
-        ROS_INFO("joint_states is not initialized yet. cannot update arm joints");
-        return;
-    }
+
     armSide side = ui->radioArmSideLeft->isChecked() ? LEFT : RIGHT;
     mtx_.lock();
     for (size_t i = 0; i < jointNames_.size(); i++){
         if(side == LEFT) {
             if (jointNames_[i] == "leftShoulderPitch"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - LEFT_SHOULDER_PITCH_MIN )* 100)/(LEFT_SHOULDER_PITCH_MAX-LEFT_SHOULDER_PITCH_MIN);
+                jointVal = (jointVal-LEFT_SHOULDER_PITCH_MIN) *(100/(LEFT_SHOULDER_PITCH_MAX-LEFT_SHOULDER_PITCH_MIN));
                 ui->sliderShoulderPitch->setValue(jointVal);
                 continue;
 
             }
             else if (jointNames_[i] == "leftShoulderRoll"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - LEFT_SHOULDER_ROLL_MIN )* 100)/(LEFT_SHOULDER_ROLL_MAX-LEFT_SHOULDER_ROLL_MIN);
+                jointVal = (jointVal - LEFT_SHOULDER_ROLL_MIN) *(100/(LEFT_SHOULDER_ROLL_MAX-LEFT_SHOULDER_ROLL_MIN));
                 ui->sliderShoulderRoll->setValue(jointVal);
                 continue;
             }
             else if (jointNames_[i] == "leftShoulderYaw"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - LEFT_SHOULDER_YAW_MIN )* 100)/(LEFT_SHOULDER_YAW_MAX-LEFT_SHOULDER_YAW_MIN);
+                jointVal = (jointVal - LEFT_SHOULDER_YAW_MIN) *(100/(LEFT_SHOULDER_YAW_MAX-LEFT_SHOULDER_YAW_MIN));
                 ui->sliderShoulderYaw->setValue(jointVal);
                 continue;
             }
             else if (jointNames_[i] == "leftElbowPitch"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - LEFT_ELBOW_MIN )* 100)/(LEFT_ELBOW_MAX-LEFT_ELBOW_MIN);
-                ui->sliderElbow->setValue(jointVal);
+                ui->sliderElbow->setValue(jointVal *(100/(LEFT_ELBOW_MAX-LEFT_ELBOW_MIN)));
                 continue;
             }
             else if (jointNames_[i] == "leftForearmYaw"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - LEFT_WRIST_YAW_MIN )* 100)/(LEFT_WRIST_YAW_MAX-LEFT_WRIST_YAW_MIN);
-                ui->sliderWristYaw->setValue(jointVal);
+                ui->sliderWristYaw->setValue(jointVal *(100/(LEFT_WRIST_YAW_MAX-LEFT_WRIST_YAW_MIN)));
                 continue;
             }
             else if (jointNames_[i] == "leftWristRoll"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - LEFT_WRIST_ROLL_MIN )* 100)/(LEFT_WRIST_ROLL_MAX-LEFT_WRIST_ROLL_MIN);
-                ui->sliderWristRoll->setValue(jointVal);
+                ui->sliderWristRoll->setValue(jointVal *(100/(LEFT_WRIST_ROLL_MAX-LEFT_WRIST_ROLL_MIN)));
                 continue;
             }
             else if (jointNames_[i] == "leftWristPitch"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - LEFT_WRIST_PITCH_MIN )* 100)/(LEFT_WRIST_PITCH_MAX-LEFT_WRIST_PITCH_MIN);
-                ui->sliderWristPitch->setValue(jointVal);
+                ui->sliderWristPitch->setValue(jointVal *(100/(LEFT_WRIST_PITCH_MAX-LEFT_WRIST_PITCH_MIN)));
                 continue;
             }
         }
@@ -356,45 +354,40 @@ void ValkyrieGUI::getArmState()
 
             if (jointNames_[i] == "rightShoulderPitch"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - RIGHT_SHOULDER_PITCH_MIN )* 100)/(RIGHT_SHOULDER_PITCH_MAX-RIGHT_SHOULDER_PITCH_MIN);
+                jointVal = jointVal *(100/(RIGHT_SHOULDER_PITCH_MAX-RIGHT_SHOULDER_PITCH_MIN));
                 ui->sliderShoulderPitch->setValue(jointVal);
                 ROS_INFO("Set the shoulder pitch to %.2f rad and %.2f degrees",jointValues_[i], jointVal);
                 continue;
             }
             else if (jointNames_[i] == "rightShoulderRoll"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - RIGHT_SHOULDER_ROLL_MIN )* 100)/(RIGHT_SHOULDER_ROLL_MAX-RIGHT_SHOULDER_ROLL_MIN);
+                jointVal = jointVal *(100/(RIGHT_SHOULDER_ROLL_MAX-RIGHT_SHOULDER_ROLL_MIN));
                 ui->sliderShoulderRoll->setValue(jointVal);
                 continue;
             }
             else if (jointNames_[i] == "rightShoulderYaw"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - RIGHT_SHOULDER_YAW_MIN )* 100)/(RIGHT_SHOULDER_YAW_MAX-RIGHT_SHOULDER_YAW_MIN);
-                ui->sliderShoulderYaw->setValue(jointVal);
+                ui->sliderShoulderYaw->setValue(jointVal *(100/(RIGHT_SHOULDER_YAW_MAX-RIGHT_SHOULDER_YAW_MIN)));
                 continue;
             }
             else if (jointNames_[i] == "rightElbowPitch"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - RIGHT_ELBOW_MIN )* 100)/(RIGHT_ELBOW_MAX-RIGHT_ELBOW_MIN);
-                ui->sliderElbow->setValue(jointVal);
+                ui->sliderElbow->setValue(jointVal *(100/(RIGHT_ELBOW_MAX-RIGHT_ELBOW_MIN)));
                 continue;
             }
             else if (jointNames_[i] == "rightForearmYaw"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - RIGHT_WRIST_YAW_MIN )* 100)/(RIGHT_WRIST_YAW_MAX-RIGHT_WRIST_YAW_MIN);
-                ui->sliderWristYaw->setValue(jointVal);
+                ui->sliderWristYaw->setValue(jointVal *(100/(RIGHT_WRIST_YAW_MAX-RIGHT_WRIST_YAW_MIN)));
                 continue;
             }
             else if (jointNames_[i] == "rightWristRoll"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - RIGHT_WRIST_ROLL_MIN )* 100)/(RIGHT_WRIST_ROLL_MAX-RIGHT_WRIST_ROLL_MIN);
-                ui->sliderWristRoll->setValue(jointVal);
+                ui->sliderWristRoll->setValue(jointVal *(100/(RIGHT_WRIST_ROLL_MAX-RIGHT_WRIST_ROLL_MIN)));
                 continue;
             }
             else if (jointNames_[i] == "rightWristPitch"){
                 double jointVal = jointValues_[i] * TO_DEGREES;
-                jointVal = ((jointVal - RIGHT_WRIST_PITCH_MIN )* 100)/(RIGHT_WRIST_PITCH_MAX-RIGHT_WRIST_PITCH_MIN);
-                ui->sliderWristPitch->setValue(jointVal);
+                ui->sliderWristPitch->setValue(jointVal *(100/(RIGHT_WRIST_PITCH_MAX-RIGHT_WRIST_PITCH_MIN)));
                 continue;
             }
         }
@@ -407,44 +400,56 @@ void ValkyrieGUI::getArmState()
 
 void ValkyrieGUI::getChestState()
 {
-    return;
-    // No point updating the chest state as it will always updtae wrt to world
-
-    if(jointNames_.empty()){
-        ROS_INFO("joint_states is not initialized yet. cannot update arm joints");
-        return;
-    }
-
-    mtx_.lock();
-    for (size_t i = 0; i < jointNames_.size(); i++){
-        if (jointNames_[i] == "torsoYaw"){
-            double jointVal = jointValues_[i] * TO_DEGREES;
-            jointVal = ((jointVal - CHEST_YAW_MIN )* 100)/(CHEST_YAW_MAX-CHEST_YAW_MIN);
-            ui->sliderWristYaw->setValue(jointVal);
-            continue;
-        }
-        else if (jointNames_[i] == "torsoPitch"){
-            double jointVal = jointValues_[i] * TO_DEGREES;
-            jointVal = ((jointVal - CHEST_PITCH_MIN )* 100)/(CHEST_PITCH_MAX-CHEST_PITCH_MIN);
-            ui->sliderWristRoll->setValue(jointVal);
-            continue;
-        }
-        else if (jointNames_[i] == "torsoRoll"){
-            double jointVal = jointValues_[i] * TO_DEGREES;
-            jointVal = ((jointVal - CHEST_ROLL_MIN )* 100)/(CHEST_ROLL_MAX-CHEST_ROLL_MIN);
-            ui->sliderWristPitch->setValue(jointVal);
-            continue;
-        }
-
-    }
-
-    mtx_.unlock();
-
 
 }
 
 void ValkyrieGUI::getPelvisState()
 {
+
+}
+
+void ValkyrieGUI::getNeckState()
+{
+
+}
+
+void ValkyrieGUI::getGripperState()
+{
+
+}
+
+void ValkyrieGUI::jointStateCallBack(const sensor_msgs::JointStatePtr &state)
+{
+    jointNames_ = state->name;
+    jointValues_ = state->position;
+
+}
+
+void ValkyrieGUI::updateJointStateSub(int tabID){
+    //0 = arm
+    //1 = chest
+    //2 = neck
+    //3 = walk
+//    jointStateSub_ = nh_.subscribe("/joint_states",1, &ValkyrieGUI::jointStateCallBack, this);
+    switch (tabID) {
+    case 0:
+        getArmState();
+        getGripperState();
+        break;
+    case 1:
+        getChestState();
+        break;
+    case 2:
+        getNeckState();
+        break;
+    case 3:
+        getPelvisState();
+        break;
+    default:
+        break;
+    }
+
+//    jointStateSub_.shutdown();
 
 }
 
@@ -718,6 +723,62 @@ void ValkyrieGUI::changePelvisHeight(){
     if(pelvisHeightController_ != nullptr){
         pelvisHeightController_->controlPelvisHeight(height);
     }
+
+}
+
+void ValkyrieGUI::moveArmJoints(){
+    if(armJointController_ == nullptr) {
+        return;
+    }
+    float shoulderRollValue ;
+    float shoulderPitchValue;
+    float shoulderYawValue  ;
+
+    float wristRollValue    ;
+    float wristPitchValue   ;
+    float wristYawValue     ;
+
+    float elbowValue        ;
+
+    armSide side = ui->radioArmSideLeft->isChecked() ? LEFT : RIGHT;
+    if(side == LEFT)
+    {
+        shoulderRollValue  = ui->sliderShoulderRoll->value()*(LEFT_SHOULDER_ROLL_MAX-LEFT_SHOULDER_ROLL_MIN)/100+LEFT_SHOULDER_ROLL_MIN;
+        shoulderPitchValue = ui->sliderShoulderPitch->value()*(LEFT_SHOULDER_PITCH_MAX-LEFT_SHOULDER_PITCH_MIN)/100+LEFT_SHOULDER_PITCH_MIN;
+        shoulderYawValue   = ui->sliderShoulderYaw->value()*(LEFT_SHOULDER_YAW_MAX-LEFT_SHOULDER_YAW_MIN)/100+LEFT_SHOULDER_YAW_MIN;
+
+        wristRollValue     = ui->sliderWristRoll->value()*(LEFT_WRIST_ROLL_MAX-LEFT_WRIST_ROLL_MIN)/100+LEFT_WRIST_ROLL_MIN;
+        wristPitchValue    = ui->sliderWristPitch->value()*(LEFT_WRIST_PITCH_MAX-LEFT_WRIST_PITCH_MIN)/100+LEFT_WRIST_PITCH_MIN;
+        wristYawValue      = ui->sliderWristYaw->value()*(LEFT_WRIST_YAW_MAX-LEFT_WRIST_YAW_MIN)/100+LEFT_WRIST_YAW_MIN;
+
+        elbowValue         = ui->sliderElbow->value()*(LEFT_ELBOW_MAX-LEFT_ELBOW_MIN)/100+LEFT_ELBOW_MIN;
+    }
+    else {
+        shoulderRollValue  = ui->sliderShoulderRoll->value()*(RIGHT_SHOULDER_ROLL_MAX-RIGHT_SHOULDER_ROLL_MIN)/100+RIGHT_SHOULDER_ROLL_MIN;
+        shoulderPitchValue = ui->sliderShoulderPitch->value()*(RIGHT_SHOULDER_PITCH_MAX-RIGHT_SHOULDER_PITCH_MIN)/100+RIGHT_SHOULDER_PITCH_MIN;
+        shoulderYawValue   = ui->sliderShoulderYaw->value()*(RIGHT_SHOULDER_YAW_MAX-RIGHT_SHOULDER_YAW_MIN)/100+RIGHT_SHOULDER_YAW_MIN;
+
+        wristRollValue     = ui->sliderWristRoll->value()*(RIGHT_WRIST_ROLL_MAX-RIGHT_WRIST_ROLL_MIN)/100+RIGHT_WRIST_ROLL_MIN;
+        wristPitchValue    = ui->sliderWristPitch->value()*(RIGHT_WRIST_PITCH_MAX-RIGHT_WRIST_PITCH_MIN)/100+RIGHT_WRIST_PITCH_MIN;
+        wristYawValue      = ui->sliderWristYaw->value()*(RIGHT_WRIST_YAW_MAX-RIGHT_WRIST_YAW_MIN)/100+RIGHT_WRIST_YAW_MIN;
+
+        elbowValue         = ui->sliderElbow->value()*(RIGHT_ELBOW_MAX-RIGHT_ELBOW_MIN)/100+RIGHT_ELBOW_MIN;
+    }
+
+
+    std::vector<armTrajectory::armJointData> data;
+    armTrajectory::armJointData msg;
+    //sequence of joints for sending arm data
+    std::vector<std::string> joints = {"leftShoulderPitch", "leftShoulderRoll", "leftShoulderYaw", "leftElbowPitch", "leftForearmYaw", "leftWristRoll", "leftWristPitch"};
+    msg.arm_pose = {shoulderPitchValue * TO_RADIANS, shoulderRollValue* TO_RADIANS, shoulderYawValue* TO_RADIANS,
+                    elbowValue* TO_RADIANS, wristYawValue* TO_RADIANS, wristRollValue* TO_RADIANS, wristPitchValue* TO_RADIANS};
+    msg.side = side;
+    msg.time = 0.0;
+    for (size_t i = 0; i< msg.arm_pose.size(); i++){
+        ROS_INFO("%s : %0.2f", joints[i].c_str(), msg.arm_pose[i]);
+    }
+    data.push_back(msg);
+    armJointController_->moveArmJoints(data);
 
 }
 
