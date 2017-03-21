@@ -1,0 +1,24 @@
+{
+    "caffe flavor": "NVIDIA",
+    "caffe version": "0.15.14",
+    "creation time": "2017-03-07 14:04:51.309206",
+    "dataset_id": "20170306-203122-41b7",
+    "deploy file": "deploy.prototxt",
+    "digits version": "5.1-dev",
+    "framework": "caffe",
+    "id": "20170307-140451-ac81",
+    "image dimensions": [
+        544,
+        1024,
+        3
+    ],
+    "job id": "20170307-140451-ac81",
+    "mean file": "mean.binaryproto",
+    "model file": "original.prototxt",
+    "name": "SRCDATA3",
+    "snapshot file": "snapshot_iter_1110.caffemodel",
+    "solver file": "solver.prototxt",
+    "status": "Done",
+    "train_val file": "train_val.prototxt",
+    "username": "bpinaya"
+}
