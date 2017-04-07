@@ -167,6 +167,7 @@ include_directories(
             src/val_task1SM.cpp
 )
 
+add_executable(val_data_creation src/val_data_creation.cpp)
 
 add_executable(val_circle src/val_circle.cpp)
 
