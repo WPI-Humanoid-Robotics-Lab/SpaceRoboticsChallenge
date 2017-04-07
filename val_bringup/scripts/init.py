@@ -15,7 +15,8 @@ def callback(data):
       subprocess.Popen(["roslaunch", "val_perception_bringup", "laser_assembler.launch"])
       subprocess.Popen(["roslaunch", "val_perception_bringup", "octomap.launch"])
       subprocess.Popen(["roslaunch", "val_footstep", "val_footstep.launch"])
-    
+      #subprocess.Popen(["roslaunch", "val_bringup", "static_frame.launch"])
+
 def WaitForRobot():
     rospy.init_node('WaitForRobot', anonymous=True)
 
