@@ -29,8 +29,8 @@ void writeToFile()
   cv::FileStorage fs(filename.str(), cv::FileStorage::WRITE);
   fs << "left" << left_image;
   fs << "right" << right_image;
-  //fs << "xpos" << transform.getOrigin().x();
-  //fs << "ypos" << transform.getOrigin().y();
+  fs << "xpos" << transform.getOrigin().x();
+  fs << "ypos" << transform.getOrigin().y();
   count++;
   fs.release();
   left_updated = right_updated = false;
@@ -65,10 +65,20 @@ int main(int argc, char **argv)
   cv::namedWindow("view");
   cv::startWindowThread();
 
+  bool success = false;
+  tf::TransformListener listener;
+  
+  while (!success) {
+    try {
+      listener.waitForTransform("/valve_frame", "/pelvis", ros::Time(0), ros::Duration(3.0));
+      listener.lookupTransform("/valve_frame", "/pelvis", ros::Time(0), transform);
+      success = true;
+    }
+    catch (tf::LookupException e){
 
-  //tf::TransformListener listener;
-  //listener.lookupTransform("/world", "/valve_frame",ros::Time(0), transform);
-
+    }
+    sleep(0.1);
+  }
 
   image_transport::ImageTransport it(nh);
   image_transport::Subscriber subL = it.subscribe("/multisense/camera/left/image_raw", 1, boost::bind(imageCallback, _1, 'L'));
