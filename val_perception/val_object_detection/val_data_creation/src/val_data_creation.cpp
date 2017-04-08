@@ -7,32 +7,39 @@
 #include <string>
 #include <opencv2/core/core.hpp>
 #include <iostream>
+#include <fstream>
 #include <boost/bind.hpp>
 #include <tf/transform_listener.h>
+
+// too many header files ^
 
 int count = 0;
 cv::Mat left_image, right_image;
 bool left_updated, right_updated;
 tf::StampedTransform transform;
-/*
-static void write(cv::FileStorage& fs, const std::string&, const tf::StampedTransform& x)
-{
-    //fs << "x" << x.getOrigin().x();
-    //fs << "y" << x.getOrigin().y();
-    x.write(fs);
-}*/
+
+// /valve_frame is at (2.15 0.60 0 0 0 0 1 ) with respect to /world
+// This node is calculating the transform from /pelvis to /valve_frame
 
 void writeToFile()
 {
-  std::stringstream filename;
-  filename<<ros::package::getPath("val_data_creation")<<"/saved_images/"<<"training_img_"<<count<<".xml";
-  cv::FileStorage fs(filename.str(), cv::FileStorage::WRITE);
-  fs << "left" << left_image;
-  fs << "right" << right_image;
-  fs << "xpos" << transform.getOrigin().x();
-  fs << "ypos" << transform.getOrigin().y();
+  // create file names
+  std::stringstream filenameL, filenameR, filetext;
+  filenameL<<ros::package::getPath("val_data_creation")<<"/left_images/"<<"L_"<<count<<".png";
+  filenameR<<ros::package::getPath("val_data_creation")<<"/right_images/"<<"R_"<<count<<".png";
+  filetext<<ros::package::getPath("val_data_creation")<<"/labels/"<<"Label_"<<count<<".txt";
+  cv::imwrite(filenameL.str(),left_image);
+  cv::imwrite(filenameR.str(),right_image);
+  std::ofstream fs;
+  fs.open(filetext.str().c_str());          // save transform to text file
+  fs << "xpos" << transform.getOrigin().x()<<"\n";
+  fs << "ypos" << transform.getOrigin().y()<<"\n";
+  fs << "zpos" << transform.getOrigin().z()<<"\n";
+  fs << "q1" << transform.getRotation()[1]<<"\n";
+  fs << "q2" << transform.getRotation()[2]<<"\n";
+  fs << "q3" << transform.getRotation()[3]<<"\n";
   count++;
-  fs.release();
+  fs.close();
   left_updated = right_updated = false;
 }
 
@@ -43,7 +50,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg, char side)
   {
     left_updated = true;
     cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-    left_image = cv_ptr->image;
+    left_image = cv_ptr->image; // convert msg to image
   }
   else if (side == 'R')
   {
@@ -53,7 +60,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg, char side)
   }
 
   if (left_updated == true && right_updated == true)
-    {writeToFile();}
+    { writeToFile(); }
 }
 
 
@@ -62,12 +69,10 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "image_listener");
   ros::NodeHandle nh;
-  cv::namedWindow("view");
-  cv::startWindowThread();
 
   bool success = false;
   tf::TransformListener listener;
-  
+
   while (!success) {
     try {
       listener.waitForTransform("/valve_frame", "/pelvis", ros::Time(0), ros::Duration(3.0));
@@ -77,69 +82,12 @@ int main(int argc, char **argv)
     catch (tf::LookupException e){
 
     }
-    sleep(0.1);
+    sleep(0.1); // not sure if required
   }
 
   image_transport::ImageTransport it(nh);
   image_transport::Subscriber subL = it.subscribe("/multisense/camera/left/image_raw", 1, boost::bind(imageCallback, _1, 'L'));
   image_transport::Subscriber subR = it.subscribe("/multisense/camera/right/image_raw", 1, boost::bind(imageCallback, _1, 'R'));
   ros::spin();
-  cv::destroyWindow("view");
+
 }
-
-
-
-//-------------------------
-/*
-class ImageConverter
-{
-    ros::NodeHandle nh_;
-    image_transport::ImageTransport it_;
-    image_transport::Subscriber image_sub_;
-
-
-public:
-    static int index;
-    ImageConverter()
-        : it_(nh_)
-    {
-        // Subscrive to input video feed and publish output video feed
-        image_sub_ = it_.subscribe("/multisense/camera/left/image_raw", 1,
-                                   &ImageConverter::imageCb, this);
-
-    }
-
-    ~ImageConverter()
-    {
-    }
-
-    void imageCb(const sensor_msgs::ImageConstPtr& msg)
-    {
-        cv_bridge::CvImagePtr cv_ptr;
-        try
-        {
-            cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-            //std::string filename = ros::package::getPath("val_data_creation") + "/saved_images/" + "training_img_" + std::to_string(index++) + ".png";
-            std::stringstream filename;
-            filename<<ros::package::getPath("val_data_creation")<<"/saved_images/"<<"training_img_"<<index<<".json";
-            cv::imwrite(filename.str(), cv_ptr->image);
-
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-
-    }
-};
-int ImageConverter::index = 0;
-
-int main(int argc, char** argv)
-{
-    ros::init(argc, argv, "generate_training_images");
-    ImageConverter::index = int(ros::WallTime::now().toSec());
-    ImageConverter ic;
-    ros::spin();
-    return 0;
-} */
