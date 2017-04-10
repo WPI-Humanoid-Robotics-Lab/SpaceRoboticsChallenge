@@ -36,9 +36,8 @@
 #include <QApplication>
 #include <ros/ros.h>
 
-#include "val_gui.h"
-
-#include "configurationreader.h"
+#include "val_gui/val_gui.h"
+#include "val_gui/configurationreader.h"
 
 int main(int argc, char **argv)
 {
@@ -49,12 +48,12 @@ int main(int argc, char **argv)
 
   QApplication app( argc, argv );
 
-  ValkyrieGUI* fallrisk_gui = new ValkyrieGUI();
-  fallrisk_gui->show();
+  ValkyrieGUI* val_gui = new ValkyrieGUI();
+  val_gui->show();
 
   app.exec();
 
-  delete fallrisk_gui;
+  delete val_gui;
 
   return 0;
 

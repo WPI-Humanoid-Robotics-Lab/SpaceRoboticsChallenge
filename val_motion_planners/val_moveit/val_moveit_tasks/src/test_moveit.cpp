@@ -19,7 +19,6 @@ int main(int argc, char** argv){
      *************************************/
   ros::AsyncSpinner spinner(1);
   spinner.start();
-
   moveit::planning_interface::MoveGroup group("rightShoulderPalm");
 
  /**********************************************************
@@ -56,6 +55,7 @@ int main(int argc, char** argv){
 //  sleep(4.0);
 
 
+    ROS_INFO("set to state");
   // set the start state to the current state of the robot
   group.setStartStateToCurrentState();
 
@@ -91,9 +91,7 @@ int main(int argc, char** argv){
   geometry_msgs::Pose t_pose_1;
   moveit::planning_interface::MoveGroup::Plan my_plan;
 
-  // arm trajectory object
   armTrajectory armTraj(node_handle);
-
   // set first pose point
   t_pose_1.orientation.w = 1.0;
   t_pose_1.position.x = 0.28;
@@ -104,10 +102,10 @@ int main(int argc, char** argv){
 
   if (group.plan((my_plan)))
   {
-    std::cout<<"sucessfully planned the trajectory"<<std::endl;
+        ROS_INFO("sucessfully planned the trajectory");
     std::vector<trajectory_msgs::JointTrajectoryPoint>::iterator itp;
 
-    std::cout << "joint names" << std::endl;
+        std::cout << "joint names" << std::endl;
     for (it = my_plan.trajectory_.joint_trajectory.joint_names.begin(); it < my_plan.trajectory_.joint_trajectory.joint_names.end(); it++)
       std::cout << *it << std::endl;
     std::cout << "joint trajectories" << std::endl;
