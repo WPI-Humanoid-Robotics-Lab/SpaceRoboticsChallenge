@@ -260,6 +260,7 @@ ihmc_msgs::FootstepDataRosMessage* ValkyrieWalker::getOffsetStep(int side , floa
     this->getCurrentStep(side, *next);
     next->location.x+=x;
     next->location.y+=y;
+    next->location.z=0.05;
     next->swing_height = swing_height;
     return next;
 
