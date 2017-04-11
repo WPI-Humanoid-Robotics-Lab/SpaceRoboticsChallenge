@@ -11,7 +11,7 @@
 
 int main(int argc, char** argv){
 
-  ros::init(argc, argv, "test_moveit");
+  ros::init(argc, argv, "dual_arm_moveit");
   ros::NodeHandle node_handle;
 
   /**************************************
@@ -19,43 +19,7 @@ int main(int argc, char** argv){
      *************************************/
   ros::AsyncSpinner spinner(1);
   spinner.start();
-  moveit::planning_interface::MoveGroup group("rightShoulderPalm");
-
- /**********************************************************
-  * This adds the detected wheel as an objectof the robot
-  * We need to import the mesh here below
-  * We need to specify the mesh positions below
-  * *******************************************************/
-
-//    Adding object to the robot to avoid collision
-//  moveit_msgs::CollisionObject collision_object;
-//  collision_object.header.frame_id = group.getPlanningFrame();
-//  collision_object.object.id = "wheels";
-
-//  shape_msgs::Mesh wheelMesh;
-//  wheelMesh.triangles =
-
-//  geometry_msgs::Pose wheelMeshPose;
-//  wheelMeshPose.orientation.w =
-//  wheelMeshPose.position.x =
-//  wheelMeshPose.position.y =
-//  wheelMeshPose.position.z =
-
-//  collision_object.meshes.push_back(wheelMesh);
-//  collision_object.mesh_poses.push_back(wheelMeshPose);
-//  collision_object.operation = collision_object.ADD;
-
-//  std::vector<moveit_msgs::CollisionObject> collision_objects;
-//  collision_objects.push_back(collision_object);
-
-//  ROS_INFO("Attach the object to the robot");
-//  group.attachObject(collision_object.id);
-
-//  /* Sleep to give Rviz time to show the object attached (different color). */
-//  sleep(4.0);
-
-
-
+  moveit::planning_interface::MoveGroup group("arms");
 
     ROS_INFO("set to state");
   // set the start state to the current state of the robot
@@ -94,6 +58,7 @@ int main(int argc, char** argv){
 
   // set the target location
   geometry_msgs::Pose t_pose_1;
+  geometry_msgs::Pose t_pose_2;
   moveit::planning_interface::MoveGroup::Plan my_plan;
 
   armTrajectory armTraj(node_handle);
@@ -103,12 +68,15 @@ int main(int argc, char** argv){
   t_pose_1.orientation.x = -0.255;
   t_pose_1.orientation.y = -0.263;
   t_pose_1.orientation.z = 0.729;
-
-
   t_pose_1.position.x = 1.683;
   t_pose_1.position.y = -0.269;
   t_pose_1.position.z = 0.941;
-  group.setPoseTarget(t_pose_1);
+
+  t_pose_2.orientation.w = 1.0;
+  t_pose_2.position.x = 1.683;
+  t_pose_2.position.y = 0.269;
+  t_pose_2.position.z = 0.943;
+  group.setPoseTarget(t_pose_2,"leftShoulderPalm");
   group.setGoalTolerance(0.1);
 
   if (group.plan((my_plan)))
@@ -134,31 +102,6 @@ int main(int argc, char** argv){
     ROS_INFO("planning failed");
   }
 
-  // sleep for 20 sec before executing next point
-  sleep(20.0);
-  ROS_INFO("planning for second point");
-
-  // set second target location
-  t_pose_1.orientation.w = 1.0;
-  t_pose_1.position.x = 0.28;
-  t_pose_1.position.y = -1.0;
-  t_pose_1.position.z = 1.3;
-  group.setPoseTarget(t_pose_1);
-
-  group.setPlanningTime(10);
-  if (group.plan((my_plan)))
-  {
-
-    /* Sleep to give Rviz time to visualize the plan. */
-    sleep(2.0);
-    ROS_INFO("executing on robot\n");
-    armTrajectory armTraj(node_handle);
-    armTraj.moveArmTrajectory(RIGHT, my_plan.trajectory_.joint_trajectory);
-  }
-  else
-  {
-    ROS_INFO("planning failed");
-  }
 
 
   ros::spin();

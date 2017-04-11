@@ -85,6 +85,10 @@ add_executable(test_moveit src/test_moveit.cpp)
 target_link_libraries(test_moveit
    ${catkin_LIBRARIES}
  )
+add_executable(dual_arm_moveit src/dual_arm_moveit.cpp)
+target_link_libraries(dual_arm_moveit
+   ${catkin_LIBRARIES}
+ )
  add_executable(val_pose src/val_pose.cpp)
  target_link_libraries(val_pose
     ${catkin_LIBRARIES}
