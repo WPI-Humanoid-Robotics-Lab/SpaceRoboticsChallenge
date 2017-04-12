@@ -19,7 +19,7 @@ int main(int argc, char** argv){
      *************************************/
   ros::AsyncSpinner spinner(1);
   spinner.start();
-  moveit::planning_interface::MoveGroup group("arms");
+  moveit::planning_interface::MoveGroup group("botharms");
 
     ROS_INFO("set to state");
   // set the start state to the current state of the robot
@@ -68,13 +68,14 @@ int main(int argc, char** argv){
   t_pose_1.orientation.x = -0.255;
   t_pose_1.orientation.y = -0.263;
   t_pose_1.orientation.z = 0.729;
-  t_pose_1.position.x = 1.683;
-  t_pose_1.position.y = -0.269;
+  t_pose_1.position.x = 0.395;
+  t_pose_1.position.y = -0.291;
   t_pose_1.position.z = 0.941;
+  group.setPoseTarget(t_pose_1,"rightShoulderPalm");
 
   t_pose_2.orientation.w = 1.0;
-  t_pose_2.position.x = 1.683;
-  t_pose_2.position.y = 0.269;
+  t_pose_2.position.x = 0.394;
+  t_pose_2.position.y = 0.109;
   t_pose_2.position.z = 0.943;
   group.setPoseTarget(t_pose_2,"leftShoulderPalm");
   group.setGoalTolerance(0.1);

@@ -41,3 +41,25 @@ controller_list:
       - leftForearmYaw
       - leftWristRoll
       - leftWristPitch
+  - name: fake_leftElbowPalm_controller
+    joints:
+      - leftElbowPitch
+      - leftForearmYaw
+      - leftWristRoll
+      - leftWristPitch
+  - name: fake_botharms_controller
+    joints:
+      - leftShoulderPitch
+      - leftShoulderRoll
+      - leftShoulderYaw
+      - leftElbowPitch
+      - leftForearmYaw
+      - leftWristRoll
+      - leftWristPitch
+      - rightShoulderPitch
+      - rightShoulderRoll
+      - rightShoulderYaw
+      - rightElbowPitch
+      - rightForearmYaw
+      - rightWristRoll
+      - rightWristPitch
