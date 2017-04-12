@@ -192,6 +192,7 @@ ValkyrieWalker::ValkyrieWalker(ros::NodeHandle nh,double InTransferTime ,double 
 {
     this->footstep_client_ = nh_.serviceClient <humanoid_nav_msgs::PlanFootsteps> ("/plan_footsteps");
     this->footsteps_pub_   = nh_.advertise<ihmc_msgs::FootstepDataListRosMessage>("/ihmc_ros/valkyrie/control/footstep_list",1,true);
+    this->footsteps_pub_   = nh_.advertise<ihmc_msgs::FootstepDataRosMessage>("/ihmc_ros/valkyrie/control/footstep_list",1,true);
     this->footstep_status_ = nh_.subscribe("/ihmc_ros/valkyrie/output/footstep_status", 20,&ValkyrieWalker::footstepStatusCB, this);
 
     transfer_time = InTransferTime;

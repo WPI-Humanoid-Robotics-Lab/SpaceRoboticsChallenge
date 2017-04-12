@@ -102,6 +102,7 @@ public:
         swing_height = value;
     }
     bool turn(armSide side);
+    void NudgeFoot(int armSide, float x, float y);
 
 private:
     static int id ;
@@ -110,7 +111,7 @@ private:
     int step_counter;
     ros::NodeHandle     nh_;
     ros::Time           cbTime_;
-    ros::Publisher      footsteps_pub_ ;
+    ros::Publisher      footsteps_pub_,nudgestep_pub ;
     ros::Subscriber     footstep_status_ ;
     ros::ServiceClient  footstep_client_ ;
     tf::TransformListener       tf_listener_;

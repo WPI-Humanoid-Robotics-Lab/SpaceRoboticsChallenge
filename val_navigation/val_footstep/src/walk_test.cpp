@@ -13,6 +13,7 @@ void load_bearing(int armSide, int load)
     msg.request=load;
     load_pub.publish(msg);
 }
+
 int main(int argc, char **argv)
 {
 
@@ -35,10 +36,10 @@ int main(int argc, char **argv)
     // 1- unload
     //load_bearing(LEFT,1);
 
-   // load_bearing(LEFT,0);
-      walk.walkPreComputedSteps(x,y,RIGHT);
-   // load_bearing(RIGHT,0);
-   // load_bearing(LEFT,1);
+    // load_bearing(LEFT,0);
+    walk.walkPreComputedSteps(x,y,RIGHT);
+    // load_bearing(RIGHT,0);
+    // load_bearing(LEFT,1);
     //walk.walkPreComputedSteps(x,y,LEFT);
 
 
