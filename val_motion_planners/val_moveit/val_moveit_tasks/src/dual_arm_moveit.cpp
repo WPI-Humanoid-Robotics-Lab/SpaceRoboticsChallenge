@@ -73,6 +73,7 @@ int main(int argc, char** argv){
   groupLeft.setPlanningTime(7);
   groupLeft.setGoalTolerance(0.1);
 
+
   // set the target location
   geometry_msgs::Pose tPoseRight;
   geometry_msgs::Pose tPoseLeft;
@@ -91,13 +92,13 @@ int main(int argc, char** argv){
   groupRight.setPoseTarget(tPoseRight);
 
 
-  tPoseLeft.orientation.w = -0.441;
-  tPoseLeft.position.x = 0.341;
-  tPoseLeft.position.y = 0.288;
-  tPoseLeft.position.z = 0.913;
-  tPoseLeft.orientation.x = -0.034;
-  tPoseLeft.orientation.y = -0.096;
-  tPoseLeft.orientation.z = 0.891;
+  tPoseLeft.position.x = 0.428;
+  tPoseLeft.position.y = 0.228;
+  tPoseLeft.position.z = 1.063;
+  tPoseLeft.orientation.x = 0.033;
+  tPoseLeft.orientation.y = -0.112;
+  tPoseLeft.orientation.z = -0.774;
+  tPoseLeft.orientation.w = 0.622;
   groupLeft.setPoseTarget(tPoseLeft);
 
 
