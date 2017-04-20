@@ -1,66 +1,173 @@
-#### Team - WPI - Space Robotics Challenge
-<description - coming soon>
+## Team - WPI - Space Robotics Challenge
+This is the main repo for Team-WPI's participation in Space Robotics Challenge. 
 
 #### Prerequisites
+  * Disable hyper-threading, if it is enabled in bios
+  * Ubuntu 14.04
+  * Ros Indigo
 
-* Ubuntu 14.04
-* Ros Indigo
-* Gazebo 7
-* MoveIt!
+### Installation using scripts
+Download the scripts from [this location](https://gitlab.com/whrl/space_robotics_challenge/tree/master/val_common/scripts) and run the following commands:
+```bash
+    bash setup1.sh
+```
+after the system restarts, run the following
+```bash
+    bash setup2.sh
+```
+once everything is setup successfully, it should automatically launch the gazebo with valkyire, controllers and the robot should start walking.               
+*note:*
+The scripts also handle installing ros, dependencies, setting up workspace, checkout - updated repo etc. So basically  running the scripts on a fresh linux machine (with out any package except git) should install and setup everything, finally making valyire walk in gazebo.
+(run `setup1.sh` first and after reboot run `setup2.sh`).                      
+*known problems*                           
+- after everything getting launched (gazebo with valkyire standing), if for any reason the process dies and say the tf is missing, then remove the build, devel `rm -rf /build /devel` and rebuild the workspace `catkin_make`, this should fix the problem and valkyire should start walking this time.
 
 
-##### Gazebo 7 Installation
+### Manual Installation
+#### Gazebo 7 and SRCSim Installation
 
 ```bash
-sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu trusty main" > /etc/apt/sources.list.d/gazebo-latest.list'
-wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install ros-indigo-gazebo7-*
+    sudo rm /etc/apt/sources.list.d/gazebo*
+    sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+    wget -O - http://packages.osrfoundation.org/gazebo.key | sudo apt-key add -
+
+    sudo sh -c 'echo "deb http://srcsim.gazebosim.org/src trusty main" > /etc/apt/sources.list.d/src-latest.list'
+    wget -O - http://srcsim.gazebosim.org/src/src.key | sudo apt-key add -
+    wget -O - https://bintray.com/user/downloadSubjectPublicKey?username=bintray | sudo apt-key add -
+
+    sudo apt-get update
+    sudo apt-get install srcsim
+```    
+
+#### Environment Variables
+
+```bash
+    echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.bashrc
+    echo 'export IS_GAZEBO=true' >> ~/.bashrc
 ```
 
-##### Additional Packages
-* ruby (if you seeing erb related error, install ruby)    
+#### Change ownership of ihmc_ros_java_adapter package. 
+This ROS package requires to write some files in its installation directory at runtime. We're working on a fix for this issue. In the meantime, please change the ownership of this directory to your user.
 
-```bash
-    sudo apt-get install ruby    
+`if you are the only user on the computer, use this`
+```
+    sudo chown -R $USER:$USER /opt/ros/indigo/share/ihmc_ros_java_adapter
+```
+`else, use this`
+```
+    sudo chmod -R 777 /opt/ros/indigo/share/ihmc_ros_java_adapter
 ```
 
-* pcl
+#### Copy the IHMC networking `ini` file 
 
-```bash
-    sudo apt-get install ros-indigo-pcl-ros ros-indigo-pcl-conversions
+```
+    mkdir -p ${HOME}/.ihmc; curl https://raw.githubusercontent.com/ihmcrobotics/ihmc_ros_core/0.8.0/ihmc_ros_common/configurations/IHMCNetworkParametersTemplate.ini > ${HOME}/.ihmc/IHMCNetworkParameters.ini
 ```
 
-* MoveIt!  
+#### Real-time scheduling priority
+Increase real-time scheduling priority for current user (rtprio), which is required by the IHMC controller. Add current user to ros group:
 
-```bash
-    sudo apt-get install ros-indigo-moveit-full    
 ```
-* Trac_ik 
+    sudo bash -c 'echo "@ros - rtprio 99" > /etc/security/limits.d/ros-rtprio.conf'
+    sudo groupadd ros
+    sudo usermod -a -G ros $USER
+```
+
+## Reboot the system
+
+#### Download Gazebo models
+
+```
+    wget -P /tmp/ https://bitbucket.org/osrf/gazebo_models/get/default.tar.gz
+    tar -xvf /tmp/default.tar.gz -C $HOME/.gazebo/models --strip 1
+    rm /tmp/default.tar.gz
+```
+
+#### Pre-build `ihmc_ros_java_adapter`. 
+Open a new terminal and run:
+
+```
+    source /opt/nasa/indigo/setup.bash
+    roslaunch ihmc_valkyrie_ros valkyrie_warmup_gradle_cache.launch
+```
+## Hack to use ihmc controllers until they provide a fix
+
+#### Clone IHMC's open robotics software repo
+
+```
+    cd ~ && git clone https://github.com/ihmcrobotics/ihmc-open-robotics-software.git
+```
+####   Compile 
+Compile the java code that you just cloned (https://xkcd.com/303)
+```
+    cd ihmc-open-robotics-software
+    git checkout master
+    ./gradlew 
+    ./gradlew -q deployLocal
+```
+
+#### ROS dependencies
+* ruby, pcl, MoveIt!, Trac\_IK, footstep\_planner, humanoid\_localization, Multisense
 
 ```bash
-    sudo apt-get install ros-indigo-trac-ik
+    sudo apt-get install ruby ros-indigo-pcl-ros ros-indigo-pcl-conversions ros-indigo-moveit-full ros-indigo-trac-ik ros-indigo-footstep-planner ros-indigo-humanoid-localization ros-indigo-multisense-ros
 ```
 
 #### Setting up workspace
-Create catkin workspace. If you already have one, move to the nest step    
+Create catkin workspace. If you already have one, move to the [next](#test-your-installation) step    
 ```bash
     mkdir -p ~/indigo_ws/src && cd ~/indigo_ws/src
     catkin_init_workspace
     cd ~/indigo_ws
     catkin_make
 ```
-Clone the git repository    
+Clone the git repositories    
 ```bash
     git clone https://gitlab.com/whrl/space_robotics_challenge.git ~/indigo_ws/src/space_robotics_challenge
+    git clone https://github.com/ninja777/humanoid_navigation.git ~/indigo_ws/src/humanoid_navigation
 ```
-@TODO: Create a script that would download and configure the environment
 
 After the code is downloaded, run catkin_make.  
 ```bash
     cd ~/indigo_ws    
     catkin_make
 ```
+
+## Test your installation
+
+#### Open a new terminal and type:
+
+```
+    source /opt/nasa/indigo/setup.bash
+    cd ~/indigo_ws
+    rm -rf devel/ build/
+    catkin_make
+    source devel/setup.bash
+    roslaunch val_bringup qual2.launch
+```
+
+#### Usage
+* To start qual task 1 with controller
+
+```bash
+    roslaunch val_bringup qual1.launch
+```
+* To start qual task 1 without controller
+
+```bash
+    roslaunch val_bringup qual1.launch controller:=false
+```
+* To start qual task 2 with controller
+
+```bash
+    roslaunch val_bringup qual2.launch
+```
+* To start qual task 2 without controller
+
+```bash
+    roslaunch val_bringup qual2.launch controller:=false
+```
+ 
 
 #### Packages
 * val_description   

@@ -21,11 +21,7 @@
           <contact_surface_layer>0.01000</contact_surface_layer>
         </constraints>
       </ode>
-
     </physics>
-
-
-
 
     <!-- Control plugin for qual task 1 -->
     <plugin name="qual1" filename="libQual1Plugin.so">

@@ -4,6 +4,7 @@ variables:
   ROS_PARALLEL_JOBS: "-j8 -l6"
 
 before_script:
+  # ALL THIS SHOULD BE ON THE .sh FILE
   # - source /opt/ros/indigo/setup.bash
   # - ROS_CI_DESKTOP=$(lsb_release -cs)
   # - ROSINSTALL_FILE=$CI_SOURCE_PATH"/dependencies.rosinstall"
@@ -49,21 +50,44 @@ before_script:
   - if [ ! -f .rosinstall ]; then wstool init; else echo "rosinstall file already there";fi
   - if [[ -f $ROSINSTALL_FILE ]] ; then wstool merge $ROSINSTALL_FILE ; fi
   - wstool up
-  - cd ~/catkin_ws
+  - cd ~/catkin_ws/src/space_robotics_challenge
+  - git submodule update --init --recursive
   - ls -a
   # - rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
-
+  
 indigo-master:
   stage: build
   script:
+#    - sudo chmod +x ~/catkin_ws/src/space_robotics_challenge/val_common/setuptemp.sh
+#    - sudo ~/catkin_ws/src/space_robotics_challenge/val_common/setuptemp.sh
     - source /opt/ros/$ROS_DISTRO/setup.bash
     - cd ~/catkin_ws
+    - rm -rf devel/ build/
     - catkin_make $( [ -f $CATKIN_OPTIONS ] && cat $CATKIN_OPTIONS )
     - source devel/setup.bash
     # - catkin_make run_tests && catkin_make test
     - catkin_make
-    - echo "Joder tio"
+    # Documentation
+    #- cd ~/catkin_ws/src/space_robotics_challenge/docs
+    #- doxygen
+    #- mv html/ public/
+  artifacts:
+    paths:
+    - public
   only:
     - master
   tags:
     - ros
+
+
+# pages:
+#   script:
+#   - cd ~/catkin_ws/src/space_robotics_challenge/docs
+#   - doxygen
+#   - ls -a
+#   - mv html/ public/
+#   artifacts:
+#     paths:
+#     - public
+#   only:
+#   - master

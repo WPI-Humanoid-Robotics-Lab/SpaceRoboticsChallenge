@@ -1,6 +1,7 @@
 .ycm_extra_conf.py
 *.swp
 *~
+*.orig
 
 CMakeCache.txt
 CMakeFiles
@@ -15,3 +16,5 @@ CMakeLists.txt.user
 build/
 devel/
 .catkin_workspace
+
+**/cmake/

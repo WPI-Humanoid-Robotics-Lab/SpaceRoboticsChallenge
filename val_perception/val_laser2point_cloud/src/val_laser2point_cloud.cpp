@@ -1,4 +1,4 @@
-#include <val_laser2point_cloud/val_laser2point_cloud_node.h>
+#include <perception_common/laser2point_cloud.h>
 
 Laser2PointCloud::Laser2PointCloud(ros::NodeHandle n,
                                    const std::string laserScanTopic,

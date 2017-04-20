@@ -221,7 +221,7 @@
             <diffuse>0 0 0 1</diffuse>
           </material>
         </visual>
- 
+
         <visual name="light13">
           <pose>-0.18713 -0.21716 1.01546 0.42 0 0</pose>
           <geometry>
@@ -403,7 +403,7 @@
             <diffuse>0 0 0 1</diffuse>
           </material>
         </visual>
- 
+
         <visual name="light27">
           <pose>0.18713 -0.21716 1.01546 0.42 0 0</pose>
           <geometry>
@@ -687,7 +687,7 @@
       </link>
     </model>
 
-     <!-- Disable gravity along all axis --> 
+     <!-- Disable gravity along all axis -->
     <gravity>0 0 0</gravity>
 
   </world>

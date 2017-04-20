@@ -85,14 +85,14 @@ bool Qual2Plugin::Pressed() const
 void Qual2Plugin::OpenTheDoor()
 {
   // Apply force on the hinge to open the door.
-  this->hingeJoint->SetForce(0, 10.0);
+  this->hingeJoint->SetForce(0, 400.0);
 }
 
 ////////////////////////////////////////////////
 void Qual2Plugin::CloseTheDoor()
 {
   // Apply force on the hinge to close the door.
-  this->hingeJoint->SetForce(0, -10.0);
+  this->hingeJoint->SetForce(0, -400.0);
 }
 
 
@@ -104,8 +104,8 @@ void Qual2Plugin::OnUpdate()
     return;
 
   int percentagePressed =
-    (1 - ((this->buttonJoint->GetAngle(0).Radian() - this->lowerLimit) /
-      this->range)) * 100;
+    ((this->buttonJoint->GetAngle(0).Radian() - this->lowerLimit) /
+      this->range) * 100;
 
   this->pressed = percentagePressed >= this->kPercentageButtonPressed;
 
