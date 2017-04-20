@@ -184,14 +184,23 @@ double ValkyrieWalker::getSwing_height() const
     return swing_height;
 }
 
-
-
+void ValkyrieWalker::load_eff(armSide side, EE_LOADING load)
+{
+    ihmc_msgs::EndEffectorLoadBearingRosMessage msg;
+    msg.unique_id=1;
+    msg.robot_side=side;
+    msg.end_effector=0;  // 0- foot 1 -hand
+    msg.request=(int)load;  // 0 -load 1 -unload
+    loadeff_pub.publish(msg);
+}
 
 // constructor
 ValkyrieWalker::ValkyrieWalker(ros::NodeHandle nh,double InTransferTime ,double InSwingTime, int InMode, double swingHeight):nh_(nh)
 {
     this->footstep_client_ = nh_.serviceClient <humanoid_nav_msgs::PlanFootsteps> ("/plan_footsteps");
     this->footsteps_pub_   = nh_.advertise<ihmc_msgs::FootstepDataListRosMessage>("/ihmc_ros/valkyrie/control/footstep_list",1,true);
+    this->nudgestep_pub_   = nh_.advertise<ihmc_msgs::FootTrajectoryRosMessage>("/ihmc_ros/valkyrie/control/foot_trajectory",1,true);
+    this->loadeff_pub      = nh_.advertise<ihmc_msgs::EndEffectorLoadBearingRosMessage>("/ihmc_ros/valkyrie/control/end_effector_load_bearing",1,true);
     this->footstep_status_ = nh_.subscribe("/ihmc_ros/valkyrie/output/footstep_status", 20,&ValkyrieWalker::footstepStatusCB, this);
 
     transfer_time = InTransferTime;
@@ -249,12 +258,53 @@ void ValkyrieWalker::getCurrentStep(int side , ihmc_msgs::FootstepDataRosMessage
     foot.trajectory_type = 0;
     return;
 }
-void ValkyrieWalker::NudgeFoot(int armSide, float x, float y)
+void ValkyrieWalker::NudgeFoot(armSide side, int dir, float value)
 {
-    ihmc_msgs::FootstepDataRosMessage msg;
-    getCurrentStep(int(armSide),*msg);
-    msg.location.x+=x;
-    msg.location.y+=y;
+    ihmc_msgs::FootTrajectoryRosMessage foot;
+    ihmc_msgs::SE3TrajectoryPointRosMessage data;
+
+    std_msgs::String foot_frame;
+    if (side == LEFT)
+    {
+        foot_frame = this->left_foot_frame_;
+    }
+    else
+    {
+        foot_frame = this->right_foot_frame_;
+    }
+
+    tf::StampedTransform transformStamped;
+    tf_listener_.lookupTransform( VAL_COMMON_NAMES::WORLD_TF,foot_frame.data,ros::Time(0),transformStamped);
+    tf::quaternionTFToMsg(transformStamped.getRotation(),data.orientation);
+    double roll, pitch, yaw;
+    tf::Matrix3x3(transformStamped.getRotation()).getRPY(roll, pitch, yaw);
+
+    data.position.x = transformStamped.getOrigin().getX();
+    data.position.y = transformStamped.getOrigin().getY();
+    data.position.z = transformStamped.getOrigin().getZ();
+    foot.robot_side = side;
+    foot.execution_mode=0; //OVERRIDE
+    foot.unique_id=1005;
+    data.unique_id=1000;
+    data.time=3.0;
+    // FORWARD- 1 BACKWARD =-1
+    if(dir == 1)
+    {
+        data.position.x +=value*cos(yaw) ;
+        data.position.y +=value*sin(yaw) ;
+    }
+    else if(dir==-1)
+    {
+        data.position.x -=value*cos(yaw) ;
+        data.position.y -=value*sin(yaw) ;
+    }
+    foot.taskspace_trajectory_points.push_back(data);
+    ROS_INFO("New value x: %f",data.position.x);
+    ROS_INFO("New value y: %f",data.position.y);
+    nudgestep_pub_.publish(foot);
+    return;
+
+
 }
 // gives footstep which are offset from current step (only for straight line)
 
@@ -268,6 +318,7 @@ ihmc_msgs::FootstepDataRosMessage* ValkyrieWalker::getOffsetStep(int side , floa
     next->location.y+=y;
     next->location.z=0.05;
     next->swing_height = swing_height;
+    next->trajectory_type=1;
     return next;
 
 }
