@@ -17,8 +17,8 @@
 #include <image_transport/subscriber_filter.h>
 
 
-int count = 0;
-cv::Mat left_image, right_image;
+int count = int(ros::WallTime::now().toSec());
+cv::Mat left_image, right_image, composed_image;
 bool left_updated, right_updated;
 tf::StampedTransform transform;
 
@@ -28,14 +28,16 @@ tf::StampedTransform transform;
 void writeToFile() //std_msgs::Header h
 {
   // create file names
-  std::stringstream filenameL, filenameR, filetext;
+  std::stringstream filenameL, filenameR, filenameI, filetext;
 
-  filenameL<<ros::package::getPath("val_data_creation")<<"/left_images/"<<"L_"<<count<<".png";
-  filenameR<<ros::package::getPath("val_data_creation")<<"/right_images/"<<"R_"<<count<<".png";
-  filetext<<ros::package::getPath("val_data_creation")<<"/labels/"<<"Label_"<<count<<".txt";
+//  filenameL<<ros::package::getPath("val_data_creation")<<"/left_images/"<<"L_"<<count<<".png";
+//  filenameR<<ros::package::getPath("val_data_creation")<<"/right_images/"<<"R_"<<count<<".png";
+  filenameI<<ros::package::getPath("val_data_creation")<<"/images/"<<count<<".png";
+  filetext<<ros::package::getPath("val_data_creation")<<"/labels/"<<count<<".txt";
 
-  cv::imwrite(filenameL.str(),left_image);
-  cv::imwrite(filenameR.str(),right_image);
+//  cv::imwrite(filenameL.str(),left_image);
+//  cv::imwrite(filenameR.str(),right_image);
+  cv::imwrite(filenameI.str(),composed_image);
 
   bool success = false;
   tf::TransformListener listener;
@@ -73,6 +75,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msgL, const sensor_msgs::Im
   cv_ptr = cv_bridge::toCvCopy(msgR, sensor_msgs::image_encodings::BGR8);
   right_image = cv_ptr->image;
 
+  cv::hconcat(left_image, right_image, composed_image);
   //std_msgs::Header h = msgR->header;
 
   writeToFile();
