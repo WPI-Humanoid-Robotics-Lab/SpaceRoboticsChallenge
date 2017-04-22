@@ -71,9 +71,9 @@ void rechabilityMap::fkMapGenerator(const std::string group_name)
     joint_bounds = joint_model_group->getActiveJointModelsBounds();
 
     double total=1;
-    long z=1;
+    long z=0.1;
 
-    float sample_dt = 1;
+    float sample_dt = 0.1;
 
     for(int i=0;i<jointCount;i++)
     {
@@ -94,7 +94,15 @@ void rechabilityMap::fkMapGenerator(const std::string group_name)
     yaml_handle = initYaml(group_name, filename);
 
     visualization_msgs::MarkerArray markerArray; //initMarker()
-    //visualization_msgs::Marker markerObs = initObsMarker();
+//    visualization_msgs::Marker markerObs = initObsMarker();
+    ROS_INFO("Joint bounds number # %d", (int)joint_bounds.size());
+//    for(robot_model::JointBoundsVector::iterator bound =joint_bounds.begin(); bound != joint_bounds.end(); bound++){
+//        ROS_INFO("Bound-");
+//        for(robot_model::JointModel::Bounds val = bound->begin(); val != bound->end() ; val++) {
+
+//            ROS_INFO("val");
+//        }
+//    }
 
     visualization_msgs::Marker markerObs;
     markerObs.header.frame_id = "pelvis";
@@ -127,28 +135,29 @@ void rechabilityMap::fkMapGenerator(const std::string group_name)
     //            {
     //                for(float j4 = (*joint_bounds[3])[0].min_position_; j4 <= (*joint_bounds[3])[0].max_position_; j4=j4+sample_dt)
     //                {
-    for(float j5 = (*joint_bounds[4])[0].min_position_; j5 <= (*joint_bounds[4])[0].max_position_; j5=j5+sample_dt)
+    for(float j5 = (*joint_bounds[0])[0].min_position_; j5 <= (*joint_bounds[0])[0].max_position_; j5=j5+sample_dt)
     {
-        for(float j6 = (*joint_bounds[5])[0].min_position_; j6 <= (*joint_bounds[5])[0].max_position_; j6=j6+sample_dt)
+        for(float j6 = (*joint_bounds[1])[0].min_position_; j6 <= (*joint_bounds[1])[0].max_position_; j6=j6+sample_dt)
         {
-            for(float j7 = (*joint_bounds[6])[0].min_position_; j7 <= (*joint_bounds[6])[0].max_position_; j7=j7+sample_dt)
+            for(float j7 = (*joint_bounds[2])[0].min_position_; j7 <= (*joint_bounds[2])[0].max_position_; j7=j7+sample_dt)
             {
-                for(float j8 = (*joint_bounds[7])[0].min_position_; j8 <= (*joint_bounds[7])[0].max_position_; j8=j8+sample_dt)
+                for(float j8 = (*joint_bounds[3])[0].min_position_; j8 <= (*joint_bounds[3])[0].max_position_; j8=j8+sample_dt)
                 {
-                    for(float j9 = (*joint_bounds[8])[0].min_position_; j9 <= (*joint_bounds[8])[0].max_position_; j9=j9+sample_dt)
+                    for(float j9 = (*joint_bounds[4])[0].min_position_; j9 <= (*joint_bounds[4])[0].max_position_; j9=j9+sample_dt)
                     {
-                        for(float j10 = (*joint_bounds[9])[0].min_position_; j10 <= (*joint_bounds[9])[0].max_position_;j10=j10+sample_dt)
+                        for(float j10 = (*joint_bounds[5])[0].min_position_; j10 <= (*joint_bounds[5])[0].max_position_;j10=j10+sample_dt)
                         {
+//                            ROS_INFO("Meow");
                             //                                            joint_values[0] = j1;
                             //                                            joint_values[1] = j2;
                             //                                            joint_values[2] = j3;
                             //                                            joint_values[3] = j4;
-                            joint_values[4] = j5;
-                            joint_values[5] = j6;
-                            joint_values[6] = j7;
-                            joint_values[7] = j8;
-                            joint_values[8] = j9;
-                            joint_values[9] = j10;
+                            joint_values[0] = j5;
+                            joint_values[1] = j6;
+                            joint_values[2] = j7;
+                            joint_values[3] = j8;
+                            joint_values[4] = j9;
+                            joint_values[5] = j10;
 
                             print_status(z, total);
                             z++;

@@ -46,59 +46,22 @@
     <disable_collisions link1="head" link2="hokuyo_link" reason="Adjacent" />
     <disable_collisions link1="head" link2="leftAnklePitchLink" reason="Never" />
     <disable_collisions link1="head" link2="leftElbowPitchLink" reason="Never" />
-    <disable_collisions link1="head" link2="leftFoot" reason="User" />
-    <disable_collisions link1="head" link2="leftForearmLink" reason="User" />
     <disable_collisions link1="head" link2="leftHipPitchLink" reason="Never" />
     <disable_collisions link1="head" link2="leftHipRollLink" reason="Never" />
     <disable_collisions link1="head" link2="leftHipYawLink" reason="Never" />
-    <disable_collisions link1="head" link2="leftIndexFingerPitch1Link" reason="User" />
-    <disable_collisions link1="head" link2="leftIndexFingerPitch2Link" reason="User" />
-    <disable_collisions link1="head" link2="leftIndexFingerPitch3Link" reason="User" />
     <disable_collisions link1="head" link2="leftKneePitchLink" reason="Never" />
-    <disable_collisions link1="head" link2="leftMiddleFingerPitch1Link" reason="User" />
-    <disable_collisions link1="head" link2="leftMiddleFingerPitch2Link" reason="User" />
-    <disable_collisions link1="head" link2="leftMiddleFingerPitch3Link" reason="User" />
-    <disable_collisions link1="head" link2="leftPalm" reason="User" />
-    <disable_collisions link1="head" link2="leftPinkyPitch1Link" reason="User" />
-    <disable_collisions link1="head" link2="leftPinkyPitch2Link" reason="User" />
-    <disable_collisions link1="head" link2="leftPinkyPitch3Link" reason="User" />
-    <disable_collisions link1="head" link2="leftShoulderPitchLink" reason="User" />
     <disable_collisions link1="head" link2="leftShoulderRollLink" reason="Never" />
-    <disable_collisions link1="head" link2="leftShoulderYawLink" reason="User" />
-    <disable_collisions link1="head" link2="leftThumbPitch1Link" reason="User" />
-    <disable_collisions link1="head" link2="leftThumbPitch2Link" reason="User" />
-    <disable_collisions link1="head" link2="leftThumbPitch3Link" reason="User" />
-    <disable_collisions link1="head" link2="leftThumbRollLink" reason="User" />
-    <disable_collisions link1="head" link2="leftWristRollLink" reason="User" />
     <disable_collisions link1="head" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="head" link2="neckYawLink" reason="Never" />
     <disable_collisions link1="head" link2="pelvis" reason="Never" />
     <disable_collisions link1="head" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="head" link2="rightElbowPitchLink" reason="Never" />
-    <disable_collisions link1="head" link2="rightFoot" reason="User" />
-    <disable_collisions link1="head" link2="rightForearmLink" reason="User" />
     <disable_collisions link1="head" link2="rightHipPitchLink" reason="Never" />
     <disable_collisions link1="head" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="head" link2="rightHipYawLink" reason="Never" />
-    <disable_collisions link1="head" link2="rightIndexFingerPitch1Link" reason="User" />
-    <disable_collisions link1="head" link2="rightIndexFingerPitch2Link" reason="User" />
-    <disable_collisions link1="head" link2="rightIndexFingerPitch3Link" reason="User" />
     <disable_collisions link1="head" link2="rightKneePitchLink" reason="Never" />
-    <disable_collisions link1="head" link2="rightMiddleFingerPitch1Link" reason="User" />
-    <disable_collisions link1="head" link2="rightMiddleFingerPitch2Link" reason="User" />
-    <disable_collisions link1="head" link2="rightMiddleFingerPitch3Link" reason="User" />
-    <disable_collisions link1="head" link2="rightPalm" reason="User" />
-    <disable_collisions link1="head" link2="rightPinkyPitch1Link" reason="User" />
-    <disable_collisions link1="head" link2="rightPinkyPitch2Link" reason="User" />
-    <disable_collisions link1="head" link2="rightPinkyPitch3Link" reason="User" />
     <disable_collisions link1="head" link2="rightShoulderPitchLink" reason="Default" />
     <disable_collisions link1="head" link2="rightShoulderRollLink" reason="Never" />
-    <disable_collisions link1="head" link2="rightShoulderYawLink" reason="User" />
-    <disable_collisions link1="head" link2="rightThumbPitch1Link" reason="User" />
-    <disable_collisions link1="head" link2="rightThumbPitch2Link" reason="User" />
-    <disable_collisions link1="head" link2="rightThumbPitch3Link" reason="User" />
-    <disable_collisions link1="head" link2="rightThumbRollLink" reason="User" />
-    <disable_collisions link1="head" link2="rightWristRollLink" reason="User" />
     <disable_collisions link1="head" link2="torso" reason="Never" />
     <disable_collisions link1="head" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="head" link2="torsoYawLink" reason="Never" />
@@ -106,7 +69,7 @@
     <disable_collisions link1="head_imu_link" link2="hokuyo_link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftAnklePitchLink" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftElbowPitchLink" reason="Never" />
-    <disable_collisions link1="head_imu_link" link2="leftFoot" reason="User" />
+    <disable_collisions link1="head_imu_link" link2="leftFoot" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftForearmLink" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftHipPitchLink" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftHipRollLink" reason="Never" />
@@ -118,7 +81,7 @@
     <disable_collisions link1="head_imu_link" link2="leftMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftMiddleFingerPitch3Link" reason="Never" />
-    <disable_collisions link1="head_imu_link" link2="leftPalm" reason="User" />
+    <disable_collisions link1="head_imu_link" link2="leftPalm" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftPinkyPitch1Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftPinkyPitch2Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="leftPinkyPitch3Link" reason="Never" />
@@ -140,21 +103,19 @@
     <disable_collisions link1="head_imu_link" link2="rightHipPitchLink" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightHipYawLink" reason="Never" />
-    <disable_collisions link1="head_imu_link" link2="rightIndexFingerPitch1Link" reason="User" />
-    <disable_collisions link1="head_imu_link" link2="rightIndexFingerPitch2Link" reason="User" />
-    <disable_collisions link1="head_imu_link" link2="rightIndexFingerPitch3Link" reason="User" />
+    <disable_collisions link1="head_imu_link" link2="rightIndexFingerPitch1Link" reason="Never" />
+    <disable_collisions link1="head_imu_link" link2="rightIndexFingerPitch2Link" reason="Never" />
+    <disable_collisions link1="head_imu_link" link2="rightIndexFingerPitch3Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightKneePitchLink" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightMiddleFingerPitch3Link" reason="Never" />
-    <disable_collisions link1="head_imu_link" link2="rightPalm" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightPinkyPitch1Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightPinkyPitch2Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightPinkyPitch3Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightShoulderPitchLink" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightShoulderRollLink" reason="Never" />
-    <disable_collisions link1="head_imu_link" link2="rightShoulderYawLink" reason="Never" />
-    <disable_collisions link1="head_imu_link" link2="rightThumbPitch1Link" reason="User" />
+    <disable_collisions link1="head_imu_link" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightThumbPitch2Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="head_imu_link" link2="rightThumbRollLink" reason="Never" />
@@ -165,78 +126,47 @@
     <disable_collisions link1="head_imu_link" link2="upperNeckPitchLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="leftAnklePitchLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="leftElbowPitchLink" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="leftFoot" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftForearmLink" reason="User" />
     <disable_collisions link1="hokuyo_link" link2="leftHipPitchLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="leftHipRollLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="leftHipYawLink" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="leftIndexFingerPitch1Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftIndexFingerPitch2Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftIndexFingerPitch3Link" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="leftKneePitchLink" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="leftMiddleFingerPitch1Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftMiddleFingerPitch2Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftMiddleFingerPitch3Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftPalm" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftPinkyPitch1Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftPinkyPitch2Link" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="leftPinkyPitch3Link" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="leftShoulderPitchLink" reason="User" />
     <disable_collisions link1="hokuyo_link" link2="leftShoulderRollLink" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="leftShoulderYawLink" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftThumbPitch1Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftThumbPitch2Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftThumbPitch3Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftThumbRollLink" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="leftWristRollLink" reason="User" />
+    <disable_collisions link1="hokuyo_link" link2="leftThumbRollLink" reason="Never" />
+    <disable_collisions link1="hokuyo_link" link2="leftWristRollLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="neckYawLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="pelvis" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="rightElbowPitchLink" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="rightFoot" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="rightForearmLink" reason="User" />
     <disable_collisions link1="hokuyo_link" link2="rightHipPitchLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="rightHipYawLink" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="rightIndexFingerPitch1Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightIndexFingerPitch2Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightIndexFingerPitch3Link" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="rightKneePitchLink" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="rightMiddleFingerPitch1Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightMiddleFingerPitch2Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightMiddleFingerPitch3Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightPalm" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightPinkyPitch1Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightPinkyPitch2Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightPinkyPitch3Link" reason="User" />
     <disable_collisions link1="hokuyo_link" link2="rightShoulderPitchLink" reason="Default" />
     <disable_collisions link1="hokuyo_link" link2="rightShoulderRollLink" reason="Never" />
-    <disable_collisions link1="hokuyo_link" link2="rightShoulderYawLink" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightThumbPitch1Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightThumbPitch2Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightThumbPitch3Link" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightThumbRollLink" reason="User" />
-    <disable_collisions link1="hokuyo_link" link2="rightWristRollLink" reason="User" />
+    <disable_collisions link1="hokuyo_link" link2="rightThumbRollLink" reason="Never" />
+    <disable_collisions link1="hokuyo_link" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="torso" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="hokuyo_link" link2="upperNeckPitchLink" reason="Never" />
-    <disable_collisions link1="leftAnklePitchLink" link2="leftElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftFoot" reason="Adjacent" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftHipPitchLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftHipRollLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftHipYawLink" reason="Never" />
+    <disable_collisions link1="leftAnklePitchLink" link2="leftIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftIndexFingerPitch3Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftKneePitchLink" reason="Adjacent" />
+    <disable_collisions link1="leftAnklePitchLink" link2="leftMiddleFingerPitch1Link" reason="Never" />
+    <disable_collisions link1="leftAnklePitchLink" link2="leftMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftMiddleFingerPitch3Link" reason="Never" />
+    <disable_collisions link1="leftAnklePitchLink" link2="leftPalm" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftPinkyPitch1Link" reason="Never" />
+    <disable_collisions link1="leftAnklePitchLink" link2="leftPinkyPitch2Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftPinkyPitch3Link" reason="Never" />
+    <disable_collisions link1="leftAnklePitchLink" link2="leftShoulderPitchLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftShoulderRollLink" reason="Never" />
-    <disable_collisions link1="leftAnklePitchLink" link2="leftThumbPitch1Link" reason="Never" />
-    <disable_collisions link1="leftAnklePitchLink" link2="leftThumbPitch2Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftThumbPitch3Link" reason="Never" />
-    <disable_collisions link1="leftAnklePitchLink" link2="leftThumbRollLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="leftWristRollLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="neckYawLink" reason="Never" />
@@ -245,21 +175,19 @@
     <disable_collisions link1="leftAnklePitchLink" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="rightIndexFingerPitch2Link" reason="Never" />
-    <disable_collisions link1="leftAnklePitchLink" link2="rightIndexFingerPitch3Link" reason="Never" />
-    <disable_collisions link1="leftAnklePitchLink" link2="rightMiddleFingerPitch1Link" reason="Never" />
-    <disable_collisions link1="leftAnklePitchLink" link2="rightMiddleFingerPitch2Link" reason="Never" />
+    <disable_collisions link1="leftAnklePitchLink" link2="rightMiddleFingerPitch3Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="rightPinkyPitch2Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="rightPinkyPitch3Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="rightShoulderPitchLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="rightShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="rightThumbPitch2Link" reason="Never" />
-    <disable_collisions link1="leftAnklePitchLink" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="leftAnklePitchLink" link2="upperNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftElbowPitchLink" link2="leftForearmLink" reason="Adjacent" />
+    <disable_collisions link1="leftElbowPitchLink" link2="leftHipRollLink" reason="Never" />
     <disable_collisions link1="leftElbowPitchLink" link2="leftHipYawLink" reason="Never" />
     <disable_collisions link1="leftElbowPitchLink" link2="leftIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftElbowPitchLink" link2="leftIndexFingerPitch2Link" reason="Never" />
@@ -308,16 +236,16 @@
     <disable_collisions link1="leftElbowPitchLink" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="leftElbowPitchLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftElbowPitchLink" link2="torsoYawLink" reason="Never" />
+    <disable_collisions link1="leftElbowPitchLink" link2="upperNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftFoot" link2="leftHipPitchLink" reason="Never" />
     <disable_collisions link1="leftFoot" link2="leftHipRollLink" reason="Never" />
     <disable_collisions link1="leftFoot" link2="leftHipYawLink" reason="Never" />
     <disable_collisions link1="leftFoot" link2="leftKneePitchLink" reason="Never" />
+    <disable_collisions link1="leftFoot" link2="leftShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftFoot" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftFoot" link2="neckYawLink" reason="Never" />
     <disable_collisions link1="leftFoot" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="leftFoot" link2="rightHipYawLink" reason="Never" />
-    <disable_collisions link1="leftFoot" link2="rightMiddleFingerPitch3Link" reason="Never" />
-    <disable_collisions link1="leftFoot" link2="rightThumbPitch2Link" reason="Never" />
     <disable_collisions link1="leftFoot" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftFoot" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="leftForearmLink" link2="leftIndexFingerPitch1Link" reason="Never" />
@@ -340,8 +268,6 @@
     <disable_collisions link1="leftForearmLink" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftForearmLink" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftForearmLink" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftForearmLink" link2="rightHipPitchLink" reason="Never" />
-    <disable_collisions link1="leftForearmLink" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="leftForearmLink" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftForearmLink" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftForearmLink" link2="rightIndexFingerPitch2Link" reason="Never" />
@@ -365,7 +291,7 @@
     <disable_collisions link1="leftHipPitchLink" link2="leftShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftHipPitchLink" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftHipPitchLink" link2="neckYawLink" reason="Never" />
-    <disable_collisions link1="leftHipPitchLink" link2="rightAnklePitchLink" reason="Never" />
+    <disable_collisions link1="leftHipPitchLink" link2="rightFoot" reason="Never" />
     <disable_collisions link1="leftHipPitchLink" link2="rightHipRollLink" reason="Default" />
     <disable_collisions link1="leftHipPitchLink" link2="rightShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftHipPitchLink" link2="upperNeckPitchLink" reason="Never" />
@@ -380,12 +306,15 @@
     <disable_collisions link1="leftHipRollLink" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftHipRollLink" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftHipRollLink" link2="rightFoot" reason="Never" />
+    <disable_collisions link1="leftHipRollLink" link2="rightForearmLink" reason="Never" />
     <disable_collisions link1="leftHipRollLink" link2="rightHipPitchLink" reason="Default" />
     <disable_collisions link1="leftHipRollLink" link2="rightHipRollLink" reason="Default" />
     <disable_collisions link1="leftHipRollLink" link2="rightKneePitchLink" reason="Never" />
     <disable_collisions link1="leftHipRollLink" link2="rightShoulderPitchLink" reason="Never" />
     <disable_collisions link1="leftHipRollLink" link2="rightShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftHipRollLink" link2="rightShoulderYawLink" reason="Never" />
+    <disable_collisions link1="leftHipRollLink" link2="rightThumbPitch3Link" reason="Never" />
+    <disable_collisions link1="leftHipRollLink" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftHipRollLink" link2="torso" reason="Default" />
     <disable_collisions link1="leftHipRollLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftHipRollLink" link2="torsoYawLink" reason="Never" />
@@ -394,16 +323,22 @@
     <disable_collisions link1="leftHipYawLink" link2="leftShoulderPitchLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="leftShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="leftShoulderYawLink" reason="Never" />
+    <disable_collisions link1="leftHipYawLink" link2="leftThumbPitch3Link" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="neckYawLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="pelvis" reason="Adjacent" />
     <disable_collisions link1="leftHipYawLink" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightFoot" reason="Never" />
+    <disable_collisions link1="leftHipYawLink" link2="rightForearmLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightHipYawLink" reason="Never" />
+    <disable_collisions link1="leftHipYawLink" link2="rightIndexFingerPitch1Link" reason="Never" />
+    <disable_collisions link1="leftHipYawLink" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightIndexFingerPitch3Link" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightKneePitchLink" reason="Never" />
+    <disable_collisions link1="leftHipYawLink" link2="rightMiddleFingerPitch2Link" reason="Never" />
+    <disable_collisions link1="leftHipYawLink" link2="rightPalm" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightPinkyPitch2Link" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightPinkyPitch3Link" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightShoulderPitchLink" reason="Never" />
@@ -411,7 +346,8 @@
     <disable_collisions link1="leftHipYawLink" link2="rightShoulderYawLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="rightThumbPitch2Link" reason="Never" />
-    <disable_collisions link1="leftHipYawLink" link2="rightThumbPitch3Link" reason="Never" />
+    <disable_collisions link1="leftHipYawLink" link2="rightThumbRollLink" reason="Never" />
+    <disable_collisions link1="leftHipYawLink" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="leftHipYawLink" link2="upperNeckPitchLink" reason="Never" />
@@ -470,7 +406,6 @@
     <disable_collisions link1="leftIndexFingerPitch2Link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch2Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch2Link" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftIndexFingerPitch2Link" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch2Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch2Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch2Link" link2="rightIndexFingerPitch3Link" reason="Never" />
@@ -507,11 +442,9 @@
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightForearmLink" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightHipPitchLink" reason="Never" />
-    <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightIndexFingerPitch3Link" reason="Never" />
-    <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightKneePitchLink" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightMiddleFingerPitch3Link" reason="Never" />
@@ -527,13 +460,14 @@
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="leftIndexFingerPitch3Link" link2="torsoPitchLink" reason="Never" />
-    <disable_collisions link1="leftIndexFingerPitch3Link" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="leftKneePitchLink" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftKneePitchLink" link2="neckYawLink" reason="Never" />
     <disable_collisions link1="leftKneePitchLink" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftKneePitchLink" link2="rightKneePitchLink" reason="Default" />
+    <disable_collisions link1="leftKneePitchLink" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="leftKneePitchLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftKneePitchLink" link2="torsoYawLink" reason="Never" />
+    <disable_collisions link1="leftKneePitchLink" link2="upperNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="leftMiddleFingerPitch2Link" reason="Adjacent" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="leftMiddleFingerPitch3Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="leftPalm" reason="Adjacent" />
@@ -551,7 +485,6 @@
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightIndexFingerPitch3Link" reason="Never" />
@@ -569,6 +502,7 @@
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch1Link" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="leftMiddleFingerPitch1Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch2Link" link2="leftMiddleFingerPitch3Link" reason="Adjacent" />
     <disable_collisions link1="leftMiddleFingerPitch2Link" link2="leftPalm" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch2Link" link2="leftPinkyPitch1Link" reason="Never" />
@@ -585,7 +519,6 @@
     <disable_collisions link1="leftMiddleFingerPitch2Link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch2Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch2Link" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftMiddleFingerPitch2Link" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch2Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch2Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch2Link" link2="rightIndexFingerPitch3Link" reason="Never" />
@@ -610,6 +543,7 @@
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="leftPinkyPitch3Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="leftShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="leftShoulderYawLink" reason="Never" />
+    <disable_collisions link1="leftMiddleFingerPitch3Link" link2="leftThumbPitch1Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="leftThumbRollLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="leftWristRollLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="lowerNeckPitchLink" reason="Never" />
@@ -617,10 +551,10 @@
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightIndexFingerPitch3Link" reason="Never" />
+    <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightKneePitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightMiddleFingerPitch3Link" reason="Never" />
@@ -628,7 +562,6 @@
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightPinkyPitch1Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightPinkyPitch2Link" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightPinkyPitch3Link" reason="Never" />
-    <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightShoulderPitchLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightShoulderYawLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightThumbPitch1Link" reason="Never" />
@@ -637,7 +570,6 @@
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="leftMiddleFingerPitch3Link" link2="torsoPitchLink" reason="Never" />
-    <disable_collisions link1="leftMiddleFingerPitch3Link" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="leftPalm" link2="leftPinkyPitch1Link" reason="Adjacent" />
     <disable_collisions link1="leftPalm" link2="leftPinkyPitch2Link" reason="Never" />
     <disable_collisions link1="leftPalm" link2="leftPinkyPitch3Link" reason="Never" />
@@ -649,20 +581,13 @@
     <disable_collisions link1="leftPalm" link2="leftThumbRollLink" reason="Adjacent" />
     <disable_collisions link1="leftPalm" link2="leftWristRollLink" reason="Adjacent" />
     <disable_collisions link1="leftPalm" link2="lowerNeckPitchLink" reason="Never" />
-    <disable_collisions link1="leftPalm" link2="neckYawLink" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftPalm" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightIndexFingerPitch3Link" reason="Never" />
-    <disable_collisions link1="leftPalm" link2="rightMiddleFingerPitch1Link" reason="Never" />
-    <disable_collisions link1="leftPalm" link2="rightMiddleFingerPitch2Link" reason="Never" />
-    <disable_collisions link1="leftPalm" link2="rightMiddleFingerPitch3Link" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightPalm" reason="Never" />
-    <disable_collisions link1="leftPalm" link2="rightPinkyPitch1Link" reason="Never" />
-    <disable_collisions link1="leftPalm" link2="rightPinkyPitch2Link" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightPinkyPitch3Link" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftPalm" link2="rightShoulderYawLink" reason="Never" />
@@ -702,6 +627,7 @@
     <disable_collisions link1="leftPinkyPitch1Link" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="leftPinkyPitch1Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch1Link" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="leftPinkyPitch1Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="leftPinkyPitch3Link" reason="Adjacent" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="leftShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="leftShoulderYawLink" reason="Never" />
@@ -715,8 +641,7 @@
     <disable_collisions link1="leftPinkyPitch2Link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftPinkyPitch2Link" link2="rightHipRollLink" reason="Never" />
-    <disable_collisions link1="leftPinkyPitch2Link" link2="rightHipYawLink" reason="Never" />
+    <disable_collisions link1="leftPinkyPitch2Link" link2="rightHipPitchLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="rightIndexFingerPitch3Link" reason="Never" />
@@ -735,6 +660,7 @@
     <disable_collisions link1="leftPinkyPitch2Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch2Link" link2="torsoPitchLink" reason="Never" />
+    <disable_collisions link1="leftPinkyPitch2Link" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="leftShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="leftShoulderYawLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="leftThumbPitch1Link" reason="Never" />
@@ -747,7 +673,7 @@
     <disable_collisions link1="leftPinkyPitch3Link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftPinkyPitch3Link" link2="rightHipYawLink" reason="Never" />
+    <disable_collisions link1="leftPinkyPitch3Link" link2="rightHipPitchLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="rightIndexFingerPitch3Link" reason="Never" />
@@ -767,6 +693,7 @@
     <disable_collisions link1="leftPinkyPitch3Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="leftPinkyPitch3Link" link2="torsoPitchLink" reason="Never" />
+    <disable_collisions link1="leftPinkyPitch3Link" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="leftShoulderPitchLink" link2="leftShoulderRollLink" reason="Adjacent" />
     <disable_collisions link1="leftShoulderPitchLink" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftShoulderPitchLink" link2="pelvis" reason="Default" />
@@ -774,8 +701,6 @@
     <disable_collisions link1="leftShoulderPitchLink" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftShoulderPitchLink" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="leftShoulderPitchLink" link2="rightHipYawLink" reason="Never" />
-    <disable_collisions link1="leftShoulderPitchLink" link2="rightIndexFingerPitch3Link" reason="Never" />
-    <disable_collisions link1="leftShoulderPitchLink" link2="rightMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftShoulderPitchLink" link2="rightShoulderRollLink" reason="Never" />
     <disable_collisions link1="leftShoulderPitchLink" link2="torso" reason="Adjacent" />
     <disable_collisions link1="leftShoulderPitchLink" link2="torsoYawLink" reason="Default" />
@@ -804,7 +729,6 @@
     <disable_collisions link1="leftShoulderRollLink" link2="rightPinkyPitch3Link" reason="Never" />
     <disable_collisions link1="leftShoulderRollLink" link2="rightShoulderPitchLink" reason="Never" />
     <disable_collisions link1="leftShoulderRollLink" link2="rightShoulderRollLink" reason="Never" />
-    <disable_collisions link1="leftShoulderRollLink" link2="rightShoulderYawLink" reason="Never" />
     <disable_collisions link1="leftShoulderRollLink" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="leftShoulderRollLink" link2="rightThumbPitch2Link" reason="Never" />
     <disable_collisions link1="leftShoulderRollLink" link2="rightThumbPitch3Link" reason="Never" />
@@ -824,14 +748,8 @@
     <disable_collisions link1="leftShoulderYawLink" link2="rightHipPitchLink" reason="Never" />
     <disable_collisions link1="leftShoulderYawLink" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="leftShoulderYawLink" link2="rightHipYawLink" reason="Never" />
-    <disable_collisions link1="leftShoulderYawLink" link2="rightIndexFingerPitch1Link" reason="Never" />
-    <disable_collisions link1="leftShoulderYawLink" link2="rightIndexFingerPitch2Link" reason="Never" />
-    <disable_collisions link1="leftShoulderYawLink" link2="rightMiddleFingerPitch1Link" reason="Never" />
-    <disable_collisions link1="leftShoulderYawLink" link2="rightMiddleFingerPitch2Link" reason="Never" />
+    <disable_collisions link1="leftShoulderYawLink" link2="rightMiddleFingerPitch3Link" reason="Never" />
     <disable_collisions link1="leftShoulderYawLink" link2="rightPalm" reason="Never" />
-    <disable_collisions link1="leftShoulderYawLink" link2="rightPinkyPitch1Link" reason="Never" />
-    <disable_collisions link1="leftShoulderYawLink" link2="rightPinkyPitch2Link" reason="Never" />
-    <disable_collisions link1="leftShoulderYawLink" link2="rightPinkyPitch3Link" reason="Never" />
     <disable_collisions link1="leftShoulderYawLink" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="leftShoulderYawLink" link2="rightThumbPitch2Link" reason="Never" />
     <disable_collisions link1="leftShoulderYawLink" link2="rightThumbPitch3Link" reason="Never" />
@@ -846,11 +764,10 @@
     <disable_collisions link1="leftThumbPitch1Link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch1Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch1Link" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftThumbPitch1Link" link2="rightHipPitchLink" reason="Never" />
-    <disable_collisions link1="leftThumbPitch1Link" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch1Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftThumbPitch1Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftThumbPitch1Link" link2="rightIndexFingerPitch3Link" reason="Never" />
+    <disable_collisions link1="leftThumbPitch1Link" link2="rightKneePitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch1Link" link2="rightMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftThumbPitch1Link" link2="rightMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftThumbPitch1Link" link2="rightMiddleFingerPitch3Link" reason="Never" />
@@ -873,7 +790,6 @@
     <disable_collisions link1="leftThumbPitch2Link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch2Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch2Link" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftThumbPitch2Link" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch2Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftThumbPitch2Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftThumbPitch2Link" link2="rightIndexFingerPitch3Link" reason="Never" />
@@ -891,14 +807,14 @@
     <disable_collisions link1="leftThumbPitch2Link" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="leftThumbPitch2Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch2Link" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="leftThumbPitch2Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch3Link" link2="leftWristRollLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch3Link" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch3Link" link2="neckYawLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch3Link" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch3Link" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch3Link" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftThumbPitch3Link" link2="rightHipRollLink" reason="Never" />
-    <disable_collisions link1="leftThumbPitch3Link" link2="rightHipYawLink" reason="Never" />
+    <disable_collisions link1="leftThumbPitch3Link" link2="rightHipPitchLink" reason="Never" />
     <disable_collisions link1="leftThumbPitch3Link" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftThumbPitch3Link" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftThumbPitch3Link" link2="rightIndexFingerPitch3Link" reason="Never" />
@@ -923,11 +839,10 @@
     <disable_collisions link1="leftThumbRollLink" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftThumbRollLink" link2="rightHipPitchLink" reason="Never" />
-    <disable_collisions link1="leftThumbRollLink" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightIndexFingerPitch3Link" reason="Never" />
+    <disable_collisions link1="leftThumbRollLink" link2="rightKneePitchLink" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightMiddleFingerPitch3Link" reason="Never" />
@@ -942,13 +857,12 @@
     <disable_collisions link1="leftThumbRollLink" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftThumbRollLink" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="leftThumbRollLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="lowerNeckPitchLink" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="neckYawLink" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="rightAnklePitchLink" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="rightElbowPitchLink" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="rightForearmLink" reason="Never" />
-    <disable_collisions link1="leftWristRollLink" link2="rightHipPitchLink" reason="Never" />
-    <disable_collisions link1="leftWristRollLink" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="rightHipYawLink" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="rightIndexFingerPitch2Link" reason="Never" />
@@ -968,6 +882,7 @@
     <disable_collisions link1="leftWristRollLink" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="leftWristRollLink" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="leftWristRollLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="lowerNeckPitchLink" link2="neckYawLink" reason="Adjacent" />
     <disable_collisions link1="lowerNeckPitchLink" link2="pelvis" reason="Never" />
     <disable_collisions link1="lowerNeckPitchLink" link2="rightAnklePitchLink" reason="Never" />
@@ -1010,6 +925,7 @@
     <disable_collisions link1="neckYawLink" link2="rightIndexFingerPitch1Link" reason="Never" />
     <disable_collisions link1="neckYawLink" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="neckYawLink" link2="rightIndexFingerPitch3Link" reason="Never" />
+    <disable_collisions link1="neckYawLink" link2="rightKneePitchLink" reason="Never" />
     <disable_collisions link1="neckYawLink" link2="rightMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="neckYawLink" link2="rightMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="neckYawLink" link2="rightMiddleFingerPitch3Link" reason="Never" />
@@ -1039,24 +955,19 @@
     <disable_collisions link1="rightAnklePitchLink" link2="rightHipPitchLink" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightHipRollLink" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightHipYawLink" reason="Never" />
-    <disable_collisions link1="rightAnklePitchLink" link2="rightIndexFingerPitch1Link" reason="Never" />
-    <disable_collisions link1="rightAnklePitchLink" link2="rightIndexFingerPitch2Link" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightIndexFingerPitch3Link" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightKneePitchLink" reason="Adjacent" />
-    <disable_collisions link1="rightAnklePitchLink" link2="rightMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightMiddleFingerPitch3Link" reason="Never" />
-    <disable_collisions link1="rightAnklePitchLink" link2="rightPalm" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightPinkyPitch1Link" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightPinkyPitch2Link" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightPinkyPitch3Link" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightShoulderPitchLink" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightShoulderRollLink" reason="Never" />
-    <disable_collisions link1="rightAnklePitchLink" link2="rightShoulderYawLink" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightThumbPitch1Link" reason="Never" />
+    <disable_collisions link1="rightAnklePitchLink" link2="rightThumbPitch2Link" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="rightThumbRollLink" reason="Never" />
-    <disable_collisions link1="rightAnklePitchLink" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="rightAnklePitchLink" link2="upperNeckPitchLink" reason="Never" />
@@ -1126,9 +1037,11 @@
     <disable_collisions link1="rightHipRollLink" link2="torsoYawLink" reason="Never" />
     <disable_collisions link1="rightHipRollLink" link2="upperNeckPitchLink" reason="Never" />
     <disable_collisions link1="rightHipYawLink" link2="rightKneePitchLink" reason="Never" />
+    <disable_collisions link1="rightHipYawLink" link2="rightMiddleFingerPitch3Link" reason="Never" />
     <disable_collisions link1="rightHipYawLink" link2="rightShoulderPitchLink" reason="Never" />
     <disable_collisions link1="rightHipYawLink" link2="rightShoulderRollLink" reason="Never" />
     <disable_collisions link1="rightHipYawLink" link2="rightShoulderYawLink" reason="Never" />
+    <disable_collisions link1="rightHipYawLink" link2="rightThumbPitch2Link" reason="Never" />
     <disable_collisions link1="rightHipYawLink" link2="torso" reason="Never" />
     <disable_collisions link1="rightHipYawLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightHipYawLink" link2="torsoYawLink" reason="Never" />
@@ -1147,7 +1060,6 @@
     <disable_collisions link1="rightIndexFingerPitch1Link" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch1Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch1Link" link2="rightWristRollLink" reason="Never" />
-    <disable_collisions link1="rightIndexFingerPitch1Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch2Link" link2="rightIndexFingerPitch3Link" reason="Adjacent" />
     <disable_collisions link1="rightIndexFingerPitch2Link" link2="rightMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch2Link" link2="rightMiddleFingerPitch2Link" reason="Never" />
@@ -1161,6 +1073,7 @@
     <disable_collisions link1="rightIndexFingerPitch2Link" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch2Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch2Link" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="rightIndexFingerPitch2Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch3Link" link2="rightMiddleFingerPitch1Link" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch3Link" link2="rightMiddleFingerPitch2Link" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch3Link" link2="rightMiddleFingerPitch3Link" reason="Never" />
@@ -1173,8 +1086,10 @@
     <disable_collisions link1="rightIndexFingerPitch3Link" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch3Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="rightIndexFingerPitch3Link" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="rightIndexFingerPitch3Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightKneePitchLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightKneePitchLink" link2="torsoYawLink" reason="Never" />
+    <disable_collisions link1="rightKneePitchLink" link2="upperNeckPitchLink" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch1Link" link2="rightMiddleFingerPitch2Link" reason="Adjacent" />
     <disable_collisions link1="rightMiddleFingerPitch1Link" link2="rightMiddleFingerPitch3Link" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch1Link" link2="rightPalm" reason="Adjacent" />
@@ -1186,7 +1101,6 @@
     <disable_collisions link1="rightMiddleFingerPitch1Link" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch1Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch1Link" link2="rightWristRollLink" reason="Never" />
-    <disable_collisions link1="rightMiddleFingerPitch1Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch2Link" link2="rightMiddleFingerPitch3Link" reason="Adjacent" />
     <disable_collisions link1="rightMiddleFingerPitch2Link" link2="rightPalm" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch2Link" link2="rightPinkyPitch1Link" reason="Never" />
@@ -1197,6 +1111,7 @@
     <disable_collisions link1="rightMiddleFingerPitch2Link" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch2Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch2Link" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="rightMiddleFingerPitch2Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch3Link" link2="rightPalm" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch3Link" link2="rightPinkyPitch1Link" reason="Never" />
     <disable_collisions link1="rightMiddleFingerPitch3Link" link2="rightPinkyPitch2Link" reason="Never" />
@@ -1229,7 +1144,6 @@
     <disable_collisions link1="rightPinkyPitch2Link" link2="rightThumbPitch1Link" reason="Never" />
     <disable_collisions link1="rightPinkyPitch2Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="rightPinkyPitch2Link" link2="rightWristRollLink" reason="Never" />
-    <disable_collisions link1="rightPinkyPitch2Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightPinkyPitch3Link" link2="rightShoulderRollLink" reason="Never" />
     <disable_collisions link1="rightPinkyPitch3Link" link2="rightShoulderYawLink" reason="Never" />
     <disable_collisions link1="rightPinkyPitch3Link" link2="rightThumbPitch1Link" reason="Never" />
@@ -1237,9 +1151,6 @@
     <disable_collisions link1="rightPinkyPitch3Link" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="rightPinkyPitch3Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightShoulderPitchLink" link2="rightShoulderRollLink" reason="Adjacent" />
-    <disable_collisions link1="rightShoulderPitchLink" link2="rightThumbPitch1Link" reason="Never" />
-    <disable_collisions link1="rightShoulderPitchLink" link2="rightThumbRollLink" reason="Never" />
-    <disable_collisions link1="rightShoulderPitchLink" link2="rightWristRollLink" reason="Never" />
     <disable_collisions link1="rightShoulderPitchLink" link2="torso" reason="Adjacent" />
     <disable_collisions link1="rightShoulderPitchLink" link2="upperNeckPitchLink" reason="Default" />
     <disable_collisions link1="rightShoulderRollLink" link2="rightShoulderYawLink" reason="Adjacent" />
@@ -1257,6 +1168,7 @@
     <disable_collisions link1="rightShoulderYawLink" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="rightShoulderYawLink" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="rightShoulderYawLink" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="rightShoulderYawLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightThumbPitch1Link" link2="rightThumbPitch2Link" reason="Adjacent" />
     <disable_collisions link1="rightThumbPitch1Link" link2="rightThumbPitch3Link" reason="Never" />
     <disable_collisions link1="rightThumbPitch1Link" link2="rightThumbRollLink" reason="Adjacent" />
@@ -1264,11 +1176,11 @@
     <disable_collisions link1="rightThumbPitch2Link" link2="rightThumbPitch3Link" reason="Adjacent" />
     <disable_collisions link1="rightThumbPitch2Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="rightThumbPitch2Link" link2="rightWristRollLink" reason="Never" />
-    <disable_collisions link1="rightThumbPitch2Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightThumbPitch3Link" link2="rightThumbRollLink" reason="Never" />
     <disable_collisions link1="rightThumbPitch3Link" link2="rightWristRollLink" reason="Never" />
-    <disable_collisions link1="rightThumbPitch3Link" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="rightThumbRollLink" link2="rightWristRollLink" reason="Never" />
+    <disable_collisions link1="rightThumbRollLink" link2="torsoPitchLink" reason="Never" />
+    <disable_collisions link1="rightWristRollLink" link2="torsoPitchLink" reason="Never" />
     <disable_collisions link1="torso" link2="torsoPitchLink" reason="Adjacent" />
     <disable_collisions link1="torso" link2="torsoYawLink" reason="Default" />
     <disable_collisions link1="torso" link2="upperNeckPitchLink" reason="Never" />

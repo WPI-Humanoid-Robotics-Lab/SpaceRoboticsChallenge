@@ -8,7 +8,7 @@ int main(int argc, char **argv)
     // create object for valkyire
     rechabilityMap valRechability(nh);
 
-    valRechability.fkMapGenerator("left_palm");
+    valRechability.fkMapGenerator("leftArm");
 
     ros::spin();
 
