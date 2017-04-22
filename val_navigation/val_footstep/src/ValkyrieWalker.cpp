@@ -194,6 +194,96 @@ void ValkyrieWalker::load_eff(armSide side, EE_LOADING load)
     loadeff_pub.publish(msg);
 }
 
+void ValkyrieWalker::raiseLeg(armSide side, float height)
+{
+    ihmc_msgs::FootTrajectoryRosMessage foot;
+    ihmc_msgs::SE3TrajectoryPointRosMessage data;
+
+    std_msgs::String foot_frame;
+    if (side == LEFT)
+    {
+        foot_frame = this->left_foot_frame_;
+    }
+    else
+    {
+        foot_frame = this->right_foot_frame_;
+    }
+
+    tf::StampedTransform transformStamped;
+    tf_listener_.lookupTransform( VAL_COMMON_NAMES::WORLD_TF,foot_frame.data,ros::Time(0),transformStamped);
+    //tf::quaternionTFToMsg(transformStamped.getRotation(),data.orientation);
+    double roll, pitch, yaw;
+    tf::Matrix3x3(transformStamped.getRotation()).getRPY(roll, pitch, yaw);
+
+    data.position.x = transformStamped.getOrigin().getX();
+    data.position.y = transformStamped.getOrigin().getY();
+    data.position.z = transformStamped.getOrigin().getZ();
+    foot.robot_side = side;
+    foot.execution_mode=0; //OVERRIDE
+    foot.unique_id=100;
+    data.unique_id=1001;
+    data.time=3.0;
+
+    data.position.x-=0.1;
+    data.position.z+=height;
+    data.orientation.x=0;
+    data.orientation.y=0.5;
+    data.orientation.z=0;
+    data.orientation.w=0.866;
+    foot.taskspace_trajectory_points.push_back(data);
+    nudgestep_pub_.publish(foot);
+    return;
+
+}
+
+void ValkyrieWalker::goTo(armSide side, float x, float y, float z)
+{
+    ihmc_msgs::FootTrajectoryRosMessage foot;
+    ihmc_msgs::SE3TrajectoryPointRosMessage data;
+
+    data.position.x=x;
+    data.position.y=z;
+    data.position.y=z;
+    data.orientation.x=0.0;
+    data.orientation.y=0.0;
+    data.orientation.z=0.0;
+    data.orientation.w=1.0;
+    data.time=2.0;
+    data.unique_id=43;
+    foot.unique_id=23;
+
+    foot.taskspace_trajectory_points.push_back(data);
+    ROS_INFO("New value x: %f",data.position.x);
+    ROS_INFO("New value y: %f",data.position.y);
+    nudgestep_pub_.publish(foot);
+    return;
+
+
+    //    ihmc_msgs::FootstepDataListRosMessage list ;
+    //    list.default_transfer_time = transfer_time;
+    //    list.default_swing_time= swing_time;
+    //    list.execution_mode = exe_mode;
+    //    list.unique_id = 800;
+    //    ihmc_msgs::FootstepDataRosMessage step;
+
+    //    step.location.x=x;
+    //    step.location.x=y;
+    //    step.location.x=z;
+
+    //    step.orientation.x=0.0;
+    //    step.orientation.y=0.0;
+    //    step.orientation.z=0.0;
+    //    step.orientation.w=1.0;
+    //    step.swing_height=0.1;
+    //    step.swing_time=1.0;
+    //    step.transfer_time=1.0;
+    //    step.unique_id=455;
+
+    //    list.footstep_data_list.push_back(step);
+    //    this->footsteps_pub_.publish(list);
+    //this->waitForSteps(list.footstep_data_list.size());
+}
+
 // constructor
 ValkyrieWalker::ValkyrieWalker(ros::NodeHandle nh,double InTransferTime ,double InSwingTime, int InMode, double swingHeight):nh_(nh)
 {
@@ -254,6 +344,9 @@ void ValkyrieWalker::getCurrentStep(int side , ihmc_msgs::FootstepDataRosMessage
     foot.location.x = transformStamped.getOrigin().getX();
     foot.location.y = transformStamped.getOrigin().getY();
     foot.location.z = transformStamped.getOrigin().getZ();
+    ROS_INFO("Current x: %f",foot.location.x);
+    ROS_INFO("Current y: %f",foot.location.y);
+    ROS_INFO("Current z: %f",foot.location.z);
     foot.robot_side = side;
     foot.trajectory_type = 0;
     return;
@@ -316,7 +409,10 @@ ihmc_msgs::FootstepDataRosMessage* ValkyrieWalker::getOffsetStep(int side , floa
     this->getCurrentStep(side, *next);
     next->location.x+=x;
     next->location.y+=y;
-    next->location.z=0.05;
+    ROS_INFO("Updated x: %f",next->location.x);
+    ROS_INFO("Updated y: %f",next->location.y);
+    ROS_INFO("Updated z: %f",next->location.z);
+
     next->swing_height = swing_height;
     next->trajectory_type=1;
     return next;

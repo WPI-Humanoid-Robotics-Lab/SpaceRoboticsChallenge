@@ -1,7 +1,7 @@
 #include <val_filters/staircase_filter.h>
 #include <pcl/point_types.h>
 #include <pcl/features/normal_3d.h>
-
+using namespace std;
 
 void StaircaseFilter::startFilter(const sensor_msgs::PointCloud2ConstPtr& input){
 
@@ -13,6 +13,9 @@ void StaircaseFilter::startFilter(const sensor_msgs::PointCloud2ConstPtr& input)
 
     visualization_msgs::MarkerArray markerArray;
     visualization_msgs::Marker marker;
+    vector<float> fL,fR;
+    vector<vector<float> > fLset,fRset;
+    geometry_msgs::Vector3 gfL,gfR;
     float yoffset=0.125;
     int counter=0;
     for (int i = 0; i < NumSteps; ++i) {
@@ -42,12 +45,16 @@ void StaircaseFilter::startFilter(const sensor_msgs::PointCloud2ConstPtr& input)
             marker.color.g = 1.0;
             marker.color.b = 0.0;
 
-            marker.pose.position.x = xyz_centroid[0];
-            marker.pose.position.y = xyz_centroid[1]-yoffset;
-            marker.pose.position.z = xyz_centroid[2];
+            fL.push_back(xyz_centroid[0]);
+            fL.push_back(xyz_centroid[1]-yoffset);
+            fL.push_back(xyz_centroid[2]);
+
+            marker.pose.position.x =fL[0];
+            marker.pose.position.y = fL[1];
+            marker.pose.position.z = fL[2];
+            fLset.push_back(fL);
+            // stairstepL_pub.publish(fL);
             markerArray.markers.push_back(marker);
-
-
 
             // Right Foot
             marker.id = i+100;
@@ -67,10 +74,17 @@ void StaircaseFilter::startFilter(const sensor_msgs::PointCloud2ConstPtr& input)
             marker.color.g = 0.0;
             marker.color.b = 0.0;
 
-            marker.pose.position.x = xyz_centroid[0];
-            marker.pose.position.y = xyz_centroid[1]+yoffset;
-            marker.pose.position.z = xyz_centroid[2];
+            fR.push_back(xyz_centroid[0]);
+            fR.push_back(xyz_centroid[1]+yoffset);
+            fR.push_back(xyz_centroid[2]);
+            marker.pose.position.x =fR[0];
+            marker.pose.position.y = fR[1];
+            marker.pose.position.z = fR[2];
+            fRset.push_back(fR);
+            //stairstepR_pub.publish(fR);
             markerArray.markers.push_back(marker);
+            fL.clear();
+            fR.clear();
             *finalCloud+=*cloud;
         }
     }
@@ -82,11 +96,37 @@ void StaircaseFilter::startFilter(const sensor_msgs::PointCloud2ConstPtr& input)
     pcl_filtered_pub.publish(output);
     if(counter==NumSteps)
     {
+        for (int i = 0; i < NumSteps; ++i) {
+            gfL.x=fLset[i][0];
+            gfL.y=fLset[i][1];
+            gfL.z=fLset[i][2];
+
+            gfR.x=fRset[i][0];
+            gfR.y=fRset[i][1];
+            gfR.z=fRset[i][2];
+            ROS_INFO("x left at %d is %f",i+1,gfL.x);
+            ROS_INFO("y left at %d is %f",i+1,gfL.y);
+            ROS_INFO("z left at %d is %f",i+1,gfL.z);
+
+
+            ROS_INFO("x right at %d is %f",i+1,gfR.x);
+            ROS_INFO("y right at %d is %f",i+1,gfR.y);
+            ROS_INFO("z right at %d is %f",i+1,gfR.z);
+
+            stairstepL_pub.publish(gfL);
+            stairstepR_pub.publish(gfR);
+        }
         ros::Time endTime = ros::Time::now();
         std::cout<<"Point Cloud and Foot Steps calculated in : "<<endTime-startTime<<" secs \n";
-        exit(0);
+        //exit(0);
+        counter=0;
     }
-    else counter=0;
+    else
+    {
+        fLset.clear();
+        fRset.clear();
+        counter=0;
+    }
 }
 
 void StaircaseFilter::passThroughFilter(pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud, float zLowerVal, float zUpperVal){

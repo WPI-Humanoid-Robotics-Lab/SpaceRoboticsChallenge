@@ -33,14 +33,14 @@
 
 #include <pcl/sample_consensus/sac_model_sphere.h>
 #include <pcl/sample_consensus/ransac.h>
-
+#include <geometry_msgs/Vector3.h>
 #include <visualization_msgs/MarkerArray.h>
 
 class StaircaseFilter{
 private:
 
     ros::Subscriber pcl_sub;
-    ros::Publisher pcl_filtered_pub,vis_pub;
+    ros::Publisher pcl_filtered_pub,vis_pub,stairstepL_pub,stairstepR_pub;
     std::vector<float> zLower, zUpper;
     int NumSteps;
 
@@ -54,6 +54,8 @@ public:
         pcl_sub =  nh.subscribe("/assembled_cloud2", 10, &StaircaseFilter::startFilter, this);
         pcl_filtered_pub = nh.advertise<sensor_msgs::PointCloud2>("/val_filter/staircasePointCloud", 1);
         vis_pub = nh.advertise<visualization_msgs::MarkerArray>( "/val_filter/footstep_markers", 1 );
+        stairstepL_pub = nh.advertise<geometry_msgs::Vector3>( "/val_filter/footsteps/Left", 1000 );
+        stairstepR_pub = nh.advertise<geometry_msgs::Vector3>( "/val_filter/footsteps/Right", 1000 );
         NumSteps=7;
         zLower.push_back(0.09);
         zLower.push_back(0.3);

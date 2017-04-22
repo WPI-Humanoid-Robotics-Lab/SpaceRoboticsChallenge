@@ -107,6 +107,8 @@ public:
     bool turn(armSide side);
     void NudgeFoot(armSide side, int dir, float value);
     void load_eff(armSide side, EE_LOADING load);
+    void raiseLeg(armSide side, float height);
+    void goTo(armSide side, float x,float y,float z);
 
 private:
     static int id ;
