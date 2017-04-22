@@ -23,8 +23,8 @@ def sendRightArmTrajectory():
     msg = ArmTrajectoryRosMessage()
 
     msg.robot_side = ArmTrajectoryRosMessage.RIGHT
-
-    msg = appendTrajectoryPoint(msg, 2.0, ZERO_VECTOR)
+    position = [0.00305, -0.0911, 0.6201, 0.003, -0.008,-0.0016, 0.0]
+    msg = appendTrajectoryPoint(msg, 2.0, position)
 #    msg = appendTrajectoryPoint(msg, 3.0, ELBOW_BENT_UP)
 #    msg = appendTrajectoryPoint(msg, 1.0, ZERO_VECTOR)
 #    msg = appendTrajectoryPoint(msg, 4.0, ZERO_VECTOR)
@@ -66,14 +66,59 @@ def sendTaskSpaceTrajectory():
     msg.base_for_control = HandTrajectoryRosMessage.CHEST
         
     pt = SE3TrajectoryPointRosMessage()
-    pt.time = 2.0
-    
-    pt.position.x = 0.28
-    pt.position.y = -0.7
-    pt.position.z = 1.0
-    
-    pt.orientation.w=1.0
-    
+    pt.time = 3.0
+
+    #Home
+    pt.position.x = 0.152
+    pt.position.y = -0.754
+    pt.position.z = 1.353
+    pt.orientation.x = -0.045
+    pt.orientation.y = 0.232
+    pt.orientation.z = 0.045
+    pt.orientation.w = 0.943
+#    pt.orientation.x = 0.535
+#    pt.orientation.y = -0.147
+#    pt.orientation.z = 0.740
+#    pt.orientation.w = 0.381
+
+#    #Initial Manip
+#    pt.position.x = 0.533
+#    pt.position.y = -0.206
+#    pt.position.z = 1.019
+#    pt.orientation.x = -0.292
+#    pt.orientation.y = -0.189
+#    pt.orientation.z = 0.779
+#    pt.orientation.w = 0.565
+
+#    #Towards the handle
+#    pt.position.x = 2.383
+#    pt.position.y = 0.850
+#    pt.position.z = 0.830
+#    pt.orientation.x = -0.168
+#    pt.orientation.y = -0.230
+#    pt.orientation.z = 0.958
+#    pt.orientation.w = 0.014
+
+#    #grabing
+#    pt.position.x = 2.253
+#    pt.position.y = 0.875
+#    pt.position.z = 0.800
+#    pt.orientation.x = -0.168
+#    pt.orientation.y = -0.230
+#    pt.orientation.z = 0.958
+#    pt.orientation.w = 0.014
+
+#    Moving
+#    pt.position.x = 1.850
+#    pt.position.y = 0.990
+#    pt.position.z = 0.500
+#    pt.orientation.x = -0.168
+#    pt.orientation.y = -0.230
+#    pt.orientation.z = 0.958
+#    pt.orientation.w = 0.014
+
+
+
     pt.unique_id = 255
     
     msg.taskspace_trajectory_points.append(pt)
@@ -105,9 +150,9 @@ if __name__ == '__main__':
                 rate.sleep()
 
         if not rospy.is_shutdown():
-            #sendRightArmTrajectory()
+            sendRightArmTrajectory()
             #closeHand()
-            sendTaskSpaceTrajectory()
+            #sendTaskSpaceTrajectory()
             time.sleep(2)
 
     except rospy.ROSInterruptException:

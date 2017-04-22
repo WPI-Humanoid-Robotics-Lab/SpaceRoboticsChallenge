@@ -99,15 +99,15 @@ int main(int argc, char** argv){
   armTrajectory armTraj(node_handle);
   // set first pose point
   // The orientation constrains below are for the first task.
-  t_pose_1.orientation.w = 0.578;
-  t_pose_1.orientation.x = -0.255;
-  t_pose_1.orientation.y = -0.263;
-  t_pose_1.orientation.z = 0.729;
+  t_pose_1.orientation.w = 0.943;
+  t_pose_1.orientation.x = -0.233;
+  t_pose_1.orientation.y = 0.232;
+  t_pose_1.orientation.z = -0.045;
 
 
-  t_pose_1.position.x = 1.683;
-  t_pose_1.position.y = -0.269;
-  t_pose_1.position.z = 0.941;
+  t_pose_1.position.x = 0.152;
+  t_pose_1.position.y = -0.754;
+  t_pose_1.position.z = 1.353;
   group.setPoseTarget(t_pose_1);
   group.setGoalTolerance(0.1);
 
