@@ -72,9 +72,9 @@ def sendTaskSpaceTrajectory():
     pt.position.y = -0.350
     pt.position.z = 1.590
     
-    pt.orientation.w=0.707
+    pt.orientation.w= 1.00
     pt.orientation.x = 0
-    pt.orientation.y = 0.707
+    pt.orientation.y = 0
     pt.orientation.z = 0
     
     pt.unique_id = 255

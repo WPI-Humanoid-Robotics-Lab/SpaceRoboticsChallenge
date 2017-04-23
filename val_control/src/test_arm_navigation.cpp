@@ -27,6 +27,9 @@ int main(int argc, char **argv)
       side = RIGHT;
     }
     armTraj.moveArmInTaskSpace(side, pt, 3.0);
+    ros::Duration(3.5).sleep();
+    armTraj.rectifyArmPosition(side,pt);
+    ROS_INFO("Done rectifying");
   } else {
     // Set the pose of the left arm to extend it to the front
     armTrajectory::armJointData l;
