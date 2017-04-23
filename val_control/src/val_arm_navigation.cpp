@@ -16,7 +16,7 @@ armTrajectory::armTrajectory(ros::NodeHandle nh):nh_(nh),
     taskSpaceTrajectoryPublisher = nh_.advertise<ihmc_msgs::HandTrajectoryRosMessage>("/ihmc_ros/valkyrie/control/hand_trajectory", 1, true);
     markerPub_ = nh_.advertise<visualization_msgs::Marker>("/visualization_marker", 1, true);
 
-    //this->armTrajectorySunscriber = nh_.subscribe("/ihmc_ros/valkyrie/output/ha", 20,&ValkyrieWalker::footstepStatusCB, this);
+    //this->armTrajectorySubscriber = nh_.subscribe("/ihmc_ros/valkyrie/output/ha", 20,&ValkyrieWalker::footstepStatusCB, this);
 
 }
 
@@ -179,6 +179,9 @@ void armTrajectory::moveArmInTaskSpace(const armSide side, const geometry_msgs::
   poseToSE3TrajectoryPoint(pose, point);
   point.time = time;
   this->moveArmInTaskSpaceMessage(side, point);
+  sleep(time+1);
+  ROS_INFO("trying rectify");
+  rectifyArmPosition(side,pose);
 }
 
 void armTrajectory::moveArmInTaskSpace(std::vector<armTaskSpaceData> &arm_data, int baseForControl)
@@ -300,7 +303,70 @@ bool armTrajectory::nudgeArm(const armSide side, const direction drct, float nud
     return true;
 }
 
+bool armTrajectory::rectifyArmPosition(const armSide side, const geometry_msgs::Pose &pose, float threshold){
 
+    ROS_INFO("In rectify");
+    float x_error,y_error,z_error;
+    short  x_count, y_count, z_count;
+    x_count = 0;
+    y_count = 0;
+    z_count = 0;
+    geometry_msgs::PoseStamped      palm_values;
+    std::string target_frame = side == LEFT ? "/leftMiddleFingerPitch1Link" : "/rightMiddleFingerPitch1Link";
+
+    do {
+        ROS_INFO("Inside do loop");
+        try{
+            tf::StampedTransform            tf_palm_values;
+            tf_listener_.waitForTransform(VAL_COMMON_NAMES::WORLD_TF,target_frame, ros::Time(0),ros::Duration(2));
+            tf_listener_.lookupTransform(VAL_COMMON_NAMES::WORLD_TF, target_frame, ros::Time(0),tf_palm_values);
+
+            tf::pointTFToMsg(tf_palm_values.getOrigin(), palm_values.pose.position);
+            tf::quaternionTFToMsg(tf_palm_values.getRotation(), palm_values.pose.orientation);
+            palm_values.header.frame_id=VAL_COMMON_NAMES::WORLD_TF;
+
+        }
+        catch (tf::TransformException ex){
+            ROS_WARN("%s",ex.what());
+            ros::spinOnce();
+            return false;
+        }
+
+        x_error = std::abs(pose.position.x - palm_values.pose.position.x);
+        ROS_INFO("X Error: %f",x_error);
+        y_error = pose.position.y - palm_values.pose.position.y;
+        ROS_INFO("Y Error: %f",y_error);
+        z_error = pose.position.z - palm_values.pose.position.z;
+
+        // Nudge to correct
+        if (std::abs(y_error) > threshold && (y_count < 6)){
+            ROS_INFO("Nudging in Y");
+            if(pose.position.y > palm_values.pose.position.y) nudgeArm(side,direction::LEFT);
+            else nudgeArm(side,direction::RIGHT);
+            sleep(1);
+            y_count++;
+        }
+
+       else if (std::abs(z_error) > threshold && z_count < 6){
+            ROS_INFO("Nudging in Z");
+            if(pose.position.z > palm_values.pose.position.z) nudgeArm(side,direction::UP);
+            else nudgeArm(side,direction::DOWN);
+            sleep(1);
+            z_count++;
+        }
+
+        else if (std::abs(x_error) > threshold && x_count < 6){
+            ROS_INFO("Nudging in X");
+            if(pose.position.x > palm_values.pose.position.x) nudgeArm(side,direction::FRONT);
+            else nudgeArm(side,direction::BACK);
+            sleep(1);
+            x_count++;
+        }
+        else return true;
+
+    } while(((std::abs(x_error)>threshold) || (std::abs(y_error)>threshold) || (std::abs(z_error)>threshold)) && (x_count+y_count+z_count) < 14);
+    return true;
+}
 
 void armTrajectory::appendTrajectoryPoint(ihmc_msgs::ArmTrajectoryRosMessage &msg, trajectory_msgs::JointTrajectoryPoint point)
 {

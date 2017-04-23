@@ -68,11 +68,14 @@ def sendTaskSpaceTrajectory():
     pt = SE3TrajectoryPointRosMessage()
     pt.time = 2.0
     
-    pt.position.x = 0.28
-    pt.position.y = -0.7
-    pt.position.z = 1.0
+    pt.position.x = 0.700
+    pt.position.y = -0.350
+    pt.position.z = 1.590
     
-    pt.orientation.w=1.0
+    pt.orientation.w=0.707
+    pt.orientation.x = 0
+    pt.orientation.y = 0.707
+    pt.orientation.z = 0
     
     pt.unique_id = 255
     

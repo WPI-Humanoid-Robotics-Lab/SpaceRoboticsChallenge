@@ -14,6 +14,7 @@
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
 #include <val_common/val_common_names.h>
+#include <cmath>
 
 /**
  * @brief The armTrajectory class provides ability to move arms of valkyrie. Current implementation provides joint level without collision detection.
@@ -135,6 +136,10 @@ public:
      */
     bool nudgeArm(const armSide side, const direction drct, float nudgeStep = 0.05);
 
+
+
+    bool rectifyArmPosition(const armSide side, const geometry_msgs::Pose &pose, float threshold = 0.04 );
+
 private:
 
     static int arm_id;
@@ -147,7 +152,7 @@ private:
     ros::Publisher  handTrajectoryPublisher;
     ros::Publisher  taskSpaceTrajectoryPublisher;
     ros::Publisher  markerPub_;
-    ros::Subscriber armTrajectorySunscriber;
+    ros::Subscriber armTrajectorySubscriber;
     tf::TransformListener tf_listener_;
     void poseToSE3TrajectoryPoint(const geometry_msgs::Pose &pose, ihmc_msgs::SE3TrajectoryPointRosMessage &point);
     void appendTrajectoryPoint(ihmc_msgs::ArmTrajectoryRosMessage &msg, float time, std::vector<float> pos);
