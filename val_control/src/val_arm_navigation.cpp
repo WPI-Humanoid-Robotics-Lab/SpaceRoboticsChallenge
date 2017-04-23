@@ -179,9 +179,6 @@ void armTrajectory::moveArmInTaskSpace(const armSide side, const geometry_msgs::
   poseToSE3TrajectoryPoint(pose, point);
   point.time = time;
   this->moveArmInTaskSpaceMessage(side, point);
-  ros::Duration(5).sleep();
-  ROS_INFO("trying rectify");
-  rectifyArmPosition(side,pose);
 }
 
 void armTrajectory::moveArmInTaskSpace(std::vector<armTaskSpaceData> &arm_data, int baseForControl)
@@ -346,7 +343,7 @@ bool armTrajectory::rectifyArmPosition(const armSide side, const geometry_msgs::
                 nudgeArm(side,direction::LEFT);
             }
             else nudgeArm(side,direction::RIGHT);
-            ros::Duration(2).sleep();
+            ros::Duration(0.5).sleep();
             y_count++;
         }
 
@@ -354,20 +351,19 @@ bool armTrajectory::rectifyArmPosition(const armSide side, const geometry_msgs::
             ROS_INFO("Nudging in Z");
             if(pose.position.z > palm_values.pose.position.z) nudgeArm(side,direction::UP);
             else nudgeArm(side,direction::DOWN);
-            ros::Duration(2).sleep();
+            ros::Duration(0.5).sleep();
             z_count++;
         }
 
-       if (std::abs(x_error) > threshold && x_count < 6){
+        if (std::abs(x_error) > threshold && x_count < 6){
             ROS_INFO("Nudging in X");
             if(pose.position.x > palm_values.pose.position.x) nudgeArm(side,direction::FRONT);
             else nudgeArm(side,direction::BACK);
             ros::Duration(2).sleep();
             x_count++;
         }
-        else return true;
 
-    } while(((std::abs(x_error)>threshold) || (std::abs(y_error)>threshold) || (std::abs(z_error)>threshold)) && (x_count+y_count+z_count) < 14);
+ } while (((std::abs(x_error)>threshold) || (std::abs(y_error)>threshold) || (std::abs(z_error)>threshold)) && ((x_count+y_count+z_count) < 14));
     return true;
 }
 
