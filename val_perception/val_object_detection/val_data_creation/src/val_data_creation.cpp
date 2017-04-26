@@ -53,13 +53,19 @@ void writeToFile() //std_msgs::Header h
 
   std::ofstream fs;
   fs.open(filetext.str().c_str());          // save transform to text file
-
-  fs << "xpos" << transform.getOrigin().x()<<"\n";
-  fs << "ypos" << transform.getOrigin().y()<<"\n";
-  fs << "zpos" << transform.getOrigin().z()<<"\n";
-  fs << "q1" << transform.getRotation()[1]<<"\n";
-  fs << "q2" << transform.getRotation()[2]<<"\n";
-  fs << "q3" << transform.getRotation()[3]<<"\n";
+  // table 0 0 0 761.0 1.0 1024.0 153.0 1 1 1 0 0 0 0 1
+  // fs << "xpos" << transform.getOrigin().x()<<"\n";
+  // fs << "ypos" << transform.getOrigin().y()<<"\n";
+  // fs << "zpos" << transform.getOrigin().z()<<"\n";
+  // fs << "q1" << transform.getRotation()[1]<<"\n";
+  // fs << "q2" << transform.getRotation()[2]<<"\n";
+  // fs << "q3" << transform.getRotation()[3]<<"\n";
+  fs << "table " << transform.getOrigin().x() << " ";
+  fs << transform.getOrigin().y() << " ";
+  fs << transform.getOrigin().z() << " ";
+  fs << transform.getRotation()[1] << " ";
+  fs << transform.getRotation()[2] << " ";
+  fs << transform.getRotation()[3];
   count++;
 
   fs.close();
