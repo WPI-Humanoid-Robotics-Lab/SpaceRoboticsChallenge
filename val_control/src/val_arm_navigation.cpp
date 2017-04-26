@@ -300,6 +300,45 @@ bool armTrajectory::nudgeArm(const armSide side, const direction drct, float nud
     return true;
 }
 
+void armTrajectory::nudgeArmOrientation(const armSide side, const euler eul, const angleDirection direct, float nudgeAngle){
+
+    armJointData data;
+    data.side = side;
+    data.time = 1;
+    data.arm_pose = getCurrentJointAngles(side);
+    short nudge_direction = direct == angleDirection::CLOCKWISE? 1:(-1);
+    if (eul == euler::PITCH) data.arm_pose.at(4) += (nudge_direction * nudgeAngle);
+    else if (eul == euler::ROLL) data.arm_pose.at(5) += (nudge_direction * nudgeAngle);
+    else data.arm_pose.at(6) += (nudge_direction * nudgeAngle);
+    std::vector<armJointData> arm_data;
+    arm_data.push_back(data);
+    moveArmJoints(arm_data);
+
+}
+
+std::vector<float> armTrajectory::getCurrentJointAngles(const armSide side){
+
+    std::vector<double> jValues;
+    std::string planning_group = side == LEFT? "/leftArm" : "rightArm";
+    ros::AsyncSpinner spinner(1);
+    spinner.start();
+    moveit::planning_interface::MoveGroup group(planning_group);
+    group.setStartStateToCurrentState();
+    jValues = group.getCurrentJointValues();
+    std::vector<float> values;
+    for (auto it=jValues.begin(); it<jValues.end(); ++it){
+        std::cout << *it << std::endl;
+        values.push_back(*it);
+    }
+
+
+
+    //spinner.stop();
+
+    return values;
+
+}
+
 
 
 void armTrajectory::appendTrajectoryPoint(ihmc_msgs::ArmTrajectoryRosMessage &msg, trajectory_msgs::JointTrajectoryPoint point)

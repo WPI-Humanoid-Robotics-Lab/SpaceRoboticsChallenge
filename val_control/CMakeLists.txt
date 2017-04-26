@@ -9,7 +9,26 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   val_common
   val_footstep
+  moveit_commander
+  moveit_core
+  moveit_fake_controller_manager
+  moveit_msgs
+  moveit_planners_ompl
+  moveit_ros_benchmarks
+  moveit_ros_benchmarks_gui
+  moveit_ros_control_interface
+  moveit_ros_manipulation
+  moveit_ros_move_group
+  moveit_ros_perception
+  moveit_ros_planning
+  moveit_ros_planning_interface
+  moveit_ros_robot_interaction
+  moveit_ros_visualization
+  moveit_ros_warehouse
+  moveit_simple_controller_manager
 )
+
+find_package(Eigen3)
 
 #   std_msgs
 
@@ -29,6 +48,8 @@ include_directories(${catkin_INCLUDE_DIRS} include)
    src/val_head_navigation.cpp
    src/val_gripper_control.cpp
 )
+
+add_dependencies(val_control ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
  target_link_libraries(val_control
    ${catkin_LIBRARIES}

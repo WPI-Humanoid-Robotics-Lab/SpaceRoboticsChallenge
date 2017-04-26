@@ -15,3 +15,14 @@ enum class direction{
     FRONT,     //Positive X
     BACK       //Negative X
 };
+
+enum class euler{
+    ROLL = 0,
+    PITCH,
+    YAW
+};
+
+enum angleDirection{
+    CLOCKWISE = 0,
+    ANTICLOCKWISE
+};

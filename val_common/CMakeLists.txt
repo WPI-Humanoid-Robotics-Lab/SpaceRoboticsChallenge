@@ -4,6 +4,7 @@ project(val_common)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+
 find_package(catkin REQUIRED)
 
 set(KDSourcesList src/kdtree/alglibinternal.cpp src/kdtree/ap.cpp src/kdtree/alglibmisc.cpp)

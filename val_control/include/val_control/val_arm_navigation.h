@@ -14,6 +14,7 @@
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
 #include <val_common/val_common_names.h>
+#include <moveit/move_group_interface/move_group.h>
 
 /**
  * @brief The armTrajectory class provides ability to move arms of valkyrie. Current implementation provides joint level without collision detection.
@@ -134,6 +135,10 @@ public:
      * @return
      */
     bool nudgeArm(const armSide side, const direction drct, float nudgeStep = 0.05);
+
+    void nudgeArmOrientation(const armSide side, const euler eul,const angleDirection direct, float nudgeAngle = 0.2);
+
+    std::vector<float> getCurrentJointAngles(const armSide side);
 
 private:
 
