@@ -45,7 +45,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES val_task2
- CATKIN_DEPENDS roscpp decision_making decision_making_parser dynamic_reconfigure val_footstep cv_bridge image_transport pcl_conversions pcl_ros sensor_msgs std_msgs val_controllers
+ CATKIN_DEPENDS roscpp decision_making decision_making_parser dynamic_reconfigure val_footstep cv_bridge image_transport pcl_conversions pcl_ros sensor_msgs std_msgs val_controllers perception_common
  DEPENDS system_lib
  #DEPENDS system_lib
 )
@@ -81,6 +81,9 @@ target_link_libraries(solar_panel_detector_node   ${catkin_LIBRARIES} ${OpenCV_L
 
 add_executable(rover_detection_node       src/val_rover_detection_node.cpp)
 target_link_libraries(rover_detection_node   ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${PROJECT_NAME} ${PCL_LIBRARY_DIRS} ${PROJECT_NAME})
+
+add_executable(rover_detection_2_node       src/rover_detection_2_node.cpp)
+target_link_libraries(rover_detection_2_node   ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${PROJECT_NAME} ${PCL_LIBRARY_DIRS} ${PROJECT_NAME})
 
 
 add_executable(solar_detection_node       src/val_solar_detection_node.cpp)
