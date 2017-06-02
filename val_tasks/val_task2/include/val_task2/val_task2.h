@@ -26,7 +26,6 @@
 #include "val_controllers/robot_state.h"
 #include "val_task2/val_rover_detection.h"
 #include "val_task2/val_solar_detection.h"
-#include "val_task2/val_solar_panel_detector.h"
 #include "val_task2/solar_panel_grasp.h"
 #include "val_task2/button_detector.h"
 #include "val_task2/array_table_detector.h"
@@ -118,6 +117,7 @@ class valTask2 {
     bool is_array_on_right_;
 
     geometry_msgs::Point button_coordinates_;
+    geometry_msgs::Point button_coordinates_temp_; // this is used for deciding if rotation of panel is required
 
     geometry_msgs::Point socket_coordinates_;
 

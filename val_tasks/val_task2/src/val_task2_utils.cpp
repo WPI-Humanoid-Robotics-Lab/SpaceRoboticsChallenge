@@ -131,21 +131,20 @@ bool task2Utils::isPanelPicked(const armSide side)
 
 void task2Utils::moveToPlacePanelPose(const armSide graspingHand, bool rotatePanel)
 {
-    if (rotatePanel) {
-        return;
-    }
-
     armSide nonGraspingHand = (armSide) !graspingHand;
 
-    // raise pelvis
-//    pelvis_controller_->controlPelvisHeight(1.1);
-//    ros::Duration(2).sleep();
-
-    const std::vector<float> *graspingHandPoseUp, *graspingHandPoseDown, *nonGraspingHandPose2, *nonGraspingHandPose1;
+    const std::vector<float> *graspingHandPoseUp, *graspingHandPoseDown;
+    const std::vector<float>  *nonGraspingHandPose2, *nonGraspingHandPose1;
 
     if(graspingHand == armSide::LEFT){
-        graspingHandPoseUp     = &leftPanelPlacementUpPose1_;
-        graspingHandPoseDown   = &leftPanelPlacementDownPose1_;
+        if (rotatePanel){
+            graspingHandPoseUp     = &leftPanelPlacementUpPose1_;
+            graspingHandPoseDown   = &leftPanelPlacementDownPose1_;
+        }
+        else{
+            graspingHandPoseUp     = &leftPanelPlacementUpPose2_;
+            graspingHandPoseDown   = &leftPanelPlacementDownPose2_;
+        }
         nonGraspingHandPose1 = &rightPanelPlacementSupport1_;
         nonGraspingHandPose2 = &rightPanelPlacementSupport2_;
         // take non-GraspingHand out
@@ -154,8 +153,14 @@ void task2Utils::moveToPlacePanelPose(const armSide graspingHand, bool rotatePan
     }
     else
     {
-        graspingHandPoseUp     = &rightPanelPlacementUpPose1_;
-        graspingHandPoseDown   = &rightPanelPlacementDownPose1_;
+        if (rotatePanel){
+            graspingHandPoseUp     = &rightPanelPlacementUpPose1_;
+            graspingHandPoseDown   = &rightPanelPlacementDownPose1_;
+        }
+        else {
+            graspingHandPoseUp     = &rightPanelPlacementUpPose2_;
+            graspingHandPoseDown   = &rightPanelPlacementDownPose2_;
+        }
         nonGraspingHandPose1 = &leftPanelPlacementSupport1_;
         nonGraspingHandPose2 = &leftPanelPlacementSupport2_;
         // take non-GraspingHand out
@@ -272,6 +277,42 @@ void task2Utils::reOrientTowardsPanel(geometry_msgs::Pose panelPose){
 
 }
 
+void task2Utils::reOrientTowardsCable(geometry_msgs::Pose cablePose, geometry_msgs::Pose panelPose){
+
+    geometry_msgs::Pose poseInPelvisFrame;
+    current_state_->transformPose(cablePose, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF, VAL_COMMON_NAMES::PELVIS_TF);
+
+    float yaw = tf::getYaw(poseInPelvisFrame.orientation);
+
+    ROS_INFO("Yaw Value : %f",yaw);
+
+    // if the vector is pointing outwards, reorient it
+    if (yaw > M_PI_2 || yaw < -M_PI_2){
+        geometry_msgs::Pose tempYaw(cablePose);
+        SolarPanelDetect::invertYaw(tempYaw);
+
+        current_state_->transformPose(tempYaw, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF, VAL_COMMON_NAMES::PELVIS_TF);
+        yaw = tf::getYaw(poseInPelvisFrame.orientation);
+    }
+
+    ROS_INFO("reOrient towards cable: The current Yaw in pelvis frame is: %d", yaw);
+
+//    geometry_msgs::Pose cableOrientationPose;
+//    // Choose the cableOrientation pose based on the condition
+//    //side = yaw < 0 ? armSide::LEFT : armSide::RIGHT;
+
+//    geometry_msgs::Pose robotPose;
+//    current_state_->getCurrentPose(VAL_COMMON_NAMES::WORLD_TF,robotPose);
+
+//    geometry_msgs::Pose2D cableOrientationPose2D;
+//    cableOrientationPose2D.x = cableOrientationPose.position.x;
+//    cableOrientationPose2D.y = cableOrientationPose.position.y;
+//    cableOrientationPose2D.theta = tf::getYaw(robotPose.orientation);
+
+//    //Convert cableo... pose to world and call the walker
+//    walk_->walkToGoal(cableOrientationPose2D);
+
+}
 
 int task2Utils::getCurrentCheckpoint() const{
     return current_checkpoint_;
@@ -290,20 +331,23 @@ bool task2Utils::isCableOnTable(geometry_msgs::Pose &cable_coordinates)
 
 bool task2Utils::isCableInHand(armSide side)
 {
-     // this function rotates the hand slighly to detect the cable and brings it back to same position
-    /// @todo : 1. Move hand to a position which can be seen by stereo cams
-    /// 2. get the pose of hand frame
-    /// 3. get position of cable
-    /// 4. compare and return the result
+    // this function rotates the hand slighly to detect the cable and brings it back to same position
+    std::string arm = side == LEFT ? "left_arm" : "right_arm";
+    std::vector<float> jointPositions;
+    current_state_->getJointPositions(arm,jointPositions);
 
-    std::string jointName = side ==LEFT ? "leftForearmYaw" : "rightForearmYaw";
-    float finalJointValue = side ==LEFT ? 1.2 : -1.2;
-    float initialJointValue =current_state_->getJointPosition(jointName);
+    std::vector< std::vector<float> > armData;
+    armData.push_back(righCableInHandSeed_);
+    arm_controller_->moveArmJoints(side, armData,2.0f);
+    ros::Duration(3).sleep();
 
-    arm_controller_->moveArmJoint(side,4,finalJointValue);
-    ros::Duration(2).sleep();
-    /// @todo detection part
-    arm_controller_->moveArmJoint(side,4,initialJointValue);
+    ///@todo detection part goes here
+
+//    armData.clear();
+//    armData.push_back(jointPositions);
+//    arm_controller_->moveArmJoints(side, armData,2.0f);
+//    ros::Duration(0.2).sleep();
+
 
 }
 

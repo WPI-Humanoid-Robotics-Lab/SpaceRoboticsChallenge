@@ -17,6 +17,7 @@
 #include "ros/package.h"
 #include <fstream>
 #include "boost/date_time/posix_time/posix_time.hpp"
+#include "val_task2/val_solar_panel_detector.h"
 
 class task2Utils {
 private:
@@ -65,14 +66,23 @@ private:
     const std::vector<float> leftPanelPlacementUpPose1_  = {-1.5, -1.4, 1.39, -0.9, -1.10, 0.5, 0};
     const std::vector<float> leftPanelPlacementDownPose1_= {-1.2, -1.4, 1.39, -0.9, -1.10, 0.5, 0.4};
 
+    const std::vector<float> leftPanelPlacementUpPose2_  = {-1.5, -1.4, 1.39, -0.9, 1.10, -0.5, 0};
+    const std::vector<float> leftPanelPlacementDownPose2_= {-1.2, -1.4, 1.39, -0.9, 1.10, -0.5, 0};
+
     const std::vector<float> leftPanelPlacementSupport1_  = {-0.66, -1.4, 1.2, -1.49, 1.29, 0, 0.26};
     const std::vector<float> leftPanelPlacementSupport2_  = {-0.66, -1.4, 0.75, -1.49, 1.29, 0, 0.26};
 
-    const std::vector<float> rightPanelPlacementUpPose1_ = {-1.5, 1.4, 1.39, 0.9, -1.10, -0.5, 0};
+    const std::vector<float> rightPanelPlacementUpPose1_  = {-1.5, 1.4, 1.39, 0.9, -1.10, -0.5, 0};
     const std::vector<float> rightPanelPlacementDownPose1_= {-1.2, 1.4, 1.39, 0.9, -1.10, -0.5, 0.4};
 
-    const std::vector<float> rightPanelPlacementSupport1_  = {-0.66, 1.4, 1.2, 1.49, 1.29, 0, 0.26};
-    const std::vector<float> rightPanelPlacementSupport2_  = {-0.66, 1.4, 0.75, 1.49, 1.29, 0, 0.26};
+    const std::vector<float> rightPanelPlacementUpPose2_  = {-1.5, 1.4, 1.39, 0.9, 1.10, 0.5, 0};
+    const std::vector<float> rightPanelPlacementDownPose2_= {-1.2, 1.4, 1.39, 0.9, 1.10, 0.5, 0};
+
+    const std::vector<float> rightPanelPlacementSupport1_ = {-0.66, 1.4, 1.2, 1.49, 1.29, 0, 0.26};
+    const std::vector<float> rightPanelPlacementSupport2_ = {-0.66, 1.4, 0.75, 1.49, 1.29, 0, 0.26};
+
+    // cable in hand seed point
+    const std::vector<float> righCableInHandSeed_ = {-0.81,1.11,0.65,1.14,-0.26,-0.19,0.30};
 
     // Gripper commands
     const std::vector<double> leftHandGrasp_          = {1.2, -0.6, -0.77, -0.9, -0.9};
@@ -98,6 +108,7 @@ public:
     void resumePointCloud();
     void clearBoxPointCloud();
     void reOrientTowardsPanel(geometry_msgs::Pose panelPose);
+    void reOrientTowardsCable(geometry_msgs::Pose cablePose, geometry_msgs::Pose panelPose);
     int getCurrentCheckpoint() const;
     bool shakeTest(const armSide graspingHand);
     boost::posix_time::ptime timeNow;
