@@ -29,6 +29,7 @@
 #include <pcl/filters/passthrough.h>
 #include <pcl/filters/filter_indices.h>
 #include <pcl/filters/extract_indices.h>
+#include <pcl/filters/project_inliers.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/kdtree/kdtree.h>

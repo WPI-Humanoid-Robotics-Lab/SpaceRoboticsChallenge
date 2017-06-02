@@ -71,7 +71,7 @@ bool StepDetector::getStepsPosition(const std::vector<double>& coefficients, con
 
     //publish the output cloud for visualization
     sensor_msgs::PointCloud2 output;
-    pcl::toROSMsg(*output_cloud, output);
+    pcl::toROSMsg(*out_cloud1, output);
     output.header.frame_id = "world";
     pcl_pub_.publish(output);
 
@@ -88,24 +88,63 @@ void StepDetector::planeSegmentation(const pcl::PointCloud<pcl::PointXYZ>::Ptr& 
 {
     int count = 0;
     pcl::PointCloud<pcl::PointXYZ>::Ptr temp_output (new pcl::PointCloud<pcl::PointXYZ>);
-    for (size_t i = 0; i < input->size(); i++)
-    {
-        double threshold = coefficients_[0] * input->points[i].x + coefficients_[1] * input->points[i].y + coefficients_[2] * input->points[i].z - coefficients_[3];
-        //double threshold = 0.244626 * input->points[i].x + -2.54532 * input->points[i].y + 0 * input->points[i].z - 3.85578;
-        if (threshold < 0.01 && threshold > -0.01){
-            temp_output->points.push_back(input->points[i]);
-            count++;
-        }
-    }
-    if (temp_output->empty())
-        return;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr temp_output1 (new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PassThrough<pcl::PointXYZ> pass;
-    pass.setInputCloud(temp_output);
+    pass.setInputCloud(input);
     pass.setFilterFieldName ("x");
     //pass.setFilterLimits (3.62829, 6.7);
     pass.setFilterLimits (stairLoc_.x, stairLoc_.x + STAIR_LENGTH_FORWARD);
-    pass.filter (*output);
+    pass.filter (*temp_output);
+
+    if (temp_output->empty())
+        return;
+
+    // Downsample the cloud for faster processing
+    float leafsize  = 0.01;
+    pcl::VoxelGrid<pcl::PointXYZ> grid;
+    grid.setLeafSize (leafsize, leafsize, leafsize);
+    grid.setInputCloud (temp_output);
+    grid.filter (*temp_output);
+    grid.setFilterLimitsNegative(false);
+
+    if (temp_output->empty())
+        return;
+
+    for (size_t i = 0; i < temp_output->size(); i++)
+    {
+        double threshold = coefficients_[0] * temp_output->points[i].x + coefficients_[1] * temp_output->points[i].y + coefficients_[2] * temp_output->points[i].z - coefficients_[3];
+        if (threshold < 2 && threshold > -2){
+            temp_output1->points.push_back(temp_output->points[i]);
+            count++;
+        }
+    }
+    Eigen::Vector3f axis(coefficients_[0], coefficients_[1], coefficients_[2]);
+    pcl::SACSegmentation<pcl::PointXYZ> seg;
+    seg.setOptimizeCoefficients(true);
+    seg.setModelType(pcl::SACMODEL_PLANE);
+    seg.setMethodType(pcl::SAC_RANSAC);
+    seg.setDistanceThreshold(0.02);
+    seg.setInputCloud(temp_output1);
+    seg.setAxis({0.0, 0.0, 0.1});
+    auto inliers = boost::make_shared<pcl::PointIndices>();
+    auto coefficients = boost::make_shared<pcl::ModelCoefficients>();
+    seg.segment(*inliers, *coefficients);
+
+    pcl::ExtractIndices<pcl::PointXYZ> extract;
+    extract.setInputCloud (temp_output1);
+    extract.setIndices (inliers);
+    extract.setNegative (false);
+    extract.filter (*temp_output1);
+
+    pcl::ProjectInliers<pcl::PointXYZ> proj;
+    proj.setModelType(pcl::SACMODEL_PLANE);
+    proj.setInputCloud(temp_output1);
+    proj.setModelCoefficients(coefficients);
+    proj.setIndices(inliers);
+    proj.filter(*output);
+
     temp_output->points.clear();
+    temp_output1->points.clear();
 }
 
 void StepDetector::zAxisSegmentation(const pcl::PointCloud<pcl::PointXYZ>::Ptr& input, pcl::PointCloud<pcl::PointXYZ>::Ptr& output)
