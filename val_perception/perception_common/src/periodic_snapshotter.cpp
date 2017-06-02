@@ -42,7 +42,7 @@
 
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/filter.h>
-
+#include <pcl/filters/crop_box.h>
 #include <pcl/features/normal_3d.h>
 
 #include <pcl/registration/icp.h>
@@ -106,37 +106,42 @@ public:
 
 PeriodicSnapshotter::PeriodicSnapshotter()
 {
-    snapshot_pub_ = n_.advertise<sensor_msgs::PointCloud2> ("snapshot_cloud2", 1);
-    registered_pointcloud_pub_ = n_.advertise<sensor_msgs::PointCloud2>("assembled_cloud2",10, true);
+    robot_state_  = RobotStateInformer::getRobotStateInformer(n_);
 
+    snapshot_pub_              = n_.advertise<sensor_msgs::PointCloud2> ("snapshot_cloud2", 1);
+    registered_pointcloud_pub_ = n_.advertise<sensor_msgs::PointCloud2>("assembled_cloud2",10);
+    pointcloud_for_octomap_pub_= n_.advertise<sensor_msgs::PointCloud2>("assembled_octomap_cloud2",10, true);
+    resetPointcloudSub_        = n_.subscribe("reset_pointcloud", 10, &PeriodicSnapshotter::resetPointcloudCB, this);
+    pausePointcloudSub_        = n_.subscribe("pause_pointcloud", 10, &PeriodicSnapshotter::pausePointcloudCB, this);
+    boxFilterSub_              = n_.subscribe("clearbox_pointcloud", 10, &PeriodicSnapshotter::setBoxFilterCB, this);
     // Create the service client for calling the assembler
-    client_ = n_.serviceClient<AssembleScans2>("assemble_scans2");
+    client_       = n_.serviceClient<AssembleScans2>("assemble_scans2");
     snapshot_sub_ = n_.subscribe("snapshot_cloud2",10, &PeriodicSnapshotter::mergeClouds, this);
 
     // Start the timer that will trigger the processing loop (timerCallback)
     float timeout;
     n_.param<float>("val_laser_assembler_svc/laser_snapshot_timeout", timeout, 5.0);
-    ROS_INFO("Snapshot timeout : %.2f seconds", timeout);
+    ROS_INFO("PeriodicSnapshotter::PeriodicSnapshotter : Snapshot timeout : %.2f seconds", timeout);
     timer_ = n_.createTimer(ros::Duration(timeout,0), &PeriodicSnapshotter::timerCallback, this);
 
     // Need to track if we've called the timerCallback at least once
     first_time_ = true;
-    /****************************************************
-     *downsample registered pointcloud after 4 iterations
-     ****************************************************/
     downsample_ = true;
-
+    enable_box_filter_ = false;
     sensor_msgs::PointCloud2::Ptr temp(new sensor_msgs::PointCloud2);
-    prev_msg_ = temp;
+    prev_msg_        = temp;
+    resetPointcloud_ = true;
+
 }
 
 void PeriodicSnapshotter::timerCallback(const ros::TimerEvent& e)
 {
 
-    // We don't want to build a cloud the first callback, since we we
+    // We don't want to build a cloud the first callback, since we
     //   don't have a start and end time yet
     if (first_time_)
     {
+        ROS_INFO("PeriodicSnapshotter::timerCallback : Ignoring current snapshot");
         first_time_ = false;
         return;
     }
@@ -149,21 +154,21 @@ void PeriodicSnapshotter::timerCallback(const ros::TimerEvent& e)
     // Make the service call
     if (client_.call(srv))
     {
-        ROS_INFO("Published Cloud with %u points", (uint32_t)(srv.response.cloud.data.size())) ;
+        ROS_INFO("PeriodicSnapshotter::timerCallback : Published Cloud with %u points", (uint32_t)(srv.response.cloud.data.size())) ;
         snapshot_pub_.publish(srv.response.cloud);
         pcl::PCLPointCloud2 pcl_pc2;
         pcl_conversions::toPCL(srv.response.cloud,pcl_pc2);
         pcl::fromPCLPointCloud2(pcl_pc2,*laser_assembler::PeriodicSnapshotter::POINTCLOUD_STATIC_PTR);
-        ROS_INFO("Size of pointcloud is %d", laser_assembler::PeriodicSnapshotter::POINTCLOUD_STATIC_PTR->size());
+        ROS_INFO("PeriodicSnapshotter::timerCallback : Size of pointcloud is %d", laser_assembler::PeriodicSnapshotter::POINTCLOUD_STATIC_PTR->size());
     }
     else
     {
-        ROS_ERROR("Error making service call\n") ;
+        ROS_WARN("Error making service call\n") ;
     }
 }
 
-void PeriodicSnapshotter::pairAlign (const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_src, const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_tgt, pcl::PointCloud<pcl::PointXYZ>::Ptr output, Eigen::Matrix4f &final_transform, bool downsample)
-{
+void PeriodicSnapshotter::pairAlign (const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_src, const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_tgt,
+                                     pcl::PointCloud<pcl::PointXYZ>::Ptr output, Eigen::Matrix4f &final_transform) {
 
     //
     // Downsample for consistency and speed
@@ -171,20 +176,12 @@ void PeriodicSnapshotter::pairAlign (const pcl::PointCloud<pcl::PointXYZ>::Ptr c
     pcl::PointCloud<pcl::PointXYZ>::Ptr src (new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr tgt (new pcl::PointCloud<pcl::PointXYZ>);
     pcl::VoxelGrid<PointT> grid;
-    if (downsample)
-    {
-        grid.setLeafSize (0.05, 0.05, 0.05);
-        grid.setInputCloud (cloud_src);
-        grid.filter (*src);
+    grid.setLeafSize (0.05, 0.05, 0.05);
+    grid.setInputCloud (cloud_src);
+    grid.filter (*src);
 
-        grid.setInputCloud (cloud_tgt);
-        grid.filter (*tgt);
-    }
-    else
-    {
-        src = cloud_src;
-        tgt = cloud_tgt;
-    }
+    grid.setInputCloud (cloud_tgt);
+    grid.filter (*tgt);
 
 
     // Compute surface normals and curvature
@@ -269,13 +266,93 @@ void PeriodicSnapshotter::pairAlign (const pcl::PointCloud<pcl::PointXYZ>::Ptr c
     final_transform = targetToSource;
 }
 
+void PeriodicSnapshotter::resetPointcloud(bool resetPointcloud)
+{
+    //reset the assembler
+    state_request = PCL_STATE_CONTROL::RESET;
+}
+
+void PeriodicSnapshotter::resetPointcloudCB(const std_msgs::Empty &msg)
+{
+    state_request = PCL_STATE_CONTROL::RESET;
+}
+
+void PeriodicSnapshotter::pausePointcloud(bool pausePointcloud)
+{
+    state_request = pausePointcloud ? PCL_STATE_CONTROL::PAUSE : PCL_STATE_CONTROL::RESUME;
+}
+
+void PeriodicSnapshotter::pausePointcloudCB(const std_msgs::Bool &msg)
+{
+    //reset will make sure that older scans are discarded
+    state_request = msg.data ? PCL_STATE_CONTROL::PAUSE : PCL_STATE_CONTROL::RESUME;
+}
+
+void PeriodicSnapshotter::setBoxFilterCB(const std_msgs::Empty &msg)
+{
+    enable_box_filter_ = true;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_prev_msg(new pcl::PointCloud<pcl::PointXYZ>);
+    convertROStoPCL(prev_msg_, pcl_prev_msg);
+    geometry_msgs::Pose pelvisPose;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr tgt (new pcl::PointCloud<pcl::PointXYZ>);
+    robot_state_->getCurrentPose(VAL_COMMON_NAMES::PELVIS_TF, pelvisPose);
+    Eigen::Vector4f minPoint;
+    Eigen::Vector4f maxPoint;
+    minPoint[0]=-1;
+    minPoint[1]=-1;
+    minPoint[2]=-0.5;
+
+    maxPoint[0]=2;
+    maxPoint[1]=1;
+    maxPoint[2]=1;
+    Eigen::Vector3f boxTranslatation;
+    boxTranslatation[0]=pelvisPose.position.x;
+    boxTranslatation[1]=pelvisPose.position.y;
+    boxTranslatation[2]=pelvisPose.position.z;
+    Eigen::Vector3f boxRotation;
+    boxRotation[0]=0;  // rotation around x-axis
+    boxRotation[1]=0;  // rotation around y-axis
+    boxRotation[2]= tf::getYaw(pelvisPose.orientation);  //in radians rotation around z-axis. this rotates your cube 45deg around z-axis.
+
+
+    pcl::CropBox<pcl::PointXYZ> box_filter;
+    std::vector<int> indices;
+    indices.clear();
+    box_filter.setInputCloud(pcl_prev_msg);
+    box_filter.setMin(minPoint);
+    box_filter.setMax(maxPoint);
+    box_filter.setTranslation(boxTranslatation);
+    box_filter.setRotation(boxRotation);
+    box_filter.setNegative(true);
+    box_filter.filter(*tgt);
+    sensor_msgs::PointCloud2::Ptr merged_cloud(new sensor_msgs::PointCloud2());
+    convertPCLtoROS(tgt,merged_cloud);
+    prev_msg_ = merged_cloud;
+
+    registered_pointcloud_pub_.publish(merged_cloud);
+    enable_box_filter_ = false;
+}
+
+
 void PeriodicSnapshotter::mergeClouds(const sensor_msgs::PointCloud2::Ptr msg){
+    if(enable_box_filter_ )
+        return;
+
+    if (state_request == PCL_STATE_CONTROL::PAUSE){
+        ROS_INFO("PeriodicSnapshotter::mergeClouds : Laser assembling paused");
+        registered_pointcloud_pub_.publish(prev_msg_);
+        return;
+    }
+
     sensor_msgs::PointCloud2::Ptr merged_cloud(new sensor_msgs::PointCloud2());
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_msg(new pcl::PointCloud<pcl::PointXYZ>);
     convertROStoPCL(msg, pcl_msg);
 
-    if (prev_msg_->data.empty()){
+    if (state_request == PCL_STATE_CONTROL::RESET || prev_msg_->data.empty()){
+        ROS_INFO("PeriodicSnapshotter::mergeClouds : Resetting Pointcloud");
         merged_cloud = msg;
+        pointcloud_for_octomap_pub_.publish(prev_msg_->data.empty() ? msg : prev_msg_);
+        state_request = PCL_STATE_CONTROL::RESUME;
     }
     else {
         // merge the current msg with previous messages published till now
@@ -290,21 +367,70 @@ void PeriodicSnapshotter::mergeClouds(const sensor_msgs::PointCloud2::Ptr msg){
         target = pcl_prev_msg;
         PointCloud::Ptr temp (new PointCloud);
         // check if the cloud size is growing exceptionally high. if yes, downsample the pointcloud without impacting objects and features
-        pairAlign (source, target, temp, pairTransform, downsample_);
+        pairAlign (source, target, temp, pairTransform);
 
         //transform current pair into the global transform
         pcl::transformPointCloud (*temp, *result, GlobalTransform);
 
         //update the global transform
         GlobalTransform = GlobalTransform * pairTransform;
+        pcl::PointCloud<pcl::PointXYZ>::Ptr tgt (new pcl::PointCloud<pcl::PointXYZ>);
+        /*  Disabling voxel filter -- enabling this will impact rover detection
+        float leafsize  = 0.05;
+        pcl::VoxelGrid<PointT> grid;
+        grid.setLeafSize (leafsize, leafsize, leafsize);
+        grid.setInputCloud (result);
+        grid.filter (*tgt);
+        */
 
-        convertPCLtoROS(result,merged_cloud);
+        // Create the filtering object
+        pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
+        sor.setInputCloud (result);
+        sor.setMeanK (50);
+        sor.setStddevMulThresh (1.0);
+        sor.filter (*tgt);
+
+        //        if (enable_box_filter_){
+        //            geometry_msgs::Pose pelvisPose;
+        //            robot_state_->getCurrentPose(VAL_COMMON_NAMES::PELVIS_TF, pelvisPose);
+        //            Eigen::Vector4f minPoint;
+        //            Eigen::Vector4f maxPoint;
+        //            minPoint[0]=-1;
+        //            minPoint[1]=-1;
+        //            minPoint[2]=-0.5;
+
+        //            maxPoint[0]=2;
+        //            maxPoint[1]=1;
+        //            maxPoint[2]=1;
+        //            Eigen::Vector3f boxTranslatation;
+        //            boxTranslatation[0]=pelvisPose.position.x;
+        //            boxTranslatation[1]=pelvisPose.position.y;
+        //            boxTranslatation[2]=pelvisPose.position.z;
+        //            Eigen::Vector3f boxRotation;
+        //            boxRotation[0]=0;  // rotation around x-axis
+        //            boxRotation[1]=0;  // rotation around y-axis
+        //            boxRotation[2]= tf::getYaw(pelvisPose.orientation);  //in radians rotation around z-axis. this rotates your cube 45deg around z-axis.
+
+
+        //            pcl::CropBox<pcl::PointXYZ> box_filter;
+        //            std::vector<int> indices;
+        //            indices.clear();
+        //            box_filter.setInputCloud(tgt);
+        //            box_filter.setMin(minPoint);
+        //            box_filter.setMax(maxPoint);
+        //            box_filter.setTranslation(boxTranslatation);
+        //            box_filter.setRotation(boxRotation);
+        //            box_filter.setNegative(true);
+        //            box_filter.filter(*tgt);
+        //            enable_box_filter_ = false;
+        //        }
+
+
+        convertPCLtoROS(tgt,merged_cloud);
         // publish the merged message
-
     }
 
     prev_msg_ = merged_cloud;
-
     registered_pointcloud_pub_.publish(merged_cloud);
 }
 
@@ -316,7 +442,7 @@ int main(int argc, char **argv)
     ros::service::waitForService("build_cloud");
     ROS_INFO("Found build_cloud! Starting the snapshotter");
     PeriodicSnapshotter snapshotter;
-    ros::Rate looprate(1);
+    ros::Rate looprate(5);
     while(ros::ok())
     {
         ros::spinOnce();

@@ -39,9 +39,17 @@
 #include <perception_common/MultisensePointCloud.h>
 #include <perception_common/PointCloudHelper.h>
 #include <val_common/val_common_names.h>
+#include <std_msgs/Bool.h>
+#include <val_controllers/robot_state.h>
 
 namespace laser_assembler
 {
+
+enum class PCL_STATE_CONTROL{
+    RESET=0,
+    PAUSE,
+    RESUME
+};
 
 class PeriodicSnapshotter
 {
@@ -69,7 +77,7 @@ public:
     void mergeClouds(const sensor_msgs::PointCloud2::Ptr msg);
 
     void pairAlign (const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_src, const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_tgt,
-                    pcl::PointCloud<pcl::PointXYZ>::Ptr output, Eigen::Matrix4f &final_transform, bool downsample_ = false);
+                    pcl::PointCloud<pcl::PointXYZ>::Ptr output, Eigen::Matrix4f &final_transform);
 
     /**
      * @brief getNearestPoint returns the K-nearest neighbours of a specified point. This is a
@@ -85,16 +93,31 @@ public:
      */
     static pcl::PointCloud<pcl::PointXYZ>::Ptr POINTCLOUD_STATIC_PTR;
 
+    void resetPointcloud(bool resetPointcloud);
+    void resetPointcloudCB(const std_msgs::Empty & msg);
+
+    void pausePointcloud(bool pausePointcloud);
+    void pausePointcloudCB(const std_msgs::Bool &msg);
+
+    void setBoxFilterCB(const std_msgs::Empty &msg);
 private:
     ros::NodeHandle n_;
     ros::Publisher snapshot_pub_;
     ros::Publisher registered_pointcloud_pub_;
+    ros::Publisher pointcloud_for_octomap_pub_;
     ros::Subscriber snapshot_sub_;
+    ros::Subscriber resetPointcloudSub_;
+    ros::Subscriber pausePointcloudSub_;
+    ros::Subscriber boxFilterSub_;
     ros::ServiceClient client_;
     ros::Timer timer_;
     sensor_msgs::PointCloud2::Ptr prev_msg_;
     bool first_time_;
     bool downsample_;
+    bool resetPointcloud_;
+    PCL_STATE_CONTROL state_request;
+    bool enable_box_filter_;
+    RobotStateInformer *robot_state_;
 
 
 } ;
@@ -123,7 +146,7 @@ bool PeriodicSnapshotter::getNearestPoint(geometry_msgs::PointStamped &point, in
             listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF,point, point);
         }
         catch(tf::TransformException ex){
-            ROS_ERROR("%s",ex.what());
+            ROS_WARN("%s",ex.what());
             return false;
         }
     }
@@ -179,7 +202,7 @@ bool PeriodicSnapshotter::getNearestPoint(geometry_msgs::PointStamped &point, in
             listener.transformPoint(originalFrame, point, point);
         }
         catch(tf::TransformException ex){
-            ROS_ERROR("%s",ex.what());
+            ROS_WARN("%s",ex.what());
             return false;
         }
     }

@@ -18,7 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   cv_bridge
   image_transport
-  val_control
+  val_controllers
   val_footstep
 )
 
@@ -50,7 +50,6 @@ QT4_WRAP_UI(MOC_GUI_H
   ${FORM_FILES}
 )
 
-include_directories(include)
 add_library(val_marker
   src/val_marker.cpp
 )
@@ -64,7 +63,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES val_marker
-  CATKIN_DEPENDS roscpp rviz sensor_msgs std_msgs val_control val_footstep
+  CATKIN_DEPENDS roscpp rviz sensor_msgs std_msgs val_controllers val_footstep
   DEPENDS system_lib
 )
 

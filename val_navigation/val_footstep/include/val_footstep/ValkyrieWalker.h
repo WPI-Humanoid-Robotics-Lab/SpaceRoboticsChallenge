@@ -11,12 +11,18 @@
 #include "ihmc_msgs/FootstepDataListRosMessage.h"
 #include "ihmc_msgs/FootstepDataRosMessage.h"
 #include "ihmc_msgs/FootstepStatusRosMessage.h"
+#include "ihmc_msgs/FootTrajectoryRosMessage.h"
+#include "ihmc_msgs/WholeBodyTrajectoryRosMessage.h"
+#include<ihmc_msgs/EndEffectorLoadBearingRosMessage.h>
 #include <geometry_msgs/TransformStamped.h>
 #include "std_msgs/String.h"
 #include "ros/time.h"
 #include "tf/tf.h"
 #include <tf/transform_listener.h>
 #include <val_common/val_common_defines.h>
+#include <val_controllers/robot_state.h>
+
+
 
 /**
  * @brief The ValkyrieWalker class This class provides access to the footsteps of valkyrie. It can be used
@@ -44,7 +50,7 @@ public:
      * @param goal  pose2d message giving position and orientation of goal point.
      * @return true if footstep planning is successful else false
      */
-    bool walkToGoal( geometry_msgs::Pose2D &goal);
+    bool walkToGoal(geometry_msgs::Pose2D &goal, bool waitForSteps=true);
 
     /**
      * @brief walkNSteps Makes the robot walk given number of steps.
@@ -55,7 +61,7 @@ public:
      * @param startLeg   leg to be used to start walking. It can be RIGHT or LEFT
      * @return
      */
-    bool walkNSteps(int nh_, float x_offset, float y_offset=0.0f, bool continous=false, armSide startLeg=RIGHT, bool waitForSteps=true);
+    bool walkNSteps(int n, float x_offset, float y_offset=0.0f, bool continous=false, armSide startLeg=RIGHT, bool waitForSteps=true);
 
     /**
      * @brief walkPreComputedSteps If the steps to be sent to the robot are not identical, use this function to send steps that are precomputed.
@@ -84,7 +90,7 @@ public:
     {
         this->transfer_time = InTransferTime;
         this->swing_time = InSwingTime;
-        this->exe_mode = InMode;
+        this->execution_mode = InMode;
     }
 
     /**
@@ -102,15 +108,24 @@ public:
         swing_height = value;
     }
     bool turn(armSide side);
+    void load_eff(armSide side, EE_LOADING load);
+    bool raiseLeg(armSide side, float height, float stepLength);
+    bool walkLocalPreComputedSteps(const std::vector<float> x_offset, const std::vector<float> y_offset, armSide startLeg);
+    RobotStateInformer *current_state_;
+    bool curlLeg(armSide side, float radius);
+    bool placeLeg(armSide side, float offset=0.1f);
+    bool nudgeFoot(armSide side, float distance);
+    void getCurrentStep(int side , ihmc_msgs::FootstepDataRosMessage& foot);
+
 
 private:
     static int id ;
     double transfer_time,swing_time, swing_height;
-    int exe_mode;
+    int execution_mode;
     int step_counter;
     ros::NodeHandle     nh_;
     ros::Time           cbTime_;
-    ros::Publisher      footsteps_pub_ ;
+    ros::Publisher      footsteps_pub_ ,nudgestep_pub_,loadeff_pub;
     ros::Subscriber     footstep_status_ ;
     ros::ServiceClient  footstep_client_ ;
     tf::TransformListener       tf_listener_;
@@ -118,10 +133,10 @@ private:
     std_msgs::String right_foot_frame_,left_foot_frame_;
 
     void footstepStatusCB(const ihmc_msgs::FootstepStatusRosMessage & msg);
-    void getCurrentStep(int side , ihmc_msgs::FootstepDataRosMessage& foot);
+
     void waitForSteps( int n);
     bool getFootstep(geometry_msgs::Pose2D &goal,ihmc_msgs::FootstepDataListRosMessage &list);
-    ihmc_msgs::FootstepDataRosMessage* getOffsetStep(int side, float x, float y);
+    ihmc_msgs::FootstepDataRosMessage::Ptr getOffsetStep(int side, float x, float y);
 
 };
 
