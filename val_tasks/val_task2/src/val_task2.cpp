@@ -227,6 +227,7 @@ decision_making::TaskResult valTask2::initTask(string name, const FSMCallContext
 
     // reset mapcount when retrying the state for the first time
     if(retry_count == 0){
+        output_ss << "start task \t"<<ros::Time::now().sec<<"\n";
         map_update_count_ = 0;
         taskCommonUtils::moveToInitPose(nh_);
     }
@@ -257,6 +258,7 @@ decision_making::TaskResult valTask2::initTask(string name, const FSMCallContext
         // generate the event
         head_controller_->moveHead(0,0,0);
         eventQueue.riseEvent("/INIT_SUCESSFUL");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 
     }
     else if (map_update_count_ < 2 && retry_count++ < 40) {
@@ -341,6 +343,7 @@ decision_making::TaskResult valTask2::detectRoverTask(string name, const FSMCall
             fail_count = 0;
             // update the plane coeffecients
             eventQueue.riseEvent("/DETECTED_ROVER");
+            output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 //            eventQueue.riseEvent("/MANUAL_EXECUTION");
             ROS_INFO("detected rover");
             task2_utils_->taskLogPub("detected rover");
@@ -426,6 +429,7 @@ decision_making::TaskResult valTask2::walkToRoverTask(string name, const FSMCall
             task2_utils_->taskLogPub("reached the rover");
             ros::Duration(3).sleep(); // This is required for steps to complete
             eventQueue.riseEvent("/REACHED_ROVER");
+            output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 //            eventQueue.riseEvent("/MANUAL_EXECUTION");
             executeOnce = true;
             ros::Duration(1).sleep();
@@ -554,6 +558,7 @@ decision_making::TaskResult valTask2::detectPanelTask(string name, const FSMCall
         retry_count = 0;
 
 //        eventQueue.riseEvent("/DETECTED_PANEL");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
         eventQueue.riseEvent("/MANUAL_EXECUTION");
         if(solar_panel_detector_ != nullptr) delete solar_panel_detector_;
         solar_panel_detector_ = nullptr;
@@ -641,6 +646,7 @@ decision_making::TaskResult valTask2::graspPanelTask(string name, const FSMCallC
             ROS_INFO("valTask2::graspPanelTask : Plan is 100 % Maybe Grasp is successful. Going to Pick Pannel Task");
             task2_utils_->taskLogPub("valTask2::graspPanelTask : Plan is 100 % Maybe Grasp is successful. Going to Pick Pannel Task");
             eventQueue.riseEvent("/GRASPED_PANEL");
+            output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 //            eventQueue.riseEvent("/MANUAL_EXECUTION");
             task2_utils_->taskLogPub("valTask2::graspPanelTask : Moving panel closer to chest to avoid collision with trailer");
             //            task2_utils_->afterPanelGraspPose(panel_grasping_hand_, is_rotation_required_);
@@ -714,6 +720,7 @@ decision_making::TaskResult valTask2::pickPanelTask(string name, const FSMCallCo
         head_controller_->moveHead(0,0,0);
         ros::Duration(1).sleep();
                 eventQueue.riseEvent("/PICKED_PANEL");
+                output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
         // lets detect the array manually
 //        eventQueue.riseEvent("/MANUAL_EXECUTION");
     }
@@ -800,6 +807,7 @@ decision_making::TaskResult valTask2::detectSolarArrayTask(string name, const FS
         solar_array_detector_ = nullptr;
         head_controller_->moveHead(0,0,0);
         eventQueue.riseEvent("/DETECTED_ARRAY");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 
     }
 
@@ -879,6 +887,7 @@ decision_making::TaskResult valTask2::walkSolarArrayTask(string name, const FSMC
         geometry_msgs::Pose2D temp; // added to test
         pose_prev = temp; // added to test
         eventQueue.riseEvent("/REACHED_ARRAY");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
         ros::Duration(2).sleep();
         executeOnce = true;
     }
@@ -955,6 +964,7 @@ decision_making::TaskResult valTask2::rotatePanelTask(string name, const FSMCall
         task2_utils_->rotatePanel(panel_grasping_hand_);
     }
     eventQueue.riseEvent("/ROTATED_PANEL");
+    output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 //    eventQueue.riseEvent("/MANUAL_EXECUTION");
 
     // generate the event
@@ -1056,6 +1066,7 @@ decision_making::TaskResult valTask2::findCableIntermediateTask(string name, con
         task2_utils_->taskLogPub("cable_point x: " +std::to_string(cable_point.x) + " cable_point y: " + std::to_string(cable_point.y) + " cable_point z: " + std::to_string(cable_point.z));
 
         eventQueue.riseEvent("/FOUND_CABLE");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 
         if(isPoseChangeReq)
         {
@@ -1120,6 +1131,7 @@ decision_making::TaskResult valTask2::detectSolarArrayFineTask(string name, cons
         retry_count = 0;
 
         eventQueue.riseEvent("/DETECTED_ARRAY_FINE");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 
         if(solar_array_fine_detector_ != nullptr) delete solar_array_fine_detector_;
         solar_array_fine_detector_ = nullptr;
@@ -1210,6 +1222,7 @@ decision_making::TaskResult valTask2::alignSolarArrayTask(string name, const FSM
             walker_->walkLocalPreComputedSteps(x_offset,y_offset,LEFT);
             ros::Duration(4).sleep();
             eventQueue.riseEvent("/ALIGNED_TO_ARRAY");
+            output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 //            eventQueue.riseEvent("/MANUAL_EXECUTION");
         }
         // check if the pose is changed
@@ -1326,6 +1339,7 @@ decision_making::TaskResult valTask2::placePanelTask(string name, const FSMCallC
         pelvis_controller_->controlPelvisHeight(0.9);
         ros::Duration(1).sleep();
         eventQueue.riseEvent("/PLACED_ON_GROUND");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
     }
     else {
         ROS_INFO("valTask2::placePanelTask : Panel placement failed");
@@ -1417,6 +1431,7 @@ decision_making::TaskResult valTask2::detectButtonTask(string name, const FSMCal
         std::cout<<"button x: "<<button_coordinates_.x<<" button y: "<<button_coordinates_.y<<" button z: "<<button_coordinates_.z<<"\n";
         task2_utils_->taskLogPub("Button coordinates: x : " + std::to_string(button_coordinates_.x) + "y :" + std::to_string(button_coordinates_.y) + "z :" + std::to_string(button_coordinates_.z));
         eventQueue.riseEvent("/BUTTON_DETECTED");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
         executingOnce= true;
         head_controller_->moveHead(0,0,0,2.0f);
 
@@ -1548,6 +1563,7 @@ decision_making::TaskResult valTask2::deployPanelTask(string name, const FSMCall
 
         taskCommonUtils::moveToInitPose(nh_);
         eventQueue.riseEvent("/DEPLOYED");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
         task2_utils_->clearPointCloud();
         ros::Duration(2).sleep();
 
@@ -1683,6 +1699,7 @@ decision_making::TaskResult valTask2::detectCableTask(string name, const FSMCall
         }
 
         eventQueue.riseEvent("/DETECTED_CABLE");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
         executingOnce= true;
         task2_utils_->reOrientTowardsGoal(cable_pose_.position,0.4);
         head_controller_->moveHead(0,0,0,2.0f);
@@ -1741,6 +1758,7 @@ decision_making::TaskResult valTask2::pickCableTask(string name, const FSMCallCo
         task2_utils_->taskLogPub("valTask2::pickCableTask : Picked up cable");
         // go to next state
         eventQueue.riseEvent("/CABLE_PICKED");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
         pelvis_controller_->controlPelvisHeight(0.90);
         ros::Duration(0.3).sleep();
         executeOnce=true;
@@ -1838,6 +1856,7 @@ TaskResult valTask2::detectSocketTask(string name, const FSMCallContext &context
         std::cout<<"socket x: "<<socket_coordinates_.x<<" socket y: "<<socket_coordinates_.y<<" socket z: "<<socket_coordinates_.z<<"\n";
         task2_utils_->taskLogPub("socket  x: " + std::to_string(socket_coordinates_.x) + " y: " + std::to_string(socket_coordinates_.y) + "z: " + std::to_string(socket_coordinates_.z));
         eventQueue.riseEvent("/DETECTED_SOCKET");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
         executingOnce= true;
         head_controller_->moveHead(0,0,0,2.0f);
         //        walker_->walkLocalPreComputedSteps({0.1,0.1},{0.0,0.0},RIGHT);
@@ -1875,6 +1894,7 @@ decision_making::TaskResult valTask2::plugCableTask(string name, const FSMCallCo
         ROS_INFO("valTask2::plugCableTask plugged the cable succesfully. going to next state");
         task2_utils_->taskLogPub("valTask2::plugCableTask plugged the cable succesfully. going to next state");
         eventQueue.riseEvent("/CABLE_PLUGGED");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
     }
     else if(task2_utils_->isCableInHand(armSide::RIGHT) && retry <5)
     {
@@ -1935,6 +1955,7 @@ decision_making::TaskResult valTask2::detectFinishBoxTask(string name, const FSM
             ROS_INFO("detectFinishBoxTask: Successful");
             task2_utils_->taskLogPub("detectFinishBoxTask: Successful");
             eventQueue.riseEvent("/DETECT_FINISH_SUCESSFUL");
+            output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
             retry_count=0;
             if(finish_box_detector_ != nullptr) delete finish_box_detector_;
             finish_box_detector_ = nullptr;
@@ -2025,6 +2046,7 @@ decision_making::TaskResult valTask2::walkToFinishTask(string name, const FSMCal
         task2_utils_->taskLogPub("walkToFinishTask: reached panel");
         // TODO: check if robot rechead the panel
         eventQueue.riseEvent("/WALK_TO_FINISH_SUCESSFUL");
+        output_ss << name<<"\t"<<ros::Time::now().sec<<"\n";
 
     }
     // the goal can be updated on the run time
