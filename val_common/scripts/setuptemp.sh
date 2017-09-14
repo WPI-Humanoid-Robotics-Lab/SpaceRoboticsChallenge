@@ -38,6 +38,7 @@ git checkout origin/0.9-support
 # create the folder for repos
 mkdir ~/catkin_ws/src/ihmc_repos
 cd ~/catkin_ws/src/ihmc_repos/
+#
 
 # clone the ihmc repos
 echo "$(tput setaf 1)cloning the required ihmc repos$(tput sgr0)"
