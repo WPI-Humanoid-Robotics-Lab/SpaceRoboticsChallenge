@@ -1,4 +1,4 @@
-[submodule "example/src/external/decision_making"]
-	path = example/src/external/decision_making
+[submodule "external/decision_making"]
+	path = external/decision_making
 	url = https://github.com/cogniteam/decision_making.git
 	branch = master
