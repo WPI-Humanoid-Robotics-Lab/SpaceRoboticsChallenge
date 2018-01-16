@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include <tough_common/val_common_names.h>
+#include <tough_common/tough_common_names.h>
 #include <tough_perception_common/MultisenseImage.h>
 #include <tough_perception_common/MultisensePointCloud.h>
 #include <tough_perception_common/PointCloudHelper.h>
@@ -252,7 +252,7 @@ bool getPoseRGB(int index, geometry_msgs::Point &pixelCoordinates)
     // Wait for listener to initialize
     try
     {
-        listener.waitForTransform(VAL_COMMON_NAMES::WORLD_TF, VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
+        listener.waitForTransform(TOUGH_COMMON_NAMES::WORLD_TF, TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
     }
     catch (tf::TransformException ex)
     {
@@ -267,7 +267,7 @@ bool getPoseRGB(int index, geometry_msgs::Point &pixelCoordinates)
 
     // store the in PointStamped to tranfor it from optical frame to head frame.
     geometry_msgs::PointStamped light_centroid;
-    light_centroid.header.frame_id= VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+    light_centroid.header.frame_id= TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
     light_centroid.header.stamp = ros::Time::now();
     light_centroid.point.x = pcl_point.x;
     light_centroid.point.y = pcl_point.y;
@@ -277,7 +277,7 @@ bool getPoseRGB(int index, geometry_msgs::Point &pixelCoordinates)
     // transform the detected point to head frame
     try{
 
-        listener.transformPoint(VAL_COMMON_NAMES::ROBOT_HEAD_FRAME_TF,light_centroid, light_centroid_head);
+        listener.transformPoint(TOUGH_COMMON_NAMES::ROBOT_HEAD_FRAME_TF,light_centroid, light_centroid_head);
     }
     catch(tf::TransformException ex){
         ROS_ERROR("%s",ex.what());
@@ -289,7 +289,7 @@ bool getPoseRGB(int index, geometry_msgs::Point &pixelCoordinates)
     transform.setOrigin( tf::Vector3(light_centroid_head.point.x, light_centroid_head.point.y, light_centroid_head.point.z) );
     orientation.setRPY(0, 0, 0);
     transform.setRotation(orientation);
-    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), VAL_COMMON_NAMES::ROBOT_HEAD_FRAME_TF, "LED_frame"));
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), TOUGH_COMMON_NAMES::ROBOT_HEAD_FRAME_TF, "LED_frame"));
 
     msg.x = light_centroid_head.point.x;
     msg.y = light_centroid_head.point.y;
@@ -412,7 +412,7 @@ bool getNearestPoint(srcsim::Console &msg, int K=1){
     pnt.point.x = msg.x;
     pnt.point.y = msg.y;
     pnt.point.z = msg.z;
-    pnt.header.frame_id=VAL_COMMON_NAMES::ROBOT_HEAD_FRAME_TF;
+    pnt.header.frame_id=TOUGH_COMMON_NAMES::ROBOT_HEAD_FRAME_TF;
 
     bool success = laser_assembler::PeriodicSnapshotter::getNearestPoint(pnt, K);
     if(success){

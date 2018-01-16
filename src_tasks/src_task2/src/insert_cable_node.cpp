@@ -35,27 +35,27 @@ int main(int argc, char **argv)
 
         if(std::atoi(argv[5]) == 1)
         {
-            current_state_->transformPoint(pt,pt,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+            current_state_->transformPoint(pt,pt,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
             pt.x+=0.03;
-            current_state_->transformPoint(pt,pt,rd_->getPelvisFrame(),VAL_COMMON_NAMES::WORLD_TF);
+            current_state_->transformPoint(pt,pt,rd_->getPelvisFrame(),TOUGH_COMMON_NAMES::WORLD_TF);
         }
         else if(std::atoi(argv[5]) == -1)
         {
-            current_state_->transformPoint(pt,pt,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+            current_state_->transformPoint(pt,pt,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
             pt.x-=0.03;
-            current_state_->transformPoint(pt,pt,rd_->getPelvisFrame(),VAL_COMMON_NAMES::WORLD_TF);
+            current_state_->transformPoint(pt,pt,rd_->getPelvisFrame(),TOUGH_COMMON_NAMES::WORLD_TF);
         }
         else if(std::atoi(argv[5]) == 2)
         {
-            current_state_->transformPoint(pt,pt,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+            current_state_->transformPoint(pt,pt,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
             pt.y+=0.03;
-            current_state_->transformPoint(pt,pt,rd_->getPelvisFrame(),VAL_COMMON_NAMES::WORLD_TF);
+            current_state_->transformPoint(pt,pt,rd_->getPelvisFrame(),TOUGH_COMMON_NAMES::WORLD_TF);
         }
         else
         {
-            current_state_->transformPoint(pt,pt,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+            current_state_->transformPoint(pt,pt,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
             pt.y-=0.03;
-            current_state_->transformPoint(pt,pt,rd_->getPelvisFrame(),VAL_COMMON_NAMES::WORLD_TF);
+            current_state_->transformPoint(pt,pt,rd_->getPelvisFrame(),TOUGH_COMMON_NAMES::WORLD_TF);
         }
 
 

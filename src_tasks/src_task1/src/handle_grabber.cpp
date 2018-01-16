@@ -22,7 +22,7 @@ handle_grabber::handle_grabber(ros::NodeHandle n):nh_(n), armTraj_(nh_), gripper
     //    leftHandOrientation_.quaternion.w = 0.699;
 
     //    /* Side Grip */
-    //    rightHandOrientation_.header.frame_id = VAL_COMMON_NAMES::PELVIS_TF;
+    //    rightHandOrientation_.header.frame_id = TOUGH_COMMON_NAMES::PELVIS_TF;
     //    rightHandOrientation_.quaternion.x = -0.094;
     //    rightHandOrientation_.quaternion.y = -0.027;
     //    rightHandOrientation_.quaternion.z = 0.973;
@@ -36,8 +36,8 @@ handle_grabber::handle_grabber(ros::NodeHandle n):nh_(n), armTraj_(nh_), gripper
     rightHandOrientation_.quaternion.w = 0.332;
 
     // cartesian planners for the arm
-    left_arm_planner_ = new CartesianPlanner("leftPalm", VAL_COMMON_NAMES::WORLD_TF); //leftMiddleFingerGroup
-    right_arm_planner_ = new CartesianPlanner("rightPalm", VAL_COMMON_NAMES::WORLD_TF); //rightMiddleFingerGroup
+    left_arm_planner_ = new CartesianPlanner("leftPalm", TOUGH_COMMON_NAMES::WORLD_TF); //leftMiddleFingerGroup
+    right_arm_planner_ = new CartesianPlanner("rightPalm", TOUGH_COMMON_NAMES::WORLD_TF); //rightMiddleFingerGroup
     wholebody_controller_ = new WholebodyControlInterface(nh_);
 }
 
@@ -133,11 +133,11 @@ void handle_grabber::grasp_handles(const RobotSide side, const geometry_msgs::Po
     geometry_msgs::Pose finalGoal, intermGoal;
     geometry_msgs::Point finalPoint, intermPoint;
 
-    current_state_->transformPoint(goal,intermPoint, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state_->transformPoint(goal,intermPoint, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
     intermPoint.z += 0.1;
 
     //transform that point back to world frame
-    current_state_->transformPoint(intermPoint, intermPoint, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPoint(intermPoint, intermPoint, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     ROS_INFO("Moving at an intermidate point before goal");
     intermGoal.position = intermPoint;
@@ -151,12 +151,12 @@ void handle_grabber::grasp_handles(const RobotSide side, const geometry_msgs::Po
 
     //move arm to final position with known orientation
 
-    current_state_->transformPoint(goal,finalPoint, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state_->transformPoint(goal,finalPoint, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
     finalPoint.x -= 0.05; // this is to compensate for the distance between palm frame and center of palm
 //    finalPoint.y = side == armSide::LEFT ? (finalPoint.y-0.02) : (finalPoint.y+0.02);
 
     //transform that point back to world frame
-    current_state_->transformPoint(finalPoint, finalPoint, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPoint(finalPoint, finalPoint, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     ROS_INFO("Moving towards goal");
     finalGoal.position = finalPoint;

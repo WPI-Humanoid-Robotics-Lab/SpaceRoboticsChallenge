@@ -29,11 +29,11 @@ CableTask::CableTask(ros::NodeHandle n):nh_(n), armTraj_(nh_), gripper_(nh_)
 
 
     // cartesian planners for the arm
-    right_arm_planner_choke = new CartesianPlanner(VAL_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
-    right_arm_planner_cable = new CartesianPlanner(VAL_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
+    right_arm_planner_choke = new CartesianPlanner(TOUGH_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
+    right_arm_planner_cable = new CartesianPlanner(TOUGH_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
 
-    left_arm_planner_choke = new CartesianPlanner(VAL_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
-    left_arm_planner_cable = new CartesianPlanner(VAL_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
+    left_arm_planner_choke = new CartesianPlanner(TOUGH_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
+    left_arm_planner_cable = new CartesianPlanner(TOUGH_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
 
     wholebody_controller_ = new WholebodyControlInterface(nh_);
     chest_controller_     = new ChestControlInterface(nh_);
@@ -147,7 +147,7 @@ bool CableTask::grasp_choke(RobotSide side, const geometry_msgs::Pose &goal, flo
 
     //    geometry_msgs::Pose finalFramePose;
     //    ROS_INFO("CableTask::grasp_choke: Fecthing position of %s", endEffectorFrame.c_str());
-    //    current_state_->getCurrentPose(endEffectorFrame,finalFramePose, VAL_COMMON_NAMES::WORLD_TF);
+    //    current_state_->getCurrentPose(endEffectorFrame,finalFramePose, TOUGH_COMMON_NAMES::WORLD_TF);
 
     //    float x_diff = (finalGoal.position.x - finalFramePose.position.x);
     //    float y_diff = (finalGoal.position.y - finalFramePose.position.y);
@@ -205,11 +205,11 @@ bool CableTask::grasp_cable(const geometry_msgs::Pose &goal, float executionTime
     current_state_->getCurrentPose("/rightMiddleFingerPitch1Link",rightOffset,"/rightThumbRollLink");
     geometry_msgs::Pose intermGoal;
     //    intermGoal=goal;
-    current_state_->transformPose(goal,intermGoal, VAL_COMMON_NAMES::WORLD_TF, rd_->getRightEEFrame());
+    current_state_->transformPose(goal,intermGoal, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getRightEEFrame());
     intermGoal.position.x+=rightOffset.position.x;
     intermGoal.position.y+=rightOffset.position.y;
     intermGoal.position.z+=rightOffset.position.z;
-    current_state_->transformPose(intermGoal,intermGoal, rd_->getRightEEFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(intermGoal,intermGoal, rd_->getRightEEFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     taskCommonUtils::fixHandFramePalmDown(nh_, RIGHT, intermGoal);
 
@@ -385,9 +385,9 @@ bool CableTask::rotate_cable1(const geometry_msgs::Pose &goal, float executionTi
     finalGoal = goal;
     finalGoal.position.z+=0.03;
     // change in orientation
-    current_state_->transformPose(finalGoal,finalGoal, VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+    current_state_->transformPose(finalGoal,finalGoal, TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
     finalGoal.orientation= rightHandOrientationTop_.quaternion;
-    current_state_->transformPose(finalGoal,finalGoal,rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(finalGoal,finalGoal,rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     std::vector<geometry_msgs::Pose> waypoints;
 
@@ -455,9 +455,9 @@ bool CableTask::rotate_cable2(const geometry_msgs::Pose &goal, float executionTi
     intermGoal= goal;
     intermGoal.position.z+=offset;
 
-    current_state_->transformPose(intermGoal,intermGoal, VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+    current_state_->transformPose(intermGoal,intermGoal, TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
     intermGoal.orientation=rightHandOrientationAngle_.quaternion;
-    current_state_->transformPose(intermGoal,intermGoal,rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(intermGoal,intermGoal,rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     // setting a sead position without movement of chest
     armTraj_.moveArmInTaskSpace(RIGHT, intermGoal, executionTime);
@@ -466,9 +466,9 @@ bool CableTask::rotate_cable2(const geometry_msgs::Pose &goal, float executionTi
 
     finalGoal = goal;
     finalGoal.position.z-=0.01;
-    current_state_->transformPose(finalGoal,finalGoal, VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+    current_state_->transformPose(finalGoal,finalGoal, TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
     finalGoal.orientation=rightHandOrientationTop_.quaternion;
-    current_state_->transformPose(finalGoal,finalGoal,rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(finalGoal,finalGoal,rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     std::vector<geometry_msgs::Pose> waypoints;
 
@@ -545,9 +545,9 @@ bool CableTask::rotate_cable3(const geometry_msgs::Pose &goal, float executionTi
     geometry_msgs::Pose intermGoal;
 
     intermGoal= goal;
-    current_state_->transformPose(intermGoal,intermGoal, VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+    current_state_->transformPose(intermGoal,intermGoal, TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
     intermGoal.orientation=rightHandOrientationAngle_.quaternion;
-    current_state_->transformPose(intermGoal,intermGoal,rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(intermGoal,intermGoal,rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
 
     // setting a sead position without movement of chest
@@ -558,14 +558,14 @@ bool CableTask::rotate_cable3(const geometry_msgs::Pose &goal, float executionTi
 
     geometry_msgs::Pose finalGoal;
     finalGoal = goal;
-    current_state_->transformPose(finalGoal,finalGoal, VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+    current_state_->transformPose(finalGoal,finalGoal, TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
     finalGoal.orientation=rightHandOrientationTop_.quaternion;
-    current_state_->transformPose(finalGoal,finalGoal,rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(finalGoal,finalGoal,rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
     finalGoal.position.z+=0.03;
     // change in orientation
-    current_state_->transformPose(finalGoal,finalGoal, VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+    current_state_->transformPose(finalGoal,finalGoal, TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
     finalGoal.orientation= rightHandOrientationTop_.quaternion;
-    current_state_->transformPose(finalGoal,finalGoal,rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(finalGoal,finalGoal,rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     std::vector<geometry_msgs::Pose> waypoints;
 

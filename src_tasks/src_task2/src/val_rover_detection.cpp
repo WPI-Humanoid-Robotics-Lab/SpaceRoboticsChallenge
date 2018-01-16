@@ -1,5 +1,5 @@
 #include "src_task2/val_rover_detection.h"
-#include "tough_common/val_common_names.h"
+#include "tough_common/tough_common_names.h"
 
 #define lowerBox_pass_x_min  0.5
 #define lowerBox_pass_x_max  10.0
@@ -91,7 +91,7 @@ void RoverDetector::cloudCB(const sensor_msgs::PointCloud2ConstPtr& input){
 
     pcl::toROSMsg(*upperBoxCloud, output);
 
-    output.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    output.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
 
     pcl_filtered_pub_.publish(output);
 
@@ -236,7 +236,7 @@ void RoverDetector::getPosition(const pcl::PointCloud<pcl::PointXYZ>::Ptr& lower
     for(auto pose : detectedPoses){
             visualization_msgs::Marker marker;
 
-            marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+            marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
             marker.header.stamp = ros::Time();
             marker.ns = "Rover Position";
             marker.id = id++;

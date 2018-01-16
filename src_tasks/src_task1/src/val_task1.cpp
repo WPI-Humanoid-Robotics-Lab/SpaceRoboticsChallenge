@@ -892,10 +892,10 @@ decision_making::TaskResult valTask1::controlPitchTask(string name, const FSMCal
     {
         // get the handle position
 //        geometry_msgs::Pose handPose;
-//        robot_state_->getCurrentPose(VAL_COMMON_NAMES::R_PALM_TF, handPose, VAL_COMMON_NAMES::PELVIS_TF);
+//        robot_state_->getCurrentPose(TOUGH_COMMON_NAMES::R_PALM_TF, handPose, TOUGH_COMMON_NAMES::PELVIS_TF);
 //        geometry_msgs::Point handlePosition = handPose.position;
 //        handlePosition.x += 0.05;
-//        robot_state_->transformPoint(handlePosition, handlePosition, VAL_COMMON_NAMES::PELVIS_TF, VAL_COMMON_NAMES::WORLD_TF);
+//        robot_state_->transformPoint(handlePosition, handlePosition, TOUGH_COMMON_NAMES::PELVIS_TF, TOUGH_COMMON_NAMES::WORLD_TF);
 //        handle_loc_[PITCH_KNOB_HANDLE] = handlePosition;
 
 //        // reset the robot pose
@@ -1249,10 +1249,10 @@ decision_making::TaskResult valTask1::controlYawTask(string name, const FSMCallC
 
         // get the handle position
 //        geometry_msgs::Pose handPose;
-//        robot_state_->getCurrentPose(VAL_COMMON_NAMES::L_PALM_TF, handPose, VAL_COMMON_NAMES::PELVIS_TF);
+//        robot_state_->getCurrentPose(TOUGH_COMMON_NAMES::L_PALM_TF, handPose, TOUGH_COMMON_NAMES::PELVIS_TF);
 //        geometry_msgs::Point handlePosition = handPose.position;
 //        handlePosition.x += 0.05;
-//        robot_state_->transformPoint(handlePosition, handlePosition, VAL_COMMON_NAMES::PELVIS_TF, VAL_COMMON_NAMES::WORLD_TF);
+//        robot_state_->transformPoint(handlePosition, handlePosition, TOUGH_COMMON_NAMES::PELVIS_TF, TOUGH_COMMON_NAMES::WORLD_TF);
 //        handle_loc_[YAW_KNOB_HANDLE] = handlePosition;
 //        // reset the robot pose
 //        // open the gripper

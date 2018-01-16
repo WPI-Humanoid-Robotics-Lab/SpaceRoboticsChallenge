@@ -23,9 +23,9 @@ void DoorOpener::openDoor(geometry_msgs::Pose &valveCenterWorld){
     //Walking back a little
 
 //    bool result = robot_state_->transformPose(valveCenterWorld,valveCenter,
-//                                VAL_COMMON_NAMES::WORLD_TF,VAL_COMMON_NAMES::PELVIS_TF);
+//                                TOUGH_COMMON_NAMES::WORLD_TF,TOUGH_COMMON_NAMES::PELVIS_TF);
 //    ros::Duration(1.0).sleep();
-//    robot_state_->getCurrentPose(VAL_COMMON_NAMES::PELVIS_TF, pelvisPose);
+//    robot_state_->getCurrentPose(TOUGH_COMMON_NAMES::PELVIS_TF, pelvisPose);
 //    ROS_INFO_STREAM(" The result is:" << result);
 //    ROS_INFO("Valve centre prlvis x: %f", valveCenter.position.x);
 
@@ -33,7 +33,7 @@ void DoorOpener::openDoor(geometry_msgs::Pose &valveCenterWorld){
 //    valveCenter.position.y  -= 0.12;
 
 //    //Converting back to world
-//    robot_state_->transformPose(valveCenter, valveCenter, VAL_COMMON_NAMES::PELVIS_TF);
+//    robot_state_->transformPose(valveCenter, valveCenter, TOUGH_COMMON_NAMES::PELVIS_TF);
 
 //    preDoorOpenGoal.x        = valveCenter.position.x;
 //    preDoorOpenGoal.y        = valveCenter.position.y;
@@ -64,7 +64,7 @@ void DoorOpener::openDoor(geometry_msgs::Pose &valveCenterWorld){
 
     task3_.task3LogPub(" door_opener_node : Walking close to the door");
     robot_state_->transformPose(valveCenterWorld,valveCenter,
-                                VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+                                TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
     robot_state_->getCurrentPose(rd_->getPelvisFrame(), pelvisPose);
 
     valveCenter.position.x  -= 0.35;

@@ -3,7 +3,7 @@
 #include <ros/publisher.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <visualization_msgs/Marker.h>
-#include <tough_common/val_common_names.h>
+#include <tough_common/tough_common_names.h>
 
 ros::Publisher array_pub;
 
@@ -30,7 +30,7 @@ void createCircle(geometry_msgs::PoseStamped center, std::vector<geometry_msgs::
   visualization_msgs::MarkerArray circle = visualization_msgs::MarkerArray();
   for (int i = 0; i < num_steps; i++) {
     visualization_msgs::Marker marker;
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time();
     marker.ns = "circle";
     marker.id = i;

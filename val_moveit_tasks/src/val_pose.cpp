@@ -6,7 +6,7 @@
 #include <moveit_msgs/DisplayRobotState.h>
 #include <moveit_msgs/DisplayTrajectory.h>
 #include <tough_controller_interface/arm_control_interface.h>
-#include <tough_common/val_common_names.h>
+#include <tough_common/tough_common_names.h>
 #include <ros/ros.h>
 #include <std_msgs/Int16.h>
 #include <string>
@@ -184,11 +184,11 @@ void* acquire_feedback(void *input_ptr)
     //Test the sleep duration if it is actually needed.
     ros::Duration(0.5).sleep();
     if(left_pose_received){
-        left_pose = transform_pose_simple(&left_pose,VAL_COMMON_NAMES::WORLD_TF);
+        left_pose = transform_pose_simple(&left_pose,TOUGH_COMMON_NAMES::WORLD_TF);
         left_failed = plan_trajectory("leftArm",left_pose, left_plan,planner_type); //0 on success
     }
     if(right_pose_received){
-        right_pose = transform_pose_simple(&right_pose,VAL_COMMON_NAMES::WORLD_TF);
+        right_pose = transform_pose_simple(&right_pose,TOUGH_COMMON_NAMES::WORLD_TF);
         right_failed = plan_trajectory("rightArm",right_pose, right_plan,planner_type);//0 on success
     }
     ros::Duration(0.5).sleep();
@@ -304,7 +304,7 @@ void make6DofMarker(std::string name,void (*callback)(const visualization_msgs::
                     geometry_msgs::Quaternion palm_rotation, bool show_6dof )
 {
     InteractiveMarker int_marker;
-    int_marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    int_marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     tf::pointTFToMsg(position, int_marker.pose.position);
     int_marker.pose.orientation = palm_rotation;
     int_marker.scale = .3;
@@ -448,8 +448,8 @@ int main(int argc, char** argv){
     try
     {
         ros::Time t = ros::Time::now();
-        listener_port->waitForTransform(rd_->getRightPalmFrame(),VAL_COMMON_NAMES::WORLD_TF,t, ros::Duration(3.0));
-        listener_port->lookupTransform(VAL_COMMON_NAMES::WORLD_TF, rd_->getRightPalmFrame(), t,transform);
+        listener_port->waitForTransform(rd_->getRightPalmFrame(),TOUGH_COMMON_NAMES::WORLD_TF,t, ros::Duration(3.0));
+        listener_port->lookupTransform(TOUGH_COMMON_NAMES::WORLD_TF, rd_->getRightPalmFrame(), t,transform);
     }
     catch (tf::TransformException ex)
     {
@@ -467,8 +467,8 @@ int main(int argc, char** argv){
     try
     {
         ros::Time t = ros::Time::now();
-        listener_port->waitForTransform(rd_->getLeftPalmFrame(),VAL_COMMON_NAMES::WORLD_TF,t, ros::Duration(3.0));
-        listener_port->lookupTransform(VAL_COMMON_NAMES::WORLD_TF, rd_->getLeftPalmFrame(), t,transform);
+        listener_port->waitForTransform(rd_->getLeftPalmFrame(),TOUGH_COMMON_NAMES::WORLD_TF,t, ros::Duration(3.0));
+        listener_port->lookupTransform(TOUGH_COMMON_NAMES::WORLD_TF, rd_->getLeftPalmFrame(), t,transform);
     }
     catch (tf::TransformException ex)
     {

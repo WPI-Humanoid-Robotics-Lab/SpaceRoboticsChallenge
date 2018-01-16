@@ -1,7 +1,7 @@
 #include <src_task2/button_detector.h>
 #include <visualization_msgs/Marker.h>
 #include <pcl/common/centroid.h>
-#include "tough_common/val_common_names.h"
+#include "tough_common/tough_common_names.h"
 
 #define DISABLE_DRAWINGS true
 
@@ -108,11 +108,11 @@ bool ButtonDetector::getButtonLocation(geometry_msgs::Point& buttonLoc)
         geom_point.point.x = cloudCentroid(0);
         geom_point.point.y = cloudCentroid(1);
         geom_point.point.z = cloudCentroid(2);
-        geom_point.header.frame_id = VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+        geom_point.header.frame_id = TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
         try
         {
-            listener.waitForTransform(VAL_COMMON_NAMES::WORLD_TF, VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
-            listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF, geom_point, geom_point);
+            listener.waitForTransform(TOUGH_COMMON_NAMES::WORLD_TF, TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
+            listener.transformPoint(TOUGH_COMMON_NAMES::WORLD_TF, geom_point, geom_point);
         }
         catch (tf::TransformException ex){
             ROS_ERROR("%s",ex.what());
@@ -151,7 +151,7 @@ void ButtonDetector::visualize_point(const geometry_msgs::Point &point){
     static int id = 0;
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time::now();
 
     // Set the namespace and id for this marker.  This serves to create a unique ID

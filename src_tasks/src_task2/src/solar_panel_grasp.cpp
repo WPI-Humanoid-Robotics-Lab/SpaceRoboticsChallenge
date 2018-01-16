@@ -9,8 +9,8 @@ solar_panel_handle_grabber::solar_panel_handle_grabber(ros::NodeHandle n):nh_(n)
     current_state_ = RobotStateInformer::getRobotStateInformer(nh_);
     rd_ = RobotDescription::getRobotDescription(nh_);
     // cartesian planners for the arm
-    left_arm_planner_ = new CartesianPlanner("leftMiddleFingerGroup", VAL_COMMON_NAMES::WORLD_TF);
-    right_arm_planner_ = new CartesianPlanner("rightMiddleFingerGroup", VAL_COMMON_NAMES::WORLD_TF);
+    left_arm_planner_ = new CartesianPlanner("leftMiddleFingerGroup", TOUGH_COMMON_NAMES::WORLD_TF);
+    right_arm_planner_ = new CartesianPlanner("rightMiddleFingerGroup", TOUGH_COMMON_NAMES::WORLD_TF);
     wholebody_controller_ = new WholebodyControlInterface(nh_);
 }
 
@@ -64,7 +64,7 @@ bool solar_panel_handle_grabber::grasp_handles(RobotSide side, const geometry_ms
     //move arm to given point with known orientation and higher z
     geometry_msgs::Pose finalGoal, intermGoal;
 
-    current_state_->transformPose(goal,intermGoal, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state_->transformPose(goal,intermGoal, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
     float yaw = tf::getYaw(intermGoal.orientation);
     if (isRotationRequired){
         intermGoal.position.x -= 0.2*cos(yaw);
@@ -77,7 +77,7 @@ bool solar_panel_handle_grabber::grasp_handles(RobotSide side, const geometry_ms
     }
 
     //transform that point back to world frame
-    current_state_->transformPose(intermGoal, intermGoal, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(intermGoal, intermGoal, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     if (isRotationRequired){
         taskCommonUtils::fixHandFramePalmUp(nh_, side, intermGoal);
@@ -95,7 +95,7 @@ bool solar_panel_handle_grabber::grasp_handles(RobotSide side, const geometry_ms
 
     //move arm to final position with known orientation
 
-    current_state_->transformPose(goal,finalGoal, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state_->transformPose(goal,finalGoal, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
     if (isRotationRequired){
         finalGoal.position.x += 0.1*cos(yaw);
         finalGoal.position.y += 0.1*sin(yaw);
@@ -107,7 +107,7 @@ bool solar_panel_handle_grabber::grasp_handles(RobotSide side, const geometry_ms
     }
 
     //transform that point back to world frame
-    current_state_->transformPose(finalGoal, finalGoal, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(finalGoal, finalGoal, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     if (isRotationRequired){
         taskCommonUtils::fixHandFramePalmUp(nh_, side, finalGoal);
@@ -187,7 +187,7 @@ bool solar_panel_handle_grabber::grasp_handles(RobotSide side, const geometry_ms
     geometry_msgs::Pose finalFramePose;
 
     ROS_INFO("solar_panel_handle_grabber::grasp_handles : Fecthing position of %s", endEffectorFrame.c_str());
-    current_state_->getCurrentPose(endEffectorFrame,finalFramePose, VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->getCurrentPose(endEffectorFrame,finalFramePose, TOUGH_COMMON_NAMES::WORLD_TF);
 
     float x_diff = (finalGoal.position.x - finalFramePose.position.x);
     float y_diff = (finalGoal.position.y - finalFramePose.position.y);

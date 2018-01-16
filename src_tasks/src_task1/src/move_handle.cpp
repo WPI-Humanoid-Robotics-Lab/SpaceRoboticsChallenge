@@ -102,7 +102,7 @@ void move_handle::follow_path(std::vector<geometry_msgs::Pose>& points, RobotSid
     tf::StampedTransform transform;
     tf::Quaternion hand_pose;
     hand_stamp.pose = hand;
-    hand_stamp.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    hand_stamp.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
 
     listener.waitForTransform("leftMiddleFingerPitch1Link","leftElbowPitchLink",ros::Time::now(), ros::Duration(3.0));
     listener.transformPose("leftElbowPitchLink",hand_stamp,temp);
@@ -152,7 +152,7 @@ void move_handle::visulatize(std::vector<geometry_msgs::Pose> &points)
   visualization_msgs::MarkerArray circle = visualization_msgs::MarkerArray();
 
   visualization_msgs::Marker marker;
-  marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+  marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
   marker.header.stamp = ros::Time();
   marker.ns = "circle";
   marker.id = 0;
@@ -171,7 +171,7 @@ void move_handle::visulatize(std::vector<geometry_msgs::Pose> &points)
 
     for (int i = 1; i < points.size(); i++) {
         visualization_msgs::Marker marker;
-        marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+        marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
         marker.header.stamp = ros::Time();
         marker.ns = "circle";
         marker.id = i;

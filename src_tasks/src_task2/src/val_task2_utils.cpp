@@ -17,8 +17,8 @@ task2Utils::task2Utils(ros::NodeHandle nh):
     cable_detector_      = nullptr;
 
     wholebody_controller_ = new WholebodyControlInterface(nh_);
-    right_arm_planner_ = new CartesianPlanner(VAL_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
-    left_arm_planner_ = new CartesianPlanner(VAL_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
+    right_arm_planner_ = new CartesianPlanner(TOUGH_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
+    left_arm_planner_ = new CartesianPlanner(TOUGH_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
 
 
     current_checkpoint_  = 0;
@@ -337,7 +337,7 @@ void task2Utils::reOrientTowardsGoal(geometry_msgs::Point goal_point, float offs
     std::vector<float> y_offset;
     std::vector<float> x_offset;
 
-    current_state_->transformPoint(goal_point,goal_point,VAL_COMMON_NAMES::WORLD_TF,
+    current_state_->transformPoint(goal_point,goal_point,TOUGH_COMMON_NAMES::WORLD_TF,
                                    rd_->getPelvisFrame());
 
     double error = goal_point.y+offset;
@@ -386,7 +386,7 @@ void task2Utils::reOrientTowardsGoal(geometry_msgs::Point goal_point, float offs
 void task2Utils::reOrientTowardsCable(geometry_msgs::Pose cablePose, geometry_msgs::Pose panelPose){
 
     geometry_msgs::Pose poseInPelvisFrame;
-    current_state_->transformPose(cablePose, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state_->transformPose(cablePose, poseInPelvisFrame, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
 
     float yaw = tf::getYaw(poseInPelvisFrame.orientation);
 
@@ -397,7 +397,7 @@ void task2Utils::reOrientTowardsCable(geometry_msgs::Pose cablePose, geometry_ms
         geometry_msgs::Pose tempYaw(cablePose);
         SolarPanelDetect::invertYaw(tempYaw);
 
-        current_state_->transformPose(tempYaw, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+        current_state_->transformPose(tempYaw, poseInPelvisFrame, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
         yaw = tf::getYaw(poseInPelvisFrame.orientation);
     }
 
@@ -408,7 +408,7 @@ void task2Utils::reOrientTowardsCable(geometry_msgs::Pose cablePose, geometry_ms
     //    //side = yaw < 0 ? armSide::LEFT : armSide::RIGHT;
 
     //    geometry_msgs::Pose robotPose;
-    //    current_state_->getCurrentPose(VAL_COMMON_NAMES::WORLD_TF,robotPose);
+    //    current_state_->getCurrentPose(TOUGH_COMMON_NAMES::WORLD_TF,robotPose);
 
     //    geometry_msgs::Pose2D cableOrientationPose2D;
     //    cableOrientationPose2D.x = cableOrientationPose.position.x;
@@ -471,7 +471,7 @@ bool task2Utils::isCableTouchingSocket()
 geometry_msgs::Pose task2Utils::grasping_hand(RobotSide &side, geometry_msgs::Pose handle_pose)
 {
     geometry_msgs::Pose poseInPelvisFrame;
-    current_state_->transformPose(handle_pose, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state_->transformPose(handle_pose, poseInPelvisFrame, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
     float yaw = tf::getYaw(poseInPelvisFrame.orientation);
 
     if (yaw > M_PI_2 || yaw < -M_PI_2){
@@ -483,7 +483,7 @@ geometry_msgs::Pose task2Utils::grasping_hand(RobotSide &side, geometry_msgs::Po
         y = y-M_PI;
         geometry_msgs::Quaternion quaternion = tf::createQuaternionMsgFromRollPitchYaw(r,p,y);
         handle_pose.orientation = quaternion;
-        current_state_->transformPose(handle_pose, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+        current_state_->transformPose(handle_pose, poseInPelvisFrame, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
         yaw = tf::getYaw(poseInPelvisFrame.orientation);
     }
 
@@ -499,8 +499,8 @@ bool task2Utils::isRotationReq(RobotSide side, geometry_msgs::Point handle_coord
         is_rotation_required_ = side == RobotSide::LEFT ? false : true;
     }
     else{
-        current_state_->transformPoint(handle_coordinates, handle_coordinates, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
-        current_state_->transformPoint(button_coordinates, button_coordinates, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+        current_state_->transformPoint(handle_coordinates, handle_coordinates, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+        current_state_->transformPoint(button_coordinates, button_coordinates, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
 
         if( button_coordinates.x > handle_coordinates.x) {
             is_rotation_required_ = side == RobotSide::LEFT ? false : true;

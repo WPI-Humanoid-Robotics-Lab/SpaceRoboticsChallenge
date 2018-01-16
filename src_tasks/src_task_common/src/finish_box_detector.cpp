@@ -1,5 +1,5 @@
 #include "src_task_common/finish_box_detector.h"
-#include <tough_common/val_common_names.h>
+#include <tough_common/tough_common_names.h>
 #include <opencv/highgui.h>
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>

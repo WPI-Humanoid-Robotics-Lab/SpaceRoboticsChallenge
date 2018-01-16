@@ -174,7 +174,7 @@ void SolarPanelDetect::cloudCB(const sensor_msgs::PointCloud2::Ptr &input)
 
 
     pcl::toROSMsg(*cloud,output);
-    output.header.frame_id=VAL_COMMON_NAMES::WORLD_TF;
+    output.header.frame_id=TOUGH_COMMON_NAMES::WORLD_TF;
     pcl_filtered_pub.publish(output);
 
 }
@@ -325,7 +325,7 @@ void SolarPanelDetect::getOrientation(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud
     pose.orientation = quaternion;
 
     geometry_msgs::Pose pose_pelvis;
-//    robot_state_->transformPose(pose,pose_pelvis,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+//    robot_state_->transformPose(pose,pose_pelvis,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
     pose_pelvis = pose;
 
 
@@ -447,7 +447,7 @@ void SolarPanelDetect::getPosition(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,geo
 /*
     sensor_msgs::PointCloud2 output;
     pcl::toROSMsg(*cloud,output);
-    output.header.frame_id=VAL_COMMON_NAMES::WORLD_TF;
+    output.header.frame_id=TOUGH_COMMON_NAMES::WORLD_TF;
     pcl_filtered_pub.publish(output);
 
     visualizept(pose);*/

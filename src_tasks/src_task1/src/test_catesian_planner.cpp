@@ -25,7 +25,7 @@ int main(int argc, char** argv){
     centerPelvis.x = 2.66;
     centerPelvis.y= 0.945;
     centerPelvis.z = 0.845;
-//    robot_state->transformPoint(centerPelvis,centerWorld,VAL_COMMON_NAMES::PELVIS_TF);
+//    robot_state->transformPoint(centerPelvis,centerWorld,TOUGH_COMMON_NAMES::PELVIS_TF);
 
 
     geometry_msgs::Point startWorld,startPelvis;
@@ -33,7 +33,7 @@ int main(int argc, char** argv){
     startPelvis.x = 2.6;
     startPelvis.y= 0.84;
     startPelvis.z = 0.82;
-//    robot_state->transformPoint(startPelvis,startWorld,VAL_COMMON_NAMES::PELVIS_TF);
+//    robot_state->transformPoint(startPelvis,startWorld,TOUGH_COMMON_NAMES::PELVIS_TF);
 
     std::vector<geometry_msgs::Pose> points;
 //    std::vector<float> panelCoeffs {-0.002, 0.4591, 0.8884, -0.1502};
@@ -47,7 +47,7 @@ int main(int argc, char** argv){
     ROS_INFO("waypoints generated");
 
     ROS_INFO("Planning the trajectory");
-    CartesianPlanner rightArmPlanner("rightPalm", VAL_COMMON_NAMES::WORLD_TF);
+    CartesianPlanner rightArmPlanner("rightPalm", TOUGH_COMMON_NAMES::WORLD_TF);
     moveit_msgs::RobotTrajectory trajectory;
     rightArmPlanner.getTrajFromCartPoints(points, trajectory, false);
 

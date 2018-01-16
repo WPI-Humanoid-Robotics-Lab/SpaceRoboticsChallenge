@@ -2,7 +2,7 @@
 #include <geometry_msgs/Pose2D.h>
 #include <ros/publisher.h>
 #include <visualization_msgs/Marker.h>
-#include <tough_common/val_common_names.h>
+#include <tough_common/tough_common_names.h>
 #include <src_task1/val_task1_utils.h>
 
 
@@ -26,7 +26,7 @@ int main(int argc, char** argv){
 
       visualization_msgs::Marker marker;
       // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-      marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+      marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
       marker.header.stamp = ros::Time::now();
 
       // Set the namespace and id for this marker.  This serves to create a unique ID

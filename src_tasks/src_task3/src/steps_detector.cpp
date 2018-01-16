@@ -187,7 +187,7 @@ void StepDetector::visualize_point(geometry_msgs::Point point)
     static int id = 0;
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time::now();
 
     // Set the namespace and id for this marker.  This serves to create a unique ID

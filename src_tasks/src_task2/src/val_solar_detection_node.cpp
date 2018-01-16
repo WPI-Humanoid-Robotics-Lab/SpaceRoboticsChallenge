@@ -1,7 +1,7 @@
 #include "src_task2/val_solar_detection.h"
 #include "src_task2/val_rover_detection.h"
 
-#include "tough_common/val_common_names.h"
+#include "tough_common/tough_common_names.h"
 
 int main(int argc, char** argv){
     ros::init(argc, argv, "solar_array_detection");
@@ -43,7 +43,7 @@ int main(int argc, char** argv){
 
 
     geometry_msgs::PoseStamped goal;
-    goal.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    goal.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     goal.pose = rover_poses[rover_poses.size() -1][2];
 //    goalPub.publish(goal);
     //  std::cout <<obj.isRoverOnRight()<<std::endl;
@@ -63,7 +63,7 @@ int main(int argc, char** argv){
         ros::spinOnce();
         loop.sleep();
     }
-    goal.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    goal.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     goal.pose = solar_array_poses[NUM_SAMPLES -1];
 //    goalPub.publish(goal);
     //  std::cout <<obj.isRoverOnRight()<<std::endl;

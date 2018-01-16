@@ -34,7 +34,7 @@ int main(int argc, char** argv){
               RobotDescription *rd_ = RobotDescription::getRobotDescription(nh);
               geometry_msgs::Pose poseInPelvisFrame;
 
-              robot_state->transformPose(poses[i], poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+              robot_state->transformPose(poses[i], poseInPelvisFrame, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
 
               tfScalar r, p, y;
               tf::Quaternion q;

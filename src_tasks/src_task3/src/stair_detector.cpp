@@ -1,6 +1,6 @@
 #include "src_task3/stair_detector.h"
 #include <visualization_msgs/Marker.h>
-#include "tough_common/val_common_names.h"
+#include "tough_common/tough_common_names.h"
 #include <pcl/common/centroid.h>
 #include <thread>
 
@@ -164,15 +164,15 @@ bool StairDetector::getStairLocation(geometry_msgs::Point& stairLocation, uint& 
                 dir_vec.point.x += std::pow(-1, i) * cloudCentroid(0);
                 dir_vec.point.y += std::pow(-1, i) * cloudCentroid(1);
                 dir_vec.point.z += std::pow(-1, i) * cloudCentroid(2);
-                geom_point.header.frame_id = VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
-                dir_vec.header.frame_id = VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+                geom_point.header.frame_id = TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+                dir_vec.header.frame_id = TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
             }
         }
         try
         {
-            listener.waitForTransform(VAL_COMMON_NAMES::WORLD_TF, VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
-            listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF, geom_point, geom_point);
-            listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF, dir_vec, dir_vec);
+            listener.waitForTransform(TOUGH_COMMON_NAMES::WORLD_TF, TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
+            listener.transformPoint(TOUGH_COMMON_NAMES::WORLD_TF, geom_point, geom_point);
+            listener.transformPoint(TOUGH_COMMON_NAMES::WORLD_TF, dir_vec, dir_vec);
         }
         catch (tf::TransformException ex)
         {
@@ -277,7 +277,7 @@ void StairDetector::visualize_point(geometry_msgs::Point point){
     static int id = 0;
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time::now();
 
     // Set the namespace and id for this marker.  This serves to create a unique ID
@@ -313,7 +313,7 @@ void StairDetector::visualize_direction(geometry_msgs::Point point1, geometry_ms
     static int id = 0;
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time::now();
 
     // Set the namespace and id for this marker.  This serves to create a unique ID

@@ -269,7 +269,7 @@ std::vector<ArmControlInterface::armTaskSpaceData>* generate_task_space_data(std
     auto input_pose=input_poses->at(i);
     ArmControlInterface::armTaskSpaceData* task_space_data = new ArmControlInterface::armTaskSpaceData();
     task_space_data->side = input_side;
-    task_space_data->pose = transform_pose_simple(input_pose,VAL_COMMON_NAMES::WORLD_TF).pose;
+    task_space_data->pose = transform_pose_simple(input_pose,TOUGH_COMMON_NAMES::WORLD_TF).pose;
     task_space_data->time = (float)((float)i/(float)num_poses)*(float)desired_time; //what xyzzy
 
     arm_data_vector->push_back(*task_space_data);

@@ -146,7 +146,7 @@ void valTask2::panelHandleOffsetCB(const std_msgs::Float32 msg)
     setSolarPanelHandlePose(tempPose);
 
     visualization_msgs::Marker marker;
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time::now();
     marker.ns = "panel_handle";
     marker.id = 1;
@@ -701,7 +701,7 @@ decision_making::TaskResult valTask2::pickPanelTask(string name, const FSMCallCo
                 pose.position.x = 0.0;
                 pose.position.y= is_rover_on_right_ == true ? 0.5 : -0.5;
                 pose.orientation.w = 1.0;
-                robot_state_->transformPose(pose, pose, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+                robot_state_->transformPose(pose, pose, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
                 geometry_msgs::Pose2D pose2D;
                 pose2D.x = pose.position.x;
                 pose2D.y = pose.position.y;
@@ -1306,7 +1306,7 @@ decision_making::TaskResult valTask2::placePanelTask(string name, const FSMCallC
 
             robot_state_->getCurrentPose(palmFrame, currentPalmPose, rd_->getPelvisFrame());
             currentPalmPose.position.x -= 0.2;
-            robot_state_->transformPose(currentPalmPose, currentPalmPose, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+            robot_state_->transformPose(currentPalmPose, currentPalmPose, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
             arm_controller_->moveArmInTaskSpace(panel_grasping_hand_, currentPalmPose, 1.0f);
             ros::Duration(1).sleep();
@@ -1474,7 +1474,7 @@ decision_making::TaskResult valTask2::deployPanelTask(string name, const FSMCall
         float offset1=0.08;
         float offset2=0.02;
         geometry_msgs::Point buttonPelvis;
-        robot_state_->transformPoint(button_coordinates_,buttonPelvis,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+        robot_state_->transformPoint(button_coordinates_,buttonPelvis,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
         std::vector<geometry_msgs::Point> retryPoints;
 
         retryPoints.resize(8);
