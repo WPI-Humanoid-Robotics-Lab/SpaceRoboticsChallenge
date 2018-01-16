@@ -74,7 +74,7 @@ void PanelDetector::cloudCB(const sensor_msgs::PointCloud2ConstPtr& input){
 
     pcl::toROSMsg(*cloud, output);
 
-    output.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    output.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
 
     pcl_filtered_pub_.publish(output);
 }
@@ -90,8 +90,8 @@ void PanelDetector::passThroughFilter(pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud
     max.y = preset_configs_[currentDetector].y_max_limit;
     max.z = preset_configs_[currentDetector].z_max_limit;
 
-    current_state_->transformPoint(min, min, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
-    current_state_->transformPoint(max, max, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPoint(min, min, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPoint(max, max, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
     float x_min = std::min(min.x, max.x);
     float x_max = std::max(min.x, max.x);
 
@@ -277,7 +277,7 @@ bool PanelDetector::getPosition(pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud, geom
 
     visualization_msgs::Marker marker;
 
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time();
     marker.ns = "Center of the Panel";
     marker.id = 0;

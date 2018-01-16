@@ -6,14 +6,14 @@ ButtonPress::ButtonPress(ros::NodeHandle& nh):nh_(nh), armTraj_(nh), gripper_(nh
     rd_ = RobotDescription::getRobotDescription(nh_);
 
     /* Top Grip */
-    //    leftHandOrientation_.header.frame_id = VAL_COMMON_NAMES::PELVIS_TF;
+    //    leftHandOrientation_.header.frame_id = TOUGH_COMMON_NAMES::PELVIS_TF;
     //    leftHandOrientation_.quaternion.x = 0.604;
     //    leftHandOrientation_.quaternion.y = 0.434;
     //    leftHandOrientation_.quaternion.z = -0.583;
     //    leftHandOrientation_.quaternion.w = 0.326;
 
     //Most recent//
-    //    leftHandOrientation_.header.frame_id = VAL_COMMON_NAMES::PELVIS_TF;
+    //    leftHandOrientation_.header.frame_id = TOUGH_COMMON_NAMES::PELVIS_TF;
     //    leftHandOrientation_.quaternion.x = 0.533;
     //    leftHandOrientation_.quaternion.y = 0.373;
     //    leftHandOrientation_.quaternion.z = -0.430;
@@ -34,22 +34,22 @@ ButtonPress::ButtonPress(ros::NodeHandle& nh):nh_(nh), armTraj_(nh), gripper_(nh
 
 
     //    /* Side Grip */
-    //    leftHandOrientation_.header.frame_id = VAL_COMMON_NAMES::PELVIS_TF;
+    //    leftHandOrientation_.header.frame_id = TOUGH_COMMON_NAMES::PELVIS_TF;
     //    leftHandOrientation_.quaternion.x = -0.050;
     //    leftHandOrientation_.quaternion.y = -0.027;
     //    leftHandOrientation_.quaternion.z = -0.678;
     //    leftHandOrientation_.quaternion.w = 0.732;
 
     //    /* Side Grip */
-    //    rightHandOrientation_.header.frame_id = VAL_COMMON_NAMES::PELVIS_TF;
+    //    rightHandOrientation_.header.frame_id = TOUGH_COMMON_NAMES::PELVIS_TF;
     //    rightHandOrientation_.quaternion.x = -0.023;
     //    rightHandOrientation_.quaternion.y = 0.007;
     //    rightHandOrientation_.quaternion.z = 0.723;
     //    rightHandOrientation_.quaternion.w = 0.691;
 
     // Initializing planners
-    left_arm_planner_ = new CartesianPlanner(VAL_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
-    right_arm_planner_ = new CartesianPlanner(VAL_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
+    left_arm_planner_ = new CartesianPlanner(TOUGH_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
+    right_arm_planner_ = new CartesianPlanner(TOUGH_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
     wholebody_controller_ = new WholebodyControlInterface(nh_);
     chest_controller_ = new ChestControlInterface(nh_);
 
@@ -75,7 +75,7 @@ bool ButtonPress::pressButton(const RobotSide side, geometry_msgs::Point &goal, 
     current_state_->getCurrentPose("/leftMiddleFingerPitch1Link",leftOffset,"/leftThumbRollLink");
     if(side == RobotSide::LEFT){
         armSeed = &leftShoulderSeed_;
-        endEffectorFrame = VAL_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP;
+        endEffectorFrame = TOUGH_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP;
         xFingerOffset = leftOffset.position.x;
         yFingerOffset = leftOffset.position.y;// minor offsets to hit centeto hit center of buttonr of button
         zFingerOffset = leftOffset.position.z; // minor offsets to hit center of buttonto hit center of button
@@ -118,14 +118,14 @@ bool ButtonPress::pressButton(const RobotSide side, geometry_msgs::Point &goal, 
     //move arm to given point with known orientation and higher z
     geometry_msgs::Point finalGoal;
 
-    current_state_->transformPoint(goal,finalGoal, VAL_COMMON_NAMES::WORLD_TF,endEffectorFrame);
+    current_state_->transformPoint(goal,finalGoal, TOUGH_COMMON_NAMES::WORLD_TF,endEffectorFrame);
     finalGoal.x+= xFingerOffset;
     finalGoal.y+= yFingerOffset;
     finalGoal.z+= zFingerOffset;
 
 
     //transform that point back to world frame
-    current_state_->transformPoint(finalGoal, finalGoal, endEffectorFrame, VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPoint(finalGoal, finalGoal, endEffectorFrame, TOUGH_COMMON_NAMES::WORLD_TF);
 
     ROS_INFO("Moving towards goal");
 

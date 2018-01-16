@@ -25,7 +25,7 @@ int main(int argc, char** argv){
     // std::sort(poses.begin(),poses .end(), poseComparator);
 
     geometry_msgs::PoseStamped goal;
-    goal.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    goal.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     goal.pose = poses[NUM_SAMPLES -1];
 //    goalPub.publish(goal);
 

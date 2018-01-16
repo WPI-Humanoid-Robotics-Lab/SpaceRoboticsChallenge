@@ -1,5 +1,5 @@
 #include <iostream>
-#include "tough_common/val_common_defines.h"
+ 
 #include <tough_controller_interface/arm_control_interface.h>
 #include <std_msgs/String.h>
 
@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     // initializing objects
     ArmControlInterface armTraj(nh);
 
-    ros::Publisher log_pub = nh.advertise<std_msgs::String>(VAL_COMMON_NAMES::LOG_TOPIC, 10);
+    ros::Publisher log_pub = nh.advertise<std_msgs::String>(TOUGH_COMMON_NAMES::LOG_TOPIC, 10);
     const auto log_msg = [&log_pub](const std::string &str) {
         std_msgs::String msg;
         msg.data = ros::this_node::getName() + ": " + str;

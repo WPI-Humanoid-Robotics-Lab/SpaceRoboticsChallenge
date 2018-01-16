@@ -291,7 +291,7 @@ bool pcl_handle_detector::extractHandle(pcl::PointCloud<pcl::PointXYZ>::Ptr& clo
     visualization_msgs::MarkerArray box_corners;
     visualization_msgs::Marker marker;
 
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time();
     marker.id = 0;
     marker.type = visualization_msgs::Marker::SPHERE;
@@ -314,7 +314,7 @@ bool pcl_handle_detector::extractHandle(pcl::PointCloud<pcl::PointXYZ>::Ptr& clo
 
     box_corners.markers.push_back(marker);
 
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time();
     marker.id = 1;
     marker.type = visualization_msgs::Marker::SPHERE;

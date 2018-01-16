@@ -119,14 +119,14 @@ bool ArrayTableDetector::planeSegmentation(const pcl::PointCloud<pcl::PointXYZ>:
     geometry_msgs::Quaternion quaternion = tf::createQuaternionMsgFromYaw(theta);
     pose.orientation = quaternion;
 
-    robot_state_->transformPose(pose, pose, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    robot_state_->transformPose(pose, pose, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
     ROS_INFO_STREAM("acos " << tf::getYaw(pose.orientation) << std::endl);
 
     if (!(tf::getYaw(pose.orientation) < M_PI_2 && tf::getYaw(pose.orientation) > -M_PI_2))
     {
         pose.orientation = tf::createQuaternionMsgFromYaw(tf::getYaw(pose.orientation) - M_PI);
     }
-    robot_state_->transformPose(pose, pose, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    robot_state_->transformPose(pose, pose, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
     ROS_INFO_STREAM("acos1 " << tf::getYaw(pose.orientation) << std::endl);
     pose.position.x = table_center.x + TABLE_OFFSET * std::cos(tf::getYaw(pose.orientation));
     pose.position.y = table_center.y + TABLE_OFFSET * std::sin(tf::getYaw(pose.orientation));
@@ -135,7 +135,7 @@ bool ArrayTableDetector::planeSegmentation(const pcl::PointCloud<pcl::PointXYZ>:
     visualizePose(pose);
     sensor_msgs::PointCloud2 output;
     pcl::toROSMsg(*output_cloud, output);
-    output.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    output.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     pcl_pub_.publish(output);
 
     output_cloud->points.clear();
@@ -148,7 +148,7 @@ void ArrayTableDetector::extractCloudOfInterest(const pcl::PointCloud<pcl::Point
     geometry_msgs::Point cableLocation;
     cableLocation.x = cable_loc_.x;
     cableLocation.y = cable_loc_.y;
-    robot_state_->transformPoint(cableLocation, cableLocation, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    robot_state_->transformPoint(cableLocation, cableLocation, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
     geometry_msgs::Pose pelvisPose;
     robot_state_->getCurrentPose(rd_->getPelvisFrame(), pelvisPose);
     Eigen::Vector4f minPoint;
@@ -227,7 +227,7 @@ void ArrayTableDetector::visualizePose(const geometry_msgs::Pose &pose, double r
     static int id = 0;
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time::now();
 
     // Set the namespace and id for this marker.  This serves to create a unique ID

@@ -1,5 +1,5 @@
 #include "src_task3/door_valve_detector.h"
-#include "tough_common/val_common_names.h"
+#include "tough_common/tough_common_names.h"
 
 DoorValvedetector::DoorValvedetector(ros::NodeHandle nh)
 {
@@ -94,7 +94,7 @@ void DoorValvedetector::cloudCB(const sensor_msgs::PointCloud2ConstPtr& input){
     center_loc.position.z = circle_param.center[2];
     center_loc.orientation = quaternion;
 
-    robot_state_->transformPose(center_loc,center_loc_pelvis,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+    robot_state_->transformPose(center_loc,center_loc_pelvis,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
 
     float pelvis_theta = tf::getYaw(center_loc_pelvis.orientation);
 
@@ -121,7 +121,7 @@ void DoorValvedetector::cloudCB(const sensor_msgs::PointCloud2ConstPtr& input){
 
     pcl::toROSMsg(*cloud, output);
 
-    output.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    output.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
 
     pcl_filtered_pub_.publish(output);
 

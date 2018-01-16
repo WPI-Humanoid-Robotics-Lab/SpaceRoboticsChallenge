@@ -4,8 +4,7 @@
 #include <tough_controller_interface/arm_control_interface.h>
 #include <tough_controller_interface/gripper_control_interface.h>
 #include <tough_footstep/RobotWalker.h>
-#include <tough_common/val_common_defines.h>
-#include <tough_common/val_common_names.h>
+#include <tough_common/tough_common_names.h>
 #include "tough_moveit_planners/tough_cartesian_planner.h"
 #include "tough_controller_interface/wholebody_control_interface.h"
 #include "tough_controller_interface/chest_control_interface.h"

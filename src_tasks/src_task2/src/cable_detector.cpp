@@ -1,6 +1,6 @@
 #include "src_task2/cable_detector.h"
 #include <visualization_msgs/Marker.h>
-#include "tough_common/val_common_names.h"
+#include "tough_common/tough_common_names.h"
 #include <pcl/common/centroid.h>
 #include <thread>
 
@@ -119,12 +119,12 @@ bool CableDetector::getCableLocation(geometry_msgs::Point& cableLoc)
         geom_point.point.x = cloudCentroid(0);
         geom_point.point.y = cloudCentroid(1);
         geom_point.point.z = cloudCentroid(2);
-        geom_point.header.frame_id = VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+        geom_point.header.frame_id = TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
 
         try
         {
-            listener.waitForTransform(VAL_COMMON_NAMES::WORLD_TF, VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
-            listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF, geom_point, geom_point);
+            listener.waitForTransform(TOUGH_COMMON_NAMES::WORLD_TF, TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
+            listener.transformPoint(TOUGH_COMMON_NAMES::WORLD_TF, geom_point, geom_point);
         }
         catch (tf::TransformException ex){
             ROS_ERROR("%s",ex.what());
@@ -247,35 +247,35 @@ bool CableDetector::getCablePose(geometry_msgs::Pose& cablePose)
         geom_point.point.x = cloudCentroid(0);
         geom_point.point.y = cloudCentroid(1);
         geom_point.point.z = cloudCentroid(2);
-        geom_point.header.frame_id = VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+        geom_point.header.frame_id = TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
 
         geom_point0.point.x = cloudCentroid0(0);
         geom_point0.point.y = cloudCentroid0(1);
         geom_point0.point.z = cloudCentroid0(2);
-        geom_point0.header.frame_id = VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+        geom_point0.header.frame_id = TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
 
         geom_point1.point.x = cloudCentroid1(0);
         geom_point1.point.y = cloudCentroid1(1);
         geom_point1.point.z = cloudCentroid1(2);
-        geom_point1.header.frame_id = VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+        geom_point1.header.frame_id = TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
 
         geom_point2.point.x = cloudCentroid2(0);
         geom_point2.point.y = cloudCentroid2(1);
         geom_point2.point.z = cloudCentroid2(2);
-        geom_point2.header.frame_id = VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+        geom_point2.header.frame_id = TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
 
         geom_point3.point.x = cloudCentroid3(0);
         geom_point3.point.y = cloudCentroid3(1);
         geom_point3.point.z = cloudCentroid3(2);
-        geom_point3.header.frame_id = VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
+        geom_point3.header.frame_id = TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF;
         try
         {
-            listener.waitForTransform(VAL_COMMON_NAMES::WORLD_TF, VAL_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
-            listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF, geom_point, geom_point);
-            listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF, geom_point0, geom_point0_);
-            listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF, geom_point1, geom_point1);
-            listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF, geom_point2, geom_point2);
-            listener.transformPoint(VAL_COMMON_NAMES::WORLD_TF, geom_point3, geom_point3);
+            listener.waitForTransform(TOUGH_COMMON_NAMES::WORLD_TF, TOUGH_COMMON_NAMES::LEFT_CAMERA_OPTICAL_FRAME_TF, ros::Time(0), ros::Duration(3.0));
+            listener.transformPoint(TOUGH_COMMON_NAMES::WORLD_TF, geom_point, geom_point);
+            listener.transformPoint(TOUGH_COMMON_NAMES::WORLD_TF, geom_point0, geom_point0_);
+            listener.transformPoint(TOUGH_COMMON_NAMES::WORLD_TF, geom_point1, geom_point1);
+            listener.transformPoint(TOUGH_COMMON_NAMES::WORLD_TF, geom_point2, geom_point2);
+            listener.transformPoint(TOUGH_COMMON_NAMES::WORLD_TF, geom_point3, geom_point3);
         }
         catch (tf::TransformException ex){
             ROS_ERROR("%s",ex.what());
@@ -294,11 +294,11 @@ bool CableDetector::getCablePose(geometry_msgs::Pose& cablePose)
         new_point.z = geom_point3.point.z;
 
         robot_state_->transformPoint(geom_point3, geom_point3, rd_->getPelvisFrame());
-        robot_state_->transformPoint(new_point, new_point, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+        robot_state_->transformPoint(new_point, new_point, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
         double geom_norm = std::pow(geom_point3.point.x, 2) + std::pow(geom_point3.point.y, 2);
         double dir_norm = std::pow(new_point.x, 2) + std::pow(new_point.y, 2);
-        robot_state_->transformPoint(geom_point3, geom_point3, VAL_COMMON_NAMES::WORLD_TF);
-        robot_state_->transformPoint(new_point, new_point, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+        robot_state_->transformPoint(geom_point3, geom_point3, TOUGH_COMMON_NAMES::WORLD_TF);
+        robot_state_->transformPoint(new_point, new_point, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
         if(dir_norm <= geom_norm)
         {
@@ -516,7 +516,7 @@ void CableDetector::visualize_point(geometry_msgs::Point point, double r, double
     static int id = 0;
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time::now();
 
     // Set the namespace and id for this marker.  This serves to create a unique ID
@@ -550,7 +550,7 @@ void CableDetector::visualize_pose(geometry_msgs::Pose pose)
     static int id = 0;
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time::now();
 
     // Set the namespace and id for this marker.  This serves to create a unique ID
@@ -599,7 +599,7 @@ void CableDetector::visualize_direction(geometry_msgs::Point point1, geometry_ms
     static int id = 0;
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time::now();
 
     // Set the namespace and id for this marker.  This serves to create a unique ID

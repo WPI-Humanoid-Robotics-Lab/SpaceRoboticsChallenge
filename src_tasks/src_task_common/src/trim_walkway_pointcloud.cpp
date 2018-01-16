@@ -1,7 +1,7 @@
 #include <ros/ros.h>
 #include <iostream>
 #include <pcl_ros/point_cloud.h>
-#include <tough_common/val_common_names.h>
+#include <tough_common/tough_common_names.h>
 #include <tough_perception_common/perception_common_names.h>
 #include <pcl/ModelCoefficients.h>
 #include <pcl/io/pcd_io.h>
@@ -82,7 +82,7 @@ void trimPoints(const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) //const sensor_
     chull.setAlpha (0.1);
     chull.reconstruct (*cloud_hull);
     cloud_hull->header = cloud->header;
-    cloud_hull->header.frame_id = VAL_COMMON_NAMES::WORLD_TF; //VAL_COMMON_NAMES::WORLD_TF
+    cloud_hull->header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF; //TOUGH_COMMON_NAMES::WORLD_TF
 
     std::cerr << "Concave hull has: " << cloud_hull->points.size ()
               << " data points." << std::endl;

@@ -48,11 +48,11 @@ geometry_msgs::Pose leakDetectorGrabber::getGraspGoal(const RobotSide &side, con
 
     geometry_msgs::Pose thumb_offset;
     current_state_->getCurrentPose(palm_frame, thumb_offset, thumb_frame);
-    current_state_->transformPose(user_goal, grasp_goal, VAL_COMMON_NAMES::WORLD_TF, palm_frame);
+    current_state_->transformPose(user_goal, grasp_goal, TOUGH_COMMON_NAMES::WORLD_TF, palm_frame);
     grasp_goal.position.x += thumb_offset.position.x;
     grasp_goal.position.y += thumb_offset.position.y;
     grasp_goal.position.z += thumb_offset.position.z;
-    current_state_->transformPose(grasp_goal, grasp_goal, palm_frame, VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(grasp_goal, grasp_goal, palm_frame, TOUGH_COMMON_NAMES::WORLD_TF);
 
     taskCommonUtils::fixHandFramePalmDown(nh_, side, grasp_goal);
 
@@ -70,11 +70,11 @@ geometry_msgs::Pose leakDetectorGrabber::getReachGoal(const RobotSide &side, con
     // Reach goal is the same pose as grasp goal except higher above the table
     geometry_msgs::Pose reach_goal;
 
-    current_state_->transformPose(grasp_goal, reach_goal, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state_->transformPose(grasp_goal, reach_goal, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
     reach_goal.position.z += INTERMEDIATE_GOAL_OFFSET;
 
     //transform that point back to world frame
-    current_state_->transformPose(reach_goal, reach_goal, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(reach_goal, reach_goal, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     return reach_goal;
 }
@@ -83,7 +83,7 @@ float leakDetectorGrabber::getStandingOffset(const RobotSide side, const geometr
     std::string shoulder_frame = (side == RobotSide::LEFT) ? "/leftShoulderRollLink" : "/rightShoulderRollLink";
 
     geometry_msgs::Pose goal_wrt_pelvis, shoulder_wrt_pelvis;
-    current_state_->transformPose(user_goal, goal_wrt_pelvis, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state_->transformPose(user_goal, goal_wrt_pelvis, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
     current_state_->getCurrentPose(shoulder_frame, shoulder_wrt_pelvis, rd_->getPelvisFrame());
 
     double yaw = tf::getYaw(goal_wrt_pelvis.orientation);
@@ -95,7 +95,7 @@ float leakDetectorGrabber::getStandingOffset(const RobotSide side, const geometr
     geometry_msgs::Pose standing_pose;
     standing_pose.position.y = offset;
     standing_pose.orientation.w = 1;
-    current_state_->transformPose(standing_pose, standing_pose, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state_->transformPose(standing_pose, standing_pose, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
     pubPoseArrow(standing_pose, "detector_standing_pose", 1.f, 0.f, 0.f);
 
@@ -107,7 +107,7 @@ void leakDetectorGrabber::graspDetector(geometry_msgs::Pose user_goal, float exe
     // If user_goal's z is exactly zero, it's almost certainly generated from Rviz and needs its z determined
     if (user_goal.position.z == 0) {
         geometry_msgs::Pose foot_bottom_world_frame;
-        current_state_->getCurrentPose("/leftCOP_Frame", foot_bottom_world_frame, VAL_COMMON_NAMES::WORLD_TF);
+        current_state_->getCurrentPose("/leftCOP_Frame", foot_bottom_world_frame, TOUGH_COMMON_NAMES::WORLD_TF);
         user_goal.position.z = foot_bottom_world_frame.position.z + DETECTOR_GRASP_HEIGHT;
 
         ROS_DEBUG_STREAM("Goal pose z determined to be " << user_goal.position.z);

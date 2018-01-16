@@ -38,7 +38,7 @@
 #include <pcl/sample_consensus/ransac.h>
 
 #include <visualization_msgs/MarkerArray.h>
-#include "tough_common/val_common_names.h"
+#include "tough_common/tough_common_names.h"
 #include "tough_common/robot_description.h"
 #include "tough_controller_interface/robot_state.h"
 

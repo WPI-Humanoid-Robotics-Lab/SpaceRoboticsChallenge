@@ -165,7 +165,7 @@ Val_Marker::Val_Marker(string node_name,std::string name, geometry_msgs::PoseSta
   i_marker_server = new interactive_markers::InteractiveMarkerServer(node_name);
   menu_handler = new interactive_markers::MenuHandler();
   ros::Duration(0.2).sleep();
-  geometry_msgs::PoseStamped world_pose = transform_pose_simple(&start_pose,VAL_COMMON_NAMES::WORLD_TF);
+  geometry_msgs::PoseStamped world_pose = transform_pose_simple(&start_pose,TOUGH_COMMON_NAMES::WORLD_TF);
 
   tf::Vector3 position;
   position.setX(tfScalar(world_pose.pose.position.x));

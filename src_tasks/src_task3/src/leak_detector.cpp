@@ -30,7 +30,7 @@ void leakDetector::leakMsgCB(const srcsim::Leak &leakmsg)
 {
     if (leakmsg.value > 0.101) {
         geometry_msgs::PoseStamped leak_loc;
-        leak_loc.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+        leak_loc.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
         leak_loc.header.stamp = ros::Time::now();
 
         std::string palm_frame = side_ == RobotSide::LEFT ? rd_->getLeftPalmFrame() : rd_->getRightPalmFrame();
@@ -112,7 +112,7 @@ void leakDetector::visulatiseSearchPoints(std::vector<geometry_msgs::Pose> &pose
     visualization_msgs::MarkerArray marker_array = visualization_msgs::MarkerArray();
 
     visualization_msgs::Marker marker;
-    marker.header.frame_id = VAL_COMMON_NAMES::WORLD_TF;
+    marker.header.frame_id = TOUGH_COMMON_NAMES::WORLD_TF;
     marker.header.stamp = ros::Time();
     marker.ns = "leak";
     marker.type = visualization_msgs::Marker::CUBE;

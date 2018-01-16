@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
 
 
-    ros::Publisher log_pub = nh.advertise<std_msgs::String>(VAL_COMMON_NAMES::LOG_TOPIC, 10);
+    ros::Publisher log_pub = nh.advertise<std_msgs::String>(TOUGH_COMMON_NAMES::LOG_TOPIC, 10);
     const auto log_msg = [&log_pub](const std::string &str) {
         std_msgs::String msg;
         msg.data = ros::this_node::getName() + ": " + str;
@@ -32,8 +32,8 @@ int main(int argc, char **argv)
     log_msg("starting planners");
     ArmControlInterface armTraj(nh);
     WholebodyControlInterface wholeBodyController(nh);
-    CartesianPlanner right_arm_planner(VAL_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
-    CartesianPlanner left_arm_planner(VAL_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
+    CartesianPlanner right_arm_planner(TOUGH_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
+    CartesianPlanner left_arm_planner(TOUGH_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
     moveit_msgs::RobotTrajectory traj;
 
     ros::Duration(1).sleep();

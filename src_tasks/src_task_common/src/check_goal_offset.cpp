@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 //        std::cout<<"y offset in world frame: "<<y<<"\n";
 //        std::cout<<"z offset in world frame: "<<z<<"\n";
 
-        current_state_->transformPose(pt,pt,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+        current_state_->transformPose(pt,pt,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
 
         x_offset =-1*(pelvisPoseinPelvis.position.x -pt.position.x);
         y_offset =-1*(pelvisPoseinPelvis.position.y -pt.position.y);
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 //        std::cout<<"y offset in world frame: "<<y_offset<<"\n";
 //        std::cout<<"z offset in world frame: "<<z_offset<<"\n";
 
-        current_state_->transformPoint(pt,pt,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+        current_state_->transformPoint(pt,pt,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
 
         x_offset =-1*(pelvisPoseinPelvis.position.x -pt.x);
         y_offset =-1*(pelvisPoseinPelvis.position.y -pt.y);

@@ -129,7 +129,7 @@ void task3Utils::blindNavigation(geometry_msgs::Pose2D & goal){
 // Copied from task2utils
 geometry_msgs::Pose task3Utils::grasping_hand(RobotSide &side, geometry_msgs::Pose handle_pose) {
     geometry_msgs::Pose poseInPelvisFrame;
-    current_state_->transformPose(handle_pose, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF,
+    current_state_->transformPose(handle_pose, poseInPelvisFrame, TOUGH_COMMON_NAMES::WORLD_TF,
                                   rd_->getPelvisFrame());
     float yaw = tf::getYaw(poseInPelvisFrame.orientation);
 
@@ -142,7 +142,7 @@ geometry_msgs::Pose task3Utils::grasping_hand(RobotSide &side, geometry_msgs::Po
         y = y - M_PI;
         geometry_msgs::Quaternion quaternion = tf::createQuaternionMsgFromRollPitchYaw(r, p, y);
         handle_pose.orientation = quaternion;
-        current_state_->transformPose(handle_pose, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF,
+        current_state_->transformPose(handle_pose, poseInPelvisFrame, TOUGH_COMMON_NAMES::WORLD_TF,
                                       rd_->getPelvisFrame());
         yaw = tf::getYaw(poseInPelvisFrame.orientation);
     }

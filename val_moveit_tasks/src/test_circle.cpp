@@ -37,7 +37,7 @@ int main(int argc, char** argv){
     center_start_pose.pose.orientation.w  = 1; // 0.93603491255;
     center_start_pose.header.seq          = 1;
     center_start_pose.header.stamp        = ros::Time::now();
-    center_start_pose.header.frame_id     = VAL_COMMON_NAMES::WORLD_TF;
+    center_start_pose.header.frame_id     = TOUGH_COMMON_NAMES::WORLD_TF;
 
     ROS_INFO("Test Circle Node Started");
     // pthread_create(&input_thread, NULL, input_thread_func, NULL);
@@ -68,7 +68,7 @@ void* input_thread_func(void *input_ptr)
   //this waits until both center pose received and user presses enter
   input =std::cin.get();
   //man, this is pretty stupid
-  center_pub->publish(transform_pose_simple(&center_pose,VAL_COMMON_NAMES::WORLD_TF));
+  center_pub->publish(transform_pose_simple(&center_pose,TOUGH_COMMON_NAMES::WORLD_TF));
 
 // std::cout << "pub pose: " <<center_pose.pose.position.x<<" "<<center_pose.pose.position.y<< '\n';
 
@@ -79,7 +79,7 @@ void* input_thread_func(void *input_ptr)
   // Val_Marker edge_marker("test_circle","edge Pose", edge_start_pose,&edge_marker_callback );
   // ROS_INFO("Place Edge Marker, Press {Enter}");
   // input =std::cin.get();
-  // edge_pub->publish(transform_pose_simple(&edge_pose,VAL_COMMON_NAMES::R_PALM_TF));
+  // edge_pub->publish(transform_pose_simple(&edge_pose,TOUGH_COMMON_NAMES::R_PALM_TF));
 
   std::cout << "Enter angle to move: " << '\n';
   std::getline(std::cin,input_str);

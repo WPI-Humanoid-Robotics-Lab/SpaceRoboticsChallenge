@@ -36,8 +36,8 @@ int main(int argc, char **argv)
     armTraj               = new ArmControlInterface(nh);
     chest_controller_     = new ChestControlInterface(nh);
     control_common_       = new ToughControlCommon(nh);
-    right_arm_planner     = new CartesianPlanner(VAL_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
-    left_arm_planner      = new CartesianPlanner(VAL_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, VAL_COMMON_NAMES::WORLD_TF);
+    right_arm_planner     = new CartesianPlanner(TOUGH_COMMON_NAMES::RIGHT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
+    left_arm_planner      = new CartesianPlanner(TOUGH_COMMON_NAMES::LEFT_ENDEFFECTOR_GROUP, TOUGH_COMMON_NAMES::WORLD_TF);
     current_state_ = RobotStateInformer::getRobotStateInformer(nh);
 
     RobotSide side;
@@ -63,11 +63,11 @@ int main(int argc, char **argv)
             ros::Duration(2).sleep();
             control_common_->stopAllTrajectories();
 
-            current_state_->transformPose(intermGoal1,intermGoal2,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+            current_state_->transformPose(intermGoal1,intermGoal2,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
             intermGoal2.position.x+=std::atof(argv[5]);
             intermGoal2.position.y+=std::atof(argv[6]);
             intermGoal2.position.z+=std::atof(argv[7]);
-            current_state_->transformPose(intermGoal2,intermGoal2,rd_->getPelvisFrame(),VAL_COMMON_NAMES::WORLD_TF);
+            current_state_->transformPose(intermGoal2,intermGoal2,rd_->getPelvisFrame(),TOUGH_COMMON_NAMES::WORLD_TF);
             waypoints.push_back(intermGoal2);
 
             left_arm_planner->getTrajFromCartPoints(waypoints, traj, false);
@@ -87,11 +87,11 @@ int main(int argc, char **argv)
             ros::Duration(2).sleep();
             control_common_->stopAllTrajectories();
 
-            current_state_->transformPose(intermGoal1,intermGoal2,VAL_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
+            current_state_->transformPose(intermGoal1,intermGoal2,TOUGH_COMMON_NAMES::WORLD_TF,rd_->getPelvisFrame());
             intermGoal2.position.x+=std::atof(argv[5]);
             intermGoal2.position.y+=std::atof(argv[6]);
             intermGoal2.position.z+=std::atof(argv[7]);
-            current_state_->transformPose(intermGoal2,intermGoal2,rd_->getPelvisFrame(),VAL_COMMON_NAMES::WORLD_TF);
+            current_state_->transformPose(intermGoal2,intermGoal2,rd_->getPelvisFrame(),TOUGH_COMMON_NAMES::WORLD_TF);
             waypoints.push_back(intermGoal2);
 
             right_arm_planner->getTrajFromCartPoints(waypoints, traj, false);

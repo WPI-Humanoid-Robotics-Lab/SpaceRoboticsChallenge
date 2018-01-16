@@ -8,8 +8,7 @@
 #include <string>
 #include <interactive_markers/interactive_marker_server.h>
 #include <tough_controller_interface/arm_control_interface.h>
-#include <tough_common/val_common_names.h>
-#include <tough_common/val_common_defines.h>
+#include <tough_common/tough_common_names.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Int16.h>

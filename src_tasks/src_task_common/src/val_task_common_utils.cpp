@@ -110,7 +110,7 @@ void taskCommonUtils::fixHandFramePalmDown(ros::NodeHandle nh, RobotSide side, g
     RobotStateInformer *current_state = RobotStateInformer::getRobotStateInformer(nh);
     RobotDescription *rd_ = RobotDescription::getRobotDescription(nh);
     geometry_msgs::Pose poseInPelvisFrame;
-    current_state->transformPose(poseInWorldFrame, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state->transformPose(poseInWorldFrame, poseInPelvisFrame, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
 
     tf::Quaternion tfQuat;
     tf::quaternionMsgToTF(poseInPelvisFrame.orientation, tfQuat);
@@ -127,7 +127,7 @@ void taskCommonUtils::fixHandFramePalmDown(ros::NodeHandle nh, RobotSide side, g
     }
     tf::Quaternion tfQuatOut = tf::createQuaternionFromRPY(roll, pitch, yaw);
     tf::quaternionTFToMsg(tfQuatOut, poseInPelvisFrame.orientation);
-    current_state->transformPose(poseInPelvisFrame, poseInWorldFrame, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state->transformPose(poseInPelvisFrame, poseInWorldFrame, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 
 }
 
@@ -136,7 +136,7 @@ void taskCommonUtils::fixHandFramePalmUp(ros::NodeHandle nh, RobotSide side, geo
     RobotStateInformer *current_state = RobotStateInformer::getRobotStateInformer(nh);
     RobotDescription *rd_ = RobotDescription::getRobotDescription(nh);
     geometry_msgs::Pose poseInPelvisFrame;
-    current_state->transformPose(poseInWorldFrame, poseInPelvisFrame, VAL_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
+    current_state->transformPose(poseInWorldFrame, poseInPelvisFrame, TOUGH_COMMON_NAMES::WORLD_TF, rd_->getPelvisFrame());
 
     tf::Quaternion tfQuat;
     tf::quaternionMsgToTF(poseInPelvisFrame.orientation, tfQuat);
@@ -155,7 +155,7 @@ void taskCommonUtils::fixHandFramePalmUp(ros::NodeHandle nh, RobotSide side, geo
     }
     tf::Quaternion tfQuatOut = tf::createQuaternionFromRPY(roll, pitch, yaw);
     tf::quaternionTFToMsg(tfQuatOut, poseInPelvisFrame.orientation);
-    current_state->transformPose(poseInPelvisFrame, poseInWorldFrame, rd_->getPelvisFrame(), VAL_COMMON_NAMES::WORLD_TF);
+    current_state->transformPose(poseInPelvisFrame, poseInWorldFrame, rd_->getPelvisFrame(), TOUGH_COMMON_NAMES::WORLD_TF);
 }
 bool taskCommonUtils::slowGrip(ros::NodeHandle nh,RobotSide side, std::vector<double> initial, std::vector<double> final, int iterations, float executionTime)
 {
