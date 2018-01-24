@@ -137,8 +137,8 @@ void climbStairs::approach_2 (void)
   l_x = currentPelvisLocation.x;
 
   ihmc_msgs::FootstepDataListRosMessage step_list;
-  step_list.default_swing_time = 0.8;
-  step_list.default_transfer_time = 0.8;
+  step_list.swing_time = 0.8;
+  step_list.transfer_time = 0.8;
 
   // next 8 steps
   for (int i=1; i<=8; i++)
